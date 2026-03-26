@@ -716,22 +716,23 @@ class BackendPoster:
         t.start()
         print(f"[BACKEND] Poster active → {url} (mode={mode})")
 
-    def push(self, report):
+    def push(self, report, sig):
         with self._lock:
-            self._pending = report
+            self._pending = (report, sig)
 
     def _run(self):
         while self._running:
-            report = None
+            item = None
             with self._lock:
                 if self._pending is not None:
-                    report = self._pending
+                    item = self._pending
                     self._pending = None
 
-            if report is not None:
+            if item is not None:
                 try:
+                    report, sig = item
                     payload = json.dumps(
-                        {"mode": self._mode, "data": report},
+                        {"mode": self._mode, "data": report, "sig": sig},
                         cls=NumpyEncoder,
                     ).encode("utf-8")
                     req = urllib.request.Request(
@@ -1043,7 +1044,7 @@ def main():
             last_report_time = now
 
             # Post to backend
-            backend_poster.push(latest_report)
+            backend_poster.push(latest_report, sig)
 
         # ── Debug Overlay ───────────────────────────────
         active_events = event_tracker.get_active_events()

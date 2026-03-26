@@ -1,268 +1,144 @@
 /**
- * Trusted Advisor AI — Dashboard App
- * ====================================
- * Fetches /data every 400ms and updates all panels smoothly.
+ * Trusted Advisor AI — Strict Theme Dashboard App
+ * ================================================
+ * Fetches /data every 400ms and updates DOM to match app.py layout 
+ * with strict #0F0F0F, #2C2C2C, #EDEDED, #8A8A8A palette.
  */
 
 const FETCH_INTERVAL = 400;
 const DATA_URL = "/data";
 
-// ── DOM References ───────────────────────────────────────────────────
+// DOM Elements
+const statusIndicator = document.getElementById("status-indicator");
+const emotionChip = document.getElementById("emotion-chip");
 
-const statusBadge = document.getElementById("status-badge");
-const pulseDot = document.getElementById("pulse-dot");
-const statusText = document.getElementById("status-text");
+const metricEng = document.getElementById("metric-eng");
+const metricTension = document.getElementById("metric-tension");
+const metricEye = document.getElementById("metric-eye");
+const metricPosture = document.getElementById("metric-posture");
 
-const scoreValue = document.getElementById("score-value");
-const ringFill = document.getElementById("ring-fill");
-const focusLabel = document.getElementById("focus-label");
-const stabilityTag = document.getElementById("stability-tag");
+const metricGaze = document.getElementById("metric-gaze");
+const metricGestures = document.getElementById("metric-gestures");
+const metricHead = document.getElementById("metric-head");
+const metricBlinks = document.getElementById("metric-blinks");
 
-const metricOffscreen = document.getElementById("metric-offscreen");
-const metricHeaddown = document.getElementById("metric-headdown");
-const metricFacemissing = document.getElementById("metric-facemissing");
-const metricSlouch = document.getElementById("metric-slouch");
-const barOffscreen = document.getElementById("bar-offscreen");
-const barHeaddown = document.getElementById("bar-headdown");
-const barFacemissing = document.getElementById("bar-facemissing");
-const barSlouch = document.getElementById("bar-slouch");
+const signalsContainer = document.getElementById("signals-container");
+const breakdownContainer = document.getElementById("breakdown-container");
+const analysisContainer = document.getElementById("analysis-container");
+const footerText = document.getElementById("footer-text");
 
-const bodyPosture = document.getElementById("body-posture");
-const bodyNeck = document.getElementById("body-neck");
-const bodyShoulders = document.getElementById("body-shoulders");
-const bodyRecommendation = document.getElementById("body-recommendation");
-
-const alertCount = document.getElementById("alert-count");
-const alertsList = document.getElementById("alerts-list");
-const episodesList = document.getElementById("episodes-list");
-
-// ── State ────────────────────────────────────────────────────────────
-
-let isLive = false;
-
-// ── Fetch Loop ───────────────────────────────────────────────────────
-
+// Fetch Loop
 async function fetchData() {
   try {
     const res = await fetch(DATA_URL);
     const json = await res.json();
 
-    if (json.status === "waiting") {
-      setDisconnected("Waiting for data…");
+    if (json.status === "waiting" || !json.report) {
+      statusIndicator.textContent = "Waiting for data...";
       return;
     }
 
-    setLive();
+    statusIndicator.textContent = "LIVE";
+    statusIndicator.style.color = "var(--text-color)";
+    statusIndicator.style.borderColor = "var(--text-color)";
+    
     updateDashboard(json.report);
   } catch (err) {
-    setDisconnected("Connection lost");
+    statusIndicator.textContent = "Connection lost";
+    statusIndicator.style.color = "var(--text-secondary)";
+    statusIndicator.style.borderColor = "var(--text-secondary)";
   }
 }
 
-function setLive() {
-  if (!isLive) {
-    isLive = true;
-    statusBadge.classList.add("live");
-    pulseDot.classList.add("live");
-    statusText.textContent = "LIVE";
-  }
-}
+function updateDashboard(payload) {
+  // payload is { mode, data, sig } based on our app.js assumption 
+  // actually the backend stores `json.report` which equals the POST body.
+  // The POST body is `{"mode": "PROCTORING", "data": report, "sig": sig}`.
+  // So payload = {"mode": "PROCTORING", "data": report, "sig": sig}
+  
+  const report = payload.data || {};
+  const sig = payload.sig || {};
 
-function setDisconnected(msg) {
-  isLive = false;
-  statusBadge.classList.remove("live");
-  pulseDot.classList.remove("live");
-  statusText.textContent = msg;
-}
+  // 1. Emotion Banner
+  const emo = (sig.emotion || "loading").toUpperCase();
+  const emoConf = sig.emotion_conf || 0;
+  emotionChip.textContent = `🎭 ${emo} — ${Math.round(emoConf)}% confident`;
 
-// ── Update Functions ─────────────────────────────────────────────────
+  // 2. Top Metrics
+  const eng = sig.engagement_score || 5;
+  const tension = sig.micro_tension_score || 0;
+  const eye = sig.eye_contact_score || 0;
+  const posture = sig.posture || "Closed";
 
-function updateDashboard(report) {
-  if (!report) return;
+  metricEng.textContent = `${eng}/10`;
+  metricTension.textContent = `${tension}/10`;
+  metricEye.textContent = `${Math.round(eye * 100)}%`;
+  metricPosture.textContent = posture;
 
-  updateAttention(report.summary);
-  updateMetrics(report.metrics);
-  updateBody(report.body_analysis, report.recommendation);
-  updateAlerts(report.live_alerts || []);
-  updateEpisodes(report.look_away_episodes || []);
-}
+  // 3. Second Metrics
+  metricGaze.textContent = sig.gaze || "—";
+  metricGestures.textContent = sig.gestures || "0";
+  metricHead.textContent = sig.head_pose || "—";
+  metricBlinks.textContent = Math.round(sig.blinks_per_minute || 0).toString();
 
-function updateAttention(summary) {
-  if (!summary) return;
+  // 4. Facial Signals
+  let signalsHtml = "";
+  signalsHtml += createBadge(`Smile: ${sig.smile_label || '-'}`, sig.smile_genuine);
+  signalsHtml += createBadge(`Brow: ${sig.brow_label || '-'}`, sig.brow_label === 'RAISED');
+  signalsHtml += createBadge(`Lip: ${sig.lip_label || '-'}`, sig.lip_label === 'RELAXED');
+  signalsHtml += createBadge(`Nodding`, sig.nodding);
+  signalsHtml += createBadge(`Head Shake`, sig.head_shake);
+  signalsContainer.innerHTML = signalsHtml;
 
-  const score = summary.attention_score || 0;
-  const focus = summary.focus_level || "N/A";
-  const stability = summary.stability || "";
-
-  // Score number
-  scoreValue.textContent = Math.round(score * 100);
-
-  // Ring
-  const circumference = 326.73;
-  const offset = circumference * (1 - score);
-  ringFill.style.strokeDashoffset = offset;
-
-  // Ring color
-  if (score >= 0.7) {
-    ringFill.style.stroke = "var(--accent-green)";
-    scoreValue.style.color = "var(--accent-green)";
-  } else if (score >= 0.4) {
-    ringFill.style.stroke = "var(--accent-amber)";
-    scoreValue.style.color = "var(--accent-amber)";
-  } else {
-    ringFill.style.stroke = "var(--accent-red)";
-    scoreValue.style.color = "var(--accent-red)";
-  }
-
-  // Focus label
-  focusLabel.textContent = focus;
-  focusLabel.className = "focus-label " + focus;
-
-  // Stability
-  stabilityTag.textContent = stability ? `Stability: ${stability}` : "";
-}
-
-function updateMetrics(metrics) {
-  if (!metrics) return;
-
-  setMetric(metricOffscreen, barOffscreen, metrics.off_screen_time);
-  setMetric(metricHeaddown, barHeaddown, metrics.head_down_time);
-  setMetric(metricFacemissing, barFacemissing, metrics.face_missing_time);
-  setMetric(metricSlouch, barSlouch, metrics.slouch_time);
-}
-
-function setMetric(valueEl, barEl, percentStr) {
-  if (!percentStr) {
-    valueEl.textContent = "0%";
-    barEl.style.width = "0%";
-    return;
-  }
-
-  valueEl.textContent = percentStr;
-  const num = parseInt(percentStr, 10);
-  barEl.style.width = num + "%";
-
-  // Color coding
-  if (num >= 30) {
-    valueEl.style.color = "var(--accent-red)";
-    barEl.style.background = "var(--accent-red)";
-  } else if (num >= 15) {
-    valueEl.style.color = "var(--accent-amber)";
-    barEl.style.background = "var(--accent-amber)";
-  } else {
-    valueEl.style.color = "var(--accent-green)";
-    barEl.style.background = "var(--accent-green)";
-  }
-}
-
-function updateBody(body, recommendation) {
-  if (!body) return;
-
-  setBodyValue(bodyPosture, body.posture);
-  setBodyValue(bodyNeck, body.neck);
-  setBodyValue(bodyShoulders, body.shoulders);
-
-  bodyRecommendation.textContent = recommendation || "—";
-  if (recommendation === "GOOD") {
-    bodyRecommendation.className = "body-value recommendation ok";
-  } else if (recommendation === "ACCEPTABLE") {
-    bodyRecommendation.className = "body-value recommendation warn";
-  } else {
-    bodyRecommendation.className = "body-value recommendation bad";
-  }
-}
-
-function setBodyValue(el, value) {
-  el.textContent = value || "—";
-  const bad = ["SLOUCHED", "FORWARD_HEAD", "DOWN", "DROPPED", "TILTED"];
-  const ok = ["UPRIGHT", "STRAIGHT", "ACTIVE", "NEUTRAL", "RELAXED"];
-
-  if (bad.includes(value)) {
-    el.className = "body-value bad";
-  } else if (ok.includes(value)) {
-    el.className = "body-value ok";
-  } else {
-    el.className = "body-value warn";
-  }
-}
-
-function updateAlerts(alerts) {
-  const count = alerts.filter(a => a.active).length;
-  alertCount.textContent = count;
-
-  if (alerts.length === 0) {
-    alertsList.innerHTML = '<div class="empty-state">No active alerts</div>';
-    return;
-  }
-
-  let html = "";
-  for (const alert of alerts) {
-    const cls = alert.active ? "active" : "completed";
-    const typeName = formatEventType(alert.type);
-
-    html += `
-      <div class="alert-item ${cls}">
-        <span class="alert-type">${typeName}</span>
-        <span class="alert-time">${alert.start} → ${alert.end}</span>
-        <span class="alert-duration">${alert.duration}</span>
-        ${alert.active ? '<span class="alert-active-badge">LIVE</span>' : ''}
-      </div>
-    `;
-  }
-
-  alertsList.innerHTML = html;
-}
-
-function updateEpisodes(episodes) {
-  if (episodes.length === 0) {
-    episodesList.innerHTML = '<div class="empty-state">No look-away events recorded</div>';
-    return;
-  }
-
-  let html = `
-    <div class="episode-item" style="opacity:0.5; font-weight:600; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.05em;">
-      <span>Duration</span>
-      <span>Start</span>
-      <span>End</span>
-      <span>Timeline</span>
-    </div>
-  `;
-
-  for (const ep of episodes) {
-    const durSec = parseFloat(ep.duration);
-    const barWidth = Math.min(durSec / 10 * 100, 100);
-    const cls = ep.active ? "active" : "";
-
-    html += `
-      <div class="episode-item ${cls}">
-        <span class="episode-duration">${ep.duration}</span>
-        <span class="episode-start">${ep.start}</span>
-        <span class="episode-end">${ep.end}</span>
-        <div class="episode-bar">
-          <div class="episode-bar-fill" style="width:${barWidth}%"></div>
+  // 5. Emotion Breakdown
+  const emoAll = sig.emotion_all || {};
+  if (Object.keys(emoAll).length > 0 && sig.emotion !== "loading" && sig.emotion !== "analyzing") {
+    // Sort emotions by value descending
+    const sortedEmos = Object.entries(emoAll).sort((a, b) => b[1] - a[1]);
+    let barsHtml = "";
+    for (const [emoName, emoVal] of sortedEmos) {
+      const width = Math.max(2, emoVal);
+      barsHtml += `
+        <div class="score-bar-row">
+          <span class="score-label">${emoName}</span>
+          <div class="score-track">
+            <div class="score-fill" style="width: ${width}%;"></div>
+          </div>
+          <span class="score-pct">${emoVal.toFixed(1)}%</span>
         </div>
-      </div>
-    `;
+      `;
+    }
+    breakdownContainer.innerHTML = barsHtml;
+  } else {
+    breakdownContainer.innerHTML = '<div style="color:var(--text-secondary); font-size:0.9rem;">Loading breakdown...</div>';
   }
 
-  episodesList.innerHTML = html;
+  // 6. Behavior Analysis
+  let analysisHtml = "";
+  if (eng >= 7) {
+    analysisHtml += `<div class="analysis-box">✅ Excellent Engagement (${eng}/10) — Confident, well-projected non-verbal communication.</div>`;
+  } else if (eng >= 4) {
+    analysisHtml += `<div class="analysis-box">⚠️ Moderate Engagement (${eng}/10) — Try more eye contact, open posture, and gestures.</div>`;
+  } else {
+    analysisHtml += `<div class="analysis-box">🚨 Low Engagement (${eng}/10) — Significant improvement needed in body language and expression.</div>`;
+  }
+
+  if (tension >= 6) {
+    analysisHtml += `<div class="analysis-box">😰 High Tension (${tension}/10) — Signs of stress detected. Try relaxing your brow and jaw.</div>`;
+  }
+  
+  analysisContainer.innerHTML = analysisHtml;
+
+  // 7. Footer
+  const now = new Date();
+  footerText.textContent = `Last updated: ${now.toLocaleTimeString()} | Data source: /data`;
 }
 
-// ── Helpers ──────────────────────────────────────────────────────────
-
-function formatEventType(type) {
-  const map = {
-    LOOK_AWAY: "👀 Look Away",
-    LOOK_DOWN: "⬇️ Look Down",
-    FACE_MISSING: "🚫 Face Missing",
-    SLOUCH: "🪑 Slouch",
-    SHOULDER_DROP: "💪 Shoulder Drop",
-    ARMS_CROSSED: "🤞 Arms Crossed",
-  };
-  return map[type] || type;
+function createBadge(label, active) {
+  const cls = active ? "on" : "off";
+  const icon = active ? "✅" : "❌";
+  return `<span class="signal-badge ${cls}">${icon} ${label}</span>`;
 }
-
-// ── Init ─────────────────────────────────────────────────────────────
 
 setInterval(fetchData, FETCH_INTERVAL);
 fetchData();

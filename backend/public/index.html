@@ -4,134 +4,96 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Trusted Advisor AI — Real-time behavioral intelligence dashboard" />
-  <title>Trusted Advisor AI — Dashboard</title>
+  <title>Trusted Advisor AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- ── Header ───────────────────────────────────────────── -->
-  <header id="header">
-    <div class="header-left">
-      <div class="logo-icon">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="3"/>
-          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-        </svg>
-      </div>
-      <div>
-        <h1>Trusted Advisor AI</h1>
-        <p class="subtitle">Real-Time Behavioral Intelligence</p>
-      </div>
-    </div>
-    <div class="header-right">
-      <div class="status-badge" id="status-badge">
-        <span class="pulse-dot" id="pulse-dot"></span>
-        <span id="status-text">Connecting…</span>
-      </div>
-    </div>
+  
+  <div class="status-indicator" id="status-indicator">Connecting...</div>
+
+  <header>
+    <h1>🧠 Trusted Advisor AI</h1>
+    <div class="sub-header">Real-time Behavioral Intelligence Dashboard</div>
   </header>
 
-  <!-- ── Main Grid ────────────────────────────────────────── -->
-  <main class="dashboard">
-    <!-- Attention Panel -->
-    <section class="card attention-card" id="attention-panel">
-      <div class="card-header">
-        <span class="card-icon">🎯</span>
-        <h2>Attention Score</h2>
-      </div>
-      <div class="attention-display">
-        <div class="score-ring" id="score-ring">
-          <svg viewBox="0 0 120 120">
-            <circle class="ring-bg" cx="60" cy="60" r="52" />
-            <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52" />
-          </svg>
-          <div class="score-value" id="score-value">—</div>
-        </div>
-        <div class="focus-label" id="focus-label">WAITING</div>
-        <div class="stability-tag" id="stability-tag">—</div>
-      </div>
-    </section>
+  <main>
+    <!-- Emotion Banner -->
+    <div class="emotion-banner">
+      <div class="emotion-chip" id="emotion-chip">🎭 LOADING — 0% confident</div>
+    </div>
 
-    <!-- Metrics Panel -->
-    <section class="card metrics-card" id="metrics-panel">
-      <div class="card-header">
-        <span class="card-icon">📊</span>
-        <h2>Metrics</h2>
+    <!-- Top Metrics Row -->
+    <h3>📊 Key Metrics</h3>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">⚡ Engagement</span>
+        <span class="metric-value" id="metric-eng">—/10</span>
       </div>
-      <div class="metrics-grid">
-        <div class="metric-item">
-          <div class="metric-value" id="metric-offscreen">—</div>
-          <div class="metric-label">Off Screen</div>
-          <div class="metric-bar"><div class="metric-fill" id="bar-offscreen"></div></div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-value" id="metric-headdown">—</div>
-          <div class="metric-label">Head Down</div>
-          <div class="metric-bar"><div class="metric-fill" id="bar-headdown"></div></div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-value" id="metric-facemissing">—</div>
-          <div class="metric-label">Face Missing</div>
-          <div class="metric-bar"><div class="metric-fill" id="bar-facemissing"></div></div>
-        </div>
-        <div class="metric-item">
-          <div class="metric-value" id="metric-slouch">—</div>
-          <div class="metric-label">Slouch Time</div>
-          <div class="metric-bar"><div class="metric-fill" id="bar-slouch"></div></div>
-        </div>
+      <div class="metric-card">
+        <span class="metric-label">😰 Tension</span>
+        <span class="metric-value" id="metric-tension">—/10</span>
       </div>
-    </section>
+      <div class="metric-card">
+        <span class="metric-label">👁️ Eye Contact</span>
+        <span class="metric-value" id="metric-eye">—%</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">🧍 Posture</span>
+        <span class="metric-value" id="metric-posture">—</span>
+      </div>
+    </div>
 
-    <!-- Body Language Panel -->
-    <section class="card body-card" id="body-panel">
-      <div class="card-header">
-        <span class="card-icon">🧍</span>
-        <h2>Body Language</h2>
+    <!-- Second Metrics Row -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">👀 Gaze</span>
+        <span class="metric-value" id="metric-gaze">—</span>
       </div>
-      <div class="body-grid">
-        <div class="body-item">
-          <span class="body-label">Posture</span>
-          <span class="body-value" id="body-posture">—</span>
-        </div>
-        <div class="body-item">
-          <span class="body-label">Neck</span>
-          <span class="body-value" id="body-neck">—</span>
-        </div>
-        <div class="body-item">
-          <span class="body-label">Shoulders</span>
-          <span class="body-value" id="body-shoulders">—</span>
-        </div>
-        <div class="body-item">
-          <span class="body-label">Recommendation</span>
-          <span class="body-value recommendation" id="body-recommendation">—</span>
-        </div>
+      <div class="metric-card">
+        <span class="metric-label">🤚 Gestures</span>
+        <span class="metric-value" id="metric-gestures">—</span>
       </div>
-    </section>
+      <div class="metric-card">
+        <span class="metric-label">😊 Head Pose</span>
+        <span class="metric-value" id="metric-head">—</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">👁️ Blinks/min</span>
+        <span class="metric-value" id="metric-blinks">—</span>
+      </div>
+    </div>
 
-    <!-- Live Alerts Panel -->
-    <section class="card alerts-card" id="alerts-panel">
-      <div class="card-header">
-        <span class="card-icon">⚡</span>
-        <h2>Live Alerts</h2>
-        <span class="alert-count-badge" id="alert-count">0</span>
-      </div>
-      <div class="alerts-list" id="alerts-list">
-        <div class="empty-state">Waiting for data…</div>
-      </div>
-    </section>
+    <hr/>
 
-    <!-- Look-Away Episodes Panel -->
-    <section class="card episodes-card" id="episodes-panel">
-      <div class="card-header">
-        <span class="card-icon">👁️</span>
-        <h2>Look-Away Episodes</h2>
-      </div>
-      <div class="episodes-list" id="episodes-list">
-        <div class="empty-state">No look-away events yet</div>
-      </div>
-    </section>
+    <!-- Facial Signals -->
+    <h3>😊 Facial & Body Signals</h3>
+    <div class="signals-container" id="signals-container">
+      <!-- Badges injected here by app.js -->
+    </div>
+
+    <hr/>
+
+    <!-- Emotion Breakdown -->
+    <h3>🎭 Emotion Breakdown</h3>
+    <div class="breakdown-container" id="breakdown-container">
+      <!-- Bars injected here by app.js -->
+    </div>
+
+    <hr/>
+
+    <!-- Behavior Analysis -->
+    <h3>🔍 Behavior Analysis</h3>
+    <div id="analysis-container">
+      <!-- Analysis boxes injected here -->
+    </div>
+
+    <div class="footer" id="footer-text">
+      Last updated: N/A | Data source: /data
+    </div>
+
   </main>
 
   <script src="app.js"></script>
