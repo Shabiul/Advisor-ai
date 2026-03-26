@@ -54,7 +54,7 @@ graph TD
     end
 
     %% Network Boundary
-    HTTP[HTTP POST Payload\nJSON Report]:::data
+    HTTP[HTTP POST Payload\nJSON Report]:::data,color:black
 
     %% Node Backend
     subgraph Node.js Server [Backend Service]
