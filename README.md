@@ -36,7 +36,7 @@ graph TD
     classDef python fill:#3776AB,stroke:#fff,stroke-width:2px,color:#fff;
     classDef node fill:#339933,stroke:#fff,stroke-width:2px,color:#fff;
     classDef web fill:#E34F26,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef data fill:#f9f9f9,stroke:#333,stroke-width:2px;
+    classDef data fill:#f9f9f9,stroke:#333,stroke-width:2px,color:#000;
 
     %% Python Core
     subgraph Python Vision Engine [Python Core Pipeline]
@@ -54,7 +54,7 @@ graph TD
     end
 
     %% Network Boundary
-    HTTP[HTTP POST Payload\nJSON Report]:::data,color:black
+    HTTP[HTTP POST Payload\nJSON Report]:::data,color:#3776AB
 
     %% Node Backend
     subgraph Node.js Server [Backend Service]
