@@ -1,0 +1,10 @@
+{
+  "name": "trusted-advisor-sdk",
+  "version": "1.0.0",
+  "description": "JavaScript SDK for the Trusted Advisor AI system",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"No tests yet\""
+  },
+  "dependencies": {}
+}
