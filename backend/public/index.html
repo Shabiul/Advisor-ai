@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   
@@ -24,14 +25,28 @@
     <!-- Left Column: Live Video -->
     <div class="video-column">
       <div class="video-wrapper">
-        <div class="video-header">🔴 LIVE MONITORING</div>
+        <div class="video-header">🔴 LIVE STREAM</div>
         <img class="live-stream-img" id="live-stream" src="/video_feed" alt="Establishing connection to camera feed..." onerror="this.onerror=null; this.alt='Video stream offline. Start Python pipeline.'; this.src=''; this.style.backgroundColor='#E2E8F0'; this.style.minHeight='360px';" />
       </div>
 
-      <!-- Emotion Banner migrated here -->
-      <div class="emotion-banner">
-        <div class="emotion-chip" id="emotion-chip">🎭 LOADING — 0% confident</div>
+      <!-- Live Timers -->
+      <div class="timer-container">
+        <div class="timer-box">
+          <div class="timer-label">UPTIME</div>
+          <div class="timer-value neon-blue" id="session-time">00:00:00</div>
+        </div>
+        <div class="timer-box">
+          <div class="timer-label">AWAY TIME</div>
+          <div class="timer-value neon-red" id="away-time">00:00:00</div>
+        </div>
       </div>
+
+      <!-- Attention Chart -->
+      <div class="chart-container">
+        <canvas id="attentionChart"></canvas>
+      </div>
+
+
     </div>
 
     <!-- Right Column: Analytics -->
@@ -97,6 +112,14 @@
 
       <hr/>
 
+      <!-- Away Time Log -->
+      <h3>📝 Away Intervals</h3>
+      <div id="away-log-container" style="display:flex; flex-direction:column; gap:8px;">
+        <div style="color:var(--text-secondary); font-size:0.9rem;">No away intervals recorded.</div>
+      </div>
+
+      <hr/>
+
       <!-- Emotion Breakdown -->
       <h3>🎭 Emotion Breakdown</h3>
       <div class="breakdown-container" id="breakdown-container">
@@ -118,6 +141,6 @@
     </div>
   </main>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2.1"></script>
 </body>
 </html>

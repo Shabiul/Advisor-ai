@@ -226,16 +226,13 @@ def get_lip(lms, lip_hist=None):
     if face_h < 0.001:
         return {"state": "RELAXED", "movement": "LOW"}, 0.5
 
-    lip_h = abs(
-        np.mean([lms[i].y for i in LOWER_LIP_IDX])
-        - np.mean([lms[i].y for i in UPPER_LIP_IDX])
-    ) / face_h
+    lip_h = abs(lms[14].y - lms[13].y) / face_h
 
-    score = round(max(0.0, 1.0 - min(lip_h / 0.04, 1.0)), 2)
+    score = round(max(0.0, 1.0 - min(lip_h / 0.025, 1.0)), 2)
 
-    if lip_h > 0.06:
+    if lip_h > 0.035:
         state = "SPEAKING"
-    elif lip_h > 0.035:
+    elif lip_h > 0.015:
         state = "SLIGHTLY_OPEN"
     elif score > 0.65:
         state = "COMPRESSED"
@@ -299,11 +296,11 @@ def get_smile(lms, ear_hist=None):
         ear_mean = sum(recent) / len(recent)
         eye_relaxed = ear_variance < 0.04 and ear_mean < 0.30
 
-    if mouth_w > 1.2 and eye_relaxed:
+    if mouth_w > 0.95 and eye_relaxed:
         return True, "GENUINE"
-    if mouth_w > 1.2:
+    if mouth_w > 0.95:
         return False, "SOCIAL"
-    if mouth_w > 1.05:
+    if mouth_w > 0.82:
         return False, "SUBTLE"
     return False, "NONE"
 
@@ -920,6 +917,9 @@ def main():
     blink_count = 0
     consec_ear = 0
     session_start = time.time()
+    
+    total_gestures_session = 0
+    hands_present_prev = False
 
     arm_hist = deque(maxlen=SMOOTH_WINDOW)
     shoulder_adv_hist = deque(maxlen=SMOOTH_WINDOW)
@@ -1071,9 +1071,17 @@ def main():
 
         # ── Hands ──────────────────────────────────────
         hands_results = hands_model.process(rgb)
+        hands_present = False
         if hands_results.multi_hand_landmarks:
+            hands_present = True
             for hlm in hands_results.multi_hand_landmarks:
                 mp_drawing.draw_landmarks(frame, hlm, mp_hands.HAND_CONNECTIONS)
+        
+        if hands_present and not hands_present_prev:
+            total_gestures_session += 1
+        hands_present_prev = hands_present
+        
+        sig["gestures"] = total_gestures_session
 
         # ── Event Tracking ──────────────────────────────
         event_tracker.update(sig)

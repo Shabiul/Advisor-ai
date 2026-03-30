@@ -8,13 +8,13 @@
    ══════════════════════════════════════════════════════════════════════ */
 
 :root {
-  --bg-color: #F8FAFC;
-  --card-color: #FFFFFF;
-  --text-color: #0F172A;
-  --text-secondary: #64748B;
-  --border-color: #E2E8F0;
-  --accent-primary: #3B82F6;
-  --accent-secondary: #8B5CF6;
+  --bg-color: #0e0e10;
+  --card-color: #18181b;
+  --text-color: #efeff1;
+  --text-secondary: #adadb8;
+  --border-color: #2f2f35;
+  --accent-primary: #9146FF;
+  --accent-secondary: #00E6CB;
 }
 
 * {
@@ -69,14 +69,14 @@ hr {
 
 .emotion-chip {
   display: inline-block;
-  padding: 12px 30px;
+  padding: 10px 24px;
   border-radius: 30px;
-  font-weight: 700;
-  font-size: 1.2rem;
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  color: #FFFFFF;
-  border: none;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  font-weight: 600;
+  font-size: 1.1rem;
+  background-color: var(--card-color);
+  color: var(--accent-primary);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
 }
 
 /* Metrics Grid (4 columns) */
@@ -137,12 +137,12 @@ hr {
 
 .signal-badge.on {
   border-color: var(--accent-primary);
-  background-color: #EFF6FF; /* very light blue */
+  background-color: rgba(145, 70, 255, 0.15);
 }
 
 .signal-badge.off {
   color: var(--text-secondary);
-  background-color: #F8FAFC;
+  background-color: var(--card-color);
 }
 
 /* Emotion Breakdown Bars */
@@ -259,21 +259,22 @@ hr {
 
 /* Primary Confidence UI */
 .confidence-box {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  background: var(--card-color);
+  border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 2rem;
-  color: #FFFFFF;
+  padding: 2.5rem;
+  color: var(--text-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
-  transition: transform 0.3s ease;
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .confidence-box:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 30px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -5px rgba(145, 70, 255, 0.2);
 }
 
 .conf-info {
@@ -283,23 +284,85 @@ hr {
 
 .conf-label {
   font-size: 0.95rem;
-  font-weight: 700;
-  opacity: 0.9;
+  font-weight: 600;
+  color: var(--text-secondary);
   letter-spacing: 1px;
-  margin-bottom: 0.3rem;
-}
-
-.conf-level {
-  font-size: 2.4rem;
-  font-weight: 800;
-  line-height: 1.1;
+  margin-bottom: 0.5rem;
   text-transform: uppercase;
 }
 
-.conf-score {
-  font-size: 4.5rem;
+.conf-level {
+  font-size: 2.8rem;
   font-weight: 800;
   line-height: 1;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.conf-score {
+  font-size: 4.8rem;
+  font-weight: 800;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Timer Modules */
+.timer-container {
+  display: flex;
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.timer-box {
+  flex: 1;
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-top: 3px solid var(--accent-primary);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.timer-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+}
+
+.timer-value {
+  font-size: 2.2rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.neon-blue {
+  color: var(--accent-secondary);
+  text-shadow: 0 0 10px rgba(0, 230, 203, 0.25);
+}
+
+.neon-red {
+  color: #FF4A4A;
+  text-shadow: 0 0 10px rgba(255, 74, 74, 0.3);
+}
+
+/* Chart Container */
+.chart-container {
+  background-color: var(--card-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1rem;
+  height: 220px;
+  width: 100%;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 /* Responsive */

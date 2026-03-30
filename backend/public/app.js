@@ -10,7 +10,6 @@ const DATA_URL = "/data";
 
 // DOM Elements
 const statusIndicator = document.getElementById("status-indicator");
-const emotionChip = document.getElementById("emotion-chip");
 
 const metricEng = document.getElementById("metric-eng");
 const metricTension = document.getElementById("metric-tension");
@@ -27,26 +26,111 @@ const breakdownContainer = document.getElementById("breakdown-container");
 const analysisContainer = document.getElementById("analysis-container");
 const footerText = document.getElementById("footer-text");
 
+// Globals
+let sessionSeconds = 0;
+let awaySeconds = 0;
+let isFaceDetected = false;
+let attentionChart = null;
+
+let awayLogs = [];
+let currentAwayStart = null;
+
+function initChart() {
+  const ctx = document.getElementById('attentionChart').getContext('2d');
+  attentionChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: Array(50).fill(''),
+      datasets: [{
+        label: 'Attention',
+        data: Array(50).fill(100),
+        borderColor: '#00E6CB',
+        backgroundColor: 'rgba(0, 230, 203, 0.1)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointRadius: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 0 },
+      scales: {
+        y: { min: 0, max: 100, grid: { color: '#2f2f35' } },
+        x: { grid: { display: false } }
+      },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+function formatTime(s) {
+  const hh = Math.floor(s / 3600).toString().padStart(2, '0');
+  const mm = Math.floor((s % 3600) / 60).toString().padStart(2, '0');
+  const ss = (s % 60).toString().padStart(2, '0');
+  return `${hh}:${mm}:${ss}`;
+}
+
+setInterval(() => {
+  sessionSeconds++;
+  if (!isFaceDetected) {
+    awaySeconds++;
+    if (!currentAwayStart) {
+      currentAwayStart = new Date();
+    }
+  } else {
+    if (currentAwayStart) {
+      const awayEnd = new Date();
+      const dur = Math.round((awayEnd - currentAwayStart)/1000);
+      if (dur >= 3) {
+        awayLogs.unshift({
+          start: currentAwayStart,
+          end: awayEnd,
+          duration: dur
+        });
+      }
+      currentAwayStart = null;
+    }
+  }
+  
+  renderAwayLogs();
+
+  document.getElementById('session-time').textContent = formatTime(sessionSeconds);
+  document.getElementById('away-time').textContent = formatTime(awaySeconds);
+}, 1000);
+
 // Fetch Loop
 async function fetchData() {
   try {
     const res = await fetch(DATA_URL);
     const json = await res.json();
 
+    const stale = json.lastUpdated && (Date.now() - json.lastUpdated > 2500);
+
     if (json.status === "waiting" || !json.report) {
       statusIndicator.textContent = "Waiting for data...";
+      isFaceDetected = false;
       return;
     }
 
-    statusIndicator.textContent = "LIVE";
-    statusIndicator.style.color = "var(--text-color)";
-    statusIndicator.style.borderColor = "var(--text-color)";
+    if (stale) {
+      statusIndicator.textContent = "Camera Feed Frozen";
+      statusIndicator.style.color = "#FF4A4A";
+      statusIndicator.style.borderColor = "#FF4A4A";
+      isFaceDetected = false;
+    } else {
+      statusIndicator.textContent = "LIVE";
+      statusIndicator.style.color = "var(--text-color)";
+      statusIndicator.style.borderColor = "var(--text-color)";
+    }
     
     updateDashboard(json.report);
   } catch (err) {
     statusIndicator.textContent = "Connection lost";
     statusIndicator.style.color = "var(--text-secondary)";
     statusIndicator.style.borderColor = "var(--text-secondary)";
+    isFaceDetected = false;
   }
 }
 
@@ -59,6 +143,9 @@ function updateDashboard(payload) {
   const report = payload.data || {};
   const sig = payload.sig || {};
 
+  // Guarantee strict boolean or explicitly true string
+  isFaceDetected = (sig.face_detected === true || String(sig.face_detected).toLowerCase() === "true");
+
   // 0. Primary Confidence UI
   if (report.summary) {
     const focus = report.summary.focus_level || "UNKNOWN";
@@ -70,10 +157,13 @@ function updateDashboard(payload) {
     document.getElementById("conf-score").textContent = "--%";
   }
 
-  // 1. Emotion Banner
-  const emo = (sig.emotion || "loading").toUpperCase();
-  const emoConf = sig.emotion_conf || 0;
-  emotionChip.textContent = `🎭 ${emo} — ${Math.round(emoConf)}% confident`;
+  // Chart Update
+  if (attentionChart) {
+    const currentScore = report.summary ? Math.round((report.summary.attention_score || 0) * 100) : 0;
+    attentionChart.data.datasets[0].data.shift();
+    attentionChart.data.datasets[0].data.push(currentScore);
+    attentionChart.update();
+  }
 
   // 2. Top Metrics
   const eng = sig.engagement_score || 5;
@@ -151,5 +241,32 @@ function createBadge(label, active) {
   return `<span class="signal-badge ${cls}">${icon} ${label}</span>`;
 }
 
+function renderAwayLogs() {
+  const container = document.getElementById('away-log-container');
+  if (!container) return;
+  
+  if (awayLogs.length === 0 && !currentAwayStart) {
+    container.innerHTML = '<div style="color:var(--text-secondary); font-size:0.9rem;">No away intervals recorded.</div>';
+    return;
+  }
+  
+  let html = '';
+  if (currentAwayStart) {
+      html += `<div class="analysis-box" style="border-left-color: #FF4A4A; padding: 0.8rem 1.2rem; margin-bottom: 0.5rem; font-size:0.95rem;">
+        🔴 <span style="font-weight:700">Currently Away</span> (since ${currentAwayStart.toLocaleTimeString()})
+      </div>`;
+  }
+  
+  for (const log of awayLogs.slice(0, 10)) {
+      html += `<div class="analysis-box" style="padding: 0.8rem 1.2rem; margin-bottom: 0.5rem; font-size:0.95rem;">
+        🛑 Away: <span style="color:var(--text-secondary)">${log.start.toLocaleTimeString()} - ${log.end.toLocaleTimeString()}</span>
+        <span style="float:right; font-weight:700;">${log.duration}s</span>
+      </div>`;
+  }
+  
+  container.innerHTML = html;
+}
+
 setInterval(fetchData, FETCH_INTERVAL);
+initChart();
 fetchData();
