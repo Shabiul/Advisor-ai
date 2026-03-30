@@ -1,90 +1,69 @@
 # Trusted Advisor AI — Behavioral Intelligence Platform
 
-Trusted Advisor AI is a real-time behavioral intelligence platform that captures webcam frames, processes them for behavioral signals, tracks events with precise timestamps and durations, and streams structured data to a sleek, dark-themed web dashboard for live monitoring and proctoring.
+A real-time behavioral intelligence platform that captures webcam frames, extracts 20+ behavioral signals using MediaPipe and DeepFace, and streams live analytics to a Twitch-inspired dark-mode dashboard. Built for proctoring, meeting analysis, and engagement monitoring.
 
 ---
 
 ## 🏗️ System Architecture
 
-The project is divided into three primary components:
+```
+Advisor-ai/
+├── python-core/          ← Vision & analytics engine (MediaPipe, DeepFace)
+│   └── main.py           ← Headless pipeline: camera → signals → HTTP POST
+├── backend/              ← Express server (legacy, replaced by SDK)
+│   ├── server.js
+│   └── public/           ← Dashboard assets (HTML, CSS, JS)
+├── sdk/                  ← ★ Node.js SDK — the entire project as a package
+│   ├── src/
+│   │   ├── index.js      ← Entry point
+│   │   ├── server.js     ← Full HTTP server (replaces backend/server.js)
+│   │   ├── dashboard.js  ← Embedded dashboard (replaces backend/public/)
+│   │   ├── session.js    ← Session orchestrator
+│   │   ├── api.js        ← HTTP client (zero deps)
+│   │   ├── signals.js    ← Reactive signal store
+│   │   ├── attention.js  ← Attention timeline & focus streaks
+│   │   ├── away.js       ← Away detection & interval logging
+│   │   ├── gestures.js   ← Session gesture counter
+│   │   ├── interpreter.js← Behavioral interpretation engine
+│   │   └── events.js     ← EventEmitter
+│   ├── examples/
+│   │   ├── full-server.js      ← One-file backend replacement
+│   │   ├── basic-session.js    ← Live session monitoring
+│   │   └── standalone-modules.js
+│   └── test/
+│       └── run.js        ← 54 unit tests, zero dependencies
+└── README.md
+```
 
-1. **Python Vision & Analytics Engine (`python-core/`)**
-   - **Capture**: Reads webcam feed using OpenCV.
-   - **Signal Extraction**: Uses MediaPipe (FaceMesh, Pose, Hands) and DeepFace (Emotion) to extract raw physical signals (gaze, blinks, posture, gestures, tension).
-   - **Temporal Smoothing**: Analyzes recent frame history (e.g., 5-frame rolling window) to stabilize noisy signals (like shoulder alignment or neck position).
-   - **Event Tracking**: Monitors state changes (e.g., center gaze to looking away) and records timestamps and active durations for behavioral events.
-   - **Reporting**: Aggregates signals over a sliding window (e.g., 10 seconds) to calculate overall "Attention Scores" and metrics.
-   - **Networking**: Pushes structured JSON reports to the backend via non-blocking HTTP requests (`urllib`) at ~2-3 Hz.
-
-2. **Node.js Backend (`backend/`)**
-   - **In-Memory Store**: Receives HTTP POST requests from the Python engine and stores the latest behavioral state.
-   - **API Provider**: Exposes a `GET /data` endpoint for the dashboard to poll.
-   - **Static Server**: Serves the frontend web dashboard assets (HTML, CSS, JS).
-
-3. **Web Dashboard (`backend/public/`)**
-   - **Live UI**: A modern, glassmorphism-styled dashboard built with vanilla HTML/CSS/JS.
-   - **Polling Strategy**: Fetches from `/data` every 400ms to ensure smooth updates without overwhelming the browser.
-   - **Visualizations**: Displays dynamic attention rings, live alerts with pulsing indicators, real-time metrics, and a chronological look-away episode timeline.
-
----
-
-## 🔄 Working Flow Diagram
+### Data Flow
 
 ```mermaid
-graph TD
-    %% Define Styles
-    classDef python fill:#3776AB,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef node fill:#339933,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef web fill:#E34F26,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef data fill:#f9f9f9,stroke:#333,stroke-width:2px,color:#000;
-
-    %% Python Core
-    subgraph Python Vision Engine [Python Core Pipeline]
-        Cam[Webcam Feed]
-        MP[MediaPipe & DeepFace]
-        TS[Temporal Smoothing\nMode Voting]
-        ET[Event Tracker\nTimestamps & Durations]
-        AG[Cumulative Aggregation\n10s Window]
-        
-        Cam -->|Raw Frames| MP
-        MP -->|Raw Signals| TS
-        TS -->|Smoothed Signals| ET
-        TS -->|Smoothed Signals| AG
-        ET -->|Live Alerts| AG
+graph LR
+    subgraph Python["Python Vision Engine"]
+        CAM[Webcam] --> MP[MediaPipe + DeepFace]
+        MP --> SIG[Signal Extraction]
+        SIG --> RPT[Cumulative Report]
     end
 
-    %% Network Boundary
-    HTTP[HTTP POST Payload\nJSON Report]:::data,color:#3776AB
-
-    %% Node Backend
-    subgraph Node.js Server [Backend Service]
-        POST[POST /analyze]
-        MEM[(In-Memory Store)]
-        GET[GET /data]
-        
-        POST -->|Save State| MEM
-        MEM -->|Read State| GET
+    subgraph SDK["Node.js SDK"]
+        SRV["createServer()"] --> ANALYZE[POST /analyze]
+        SRV --> DATA[GET /data]
+        SRV --> VF[POST /video_frame]
+        SRV --> VS[GET /video_feed]
+        SRV --> DASH[Dashboard UI]
     end
 
-    %% Web Dashboard
-    subgraph Browser Dashboard [Web UI]
-        Poll[JS Poller\n400ms interval]
-        DOM[DOM Updater]
-        UI[Glassmorphism UI]
-        
-        Poll -->|Response Data| DOM
-        DOM -->|Re-render| UI
+    subgraph Client["SDK Client / Browser"]
+        SESS["createSession()"] --> ATT[Attention Tracker]
+        SESS --> AWAY[Away Tracker]
+        SESS --> GEST[Gesture Counter]
+        SESS --> INTERP[Interpreter]
     end
 
-    %% Connections
-    AG -->|Background Thread| HTTP
-    HTTP --> POST
-    GET -.->|HTTP GET| Poll
-
-    %% Apply Styles
-    Cam:::python; MP:::python; TS:::python; ET:::python; AG:::python;
-    POST:::node; MEM:::node; GET:::node;
-    Poll:::web; DOM:::web; UI:::web;
+    RPT -->|HTTP POST| ANALYZE
+    RPT -->|JPEG frames| VF
+    DATA -->|poll 400ms| SESS
+    VS -->|MJPEG stream| DASH
 ```
 
 ---
@@ -92,48 +71,148 @@ graph TD
 ## 🚀 Setup & Execution
 
 ### Prerequisites
-- Python 3.9+
-- Node.js 18+
+- **Python 3.9+** with OpenCV, MediaPipe, DeepFace, NumPy
+- **Node.js 18+**
 - Webcam
 
 ### 1. Install Dependencies
+
 ```bash
 # Python
 cd python-core
 pip install -r requirements.txt
 
-# Node.js
+# Node.js backend (legacy)
 cd backend
 npm install
+
+# SDK has zero dependencies — nothing to install
 ```
 
 ### 2. Run the System
 
-You need two terminal windows to run the system.
-
-**Terminal 1 (Backend Server):**
+**Option A — Using the SDK (recommended):**
 ```bash
-cd backend
-node server.js
-```
-*(Runs on `http://localhost:3000`)*
+# Terminal 1: Start the SDK server
+node sdk/examples/full-server.js
 
-**Terminal 2 (Python Engine):**
-```bash
+# Terminal 2: Start the Python pipeline
 cd python-core
 python main.py
 ```
-*(Opens the OpenCV preview window; press `q` in the window to stop)*
+
+**Option B — Using the legacy backend:**
+```bash
+# Terminal 1: Start Express backend
+cd backend
+node server.js
+
+# Terminal 2: Start the Python pipeline
+cd python-core
+python main.py
+```
 
 ### 3. View the Dashboard
-Open your browser and navigate to:
-**`http://localhost:3000`**
+Open **http://localhost:3000** in your browser.
+
+---
+
+## 📦 Node.js SDK
+
+The SDK packages the **entire project** into a single importable module with zero external dependencies.
+
+### Full Server (replaces `backend/server.js`)
+
+```js
+const { createServer } = require("./sdk");
+createServer({ port: 3000 }).start();
+// Dashboard: http://localhost:3000
+// Python posts to: http://localhost:3000/analyze
+```
+
+### Client Session (for custom integrations)
+
+```js
+const { createSession } = require("./sdk");
+
+const session = createSession({
+  backendUrl: "http://localhost:3000",
+  mode: "PROCTORING",
+  pollInterval: 400,
+});
+
+session.on("update",       (data) => console.log(data));
+session.on("focus_change", ({ from, to }) => console.log(`${from} → ${to}`));
+session.on("away_end",     (log) => console.log(`Away ${log.durationSec}s`));
+session.on("gesture",      (g) => console.log(`Gesture #${g.total}`));
+session.on("alert",        (flags) => console.log(flags));
+
+session.start();
+
+// Get full summary at any time
+const summary = session.getSummary();
+```
+
+### SDK Modules
+
+| Module | Purpose |
+|--------|---------|
+| `createServer()` | Full HTTP backend + embedded dashboard |
+| `createSession()` | Client orchestrator with real-time analytics |
+| `ApiClient` | Native HTTP client for backend APIs |
+| `AttentionTracker` | Rolling timeline, focus streaks, averages |
+| `AwayTracker` | Timestamped away intervals (≥3s threshold) |
+| `GestureCounter` | Cumulative session gesture count |
+| `Interpreter` | PROCTORING / MEETING behavioral analysis |
+| `SignalStore` | Reactive signal state with face transition events |
 
 ---
 
 ## ✨ Key Features
 
-- **Live Look-Away Tracking**: Precisely measures exact durations of "Look Away" episodes with start and end timestamps.
-- **Advanced Posture Intelligence (V6)**: Analyzes shoulder alignment, energy (dropped/active), neck position (forward/tilted), and sitting posture (upright/slouched/shifting).
-- **Responsive Dark Theme UI**: Beautiful, distraction-free aesthetic with color-coded alerts and dynamic progress rings.
-- **Zero-Block Processing**: Multi-threaded architecture ensures CPU-heavy AI operations don't freeze the camera feed or drop network packets.
+### Vision Engine (Python)
+- **20+ Behavioral Signals**: Gaze direction, eye contact score, blink rate, head pose, brow tension, lip state, smile detection (genuine/social/subtle), arm position, shoulder alignment, neck orientation, sitting posture
+- **Emotion Detection**: Real-time facial emotion classification via DeepFace
+- **Gesture Tracking**: Session-based cumulative hand gesture counting
+- **Event Tracking**: Timestamped behavioral events with precise start/end times and durations
+- **Headless Pipeline**: Runs without GUI, streams JPEG frames to Node.js backend
+
+### Dashboard (Twitch-Inspired UI)
+- **Live Video Feed**: MJPEG stream embedded directly in the dashboard
+- **Attention Timeline**: Real-time Chart.js line graph of attention score
+- **Live Timers**: Session uptime and away time chronometers
+- **Away Interval Log**: Timestamped records of every absence ≥3 seconds
+- **Focus Level Badge**: Dynamic gradient-text focus level indicator
+- **8 Metric Cards**: Engagement, tension, eye contact, posture, gaze, gestures, head pose, blink rate
+- **Signal Badges**: Real-time facial signal status (smile, brow, lip, nodding, head shake)
+- **Emotion Breakdown**: Horizontal bar chart of emotion distribution
+- **Behavior Analysis**: Contextual engagement and tension alerts
+
+### SDK (Node.js)
+- **Zero Dependencies**: Uses only native Node.js `http` module
+- **Embedded Dashboard**: HTML + CSS + JS served from memory (no static files)
+- **54 Unit Tests**: Full test suite with zero external test frameworks
+- **Event-Driven**: 13 event types for reactive integrations
+- **Dual Mode**: PROCTORING (suspicion levels) and MEETING (engagement levels)
+
+---
+
+## 🔌 API Reference
+
+| Method | Route | Description |
+|--------|-------|-------------|
+| `POST` | `/analyze` | Receive behavioral report, return interpretation |
+| `GET`  | `/data` | Latest report + signals for dashboard polling |
+| `POST` | `/video_frame` | Receive JPEG frame from Python pipeline |
+| `GET`  | `/video_feed` | MJPEG live stream for browser embed |
+| `GET`  | `/` | Twitch-style dashboard UI |
+
+---
+
+## 🧪 Testing
+
+```bash
+cd sdk
+npm test              # 54 tests, 0 dependencies
+node examples/standalone-modules.js  # Module demos (no backend needed)
+```
