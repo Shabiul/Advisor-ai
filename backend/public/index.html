@@ -19,81 +19,103 @@
     <div class="sub-header">Real-time Behavioral Intelligence Dashboard</div>
   </header>
 
-  <main>
-    <!-- Emotion Banner -->
-    <div class="emotion-banner">
-      <div class="emotion-chip" id="emotion-chip">🎭 LOADING — 0% confident</div>
-    </div>
+  <main class="dashboard-main">
+    
+    <!-- Left Column: Live Video -->
+    <div class="video-column">
+      <div class="video-wrapper">
+        <div class="video-header">🔴 LIVE MONITORING</div>
+        <img class="live-stream-img" id="live-stream" src="/video_feed" alt="Establishing connection to camera feed..." onerror="this.onerror=null; this.alt='Video stream offline. Start Python pipeline.'; this.src=''; this.style.backgroundColor='#E2E8F0'; this.style.minHeight='360px';" />
+      </div>
 
-    <!-- Top Metrics Row -->
-    <h3>📊 Key Metrics</h3>
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <span class="metric-label">⚡ Engagement</span>
-        <span class="metric-value" id="metric-eng">—/10</span>
-      </div>
-      <div class="metric-card">
-        <span class="metric-label">😰 Tension</span>
-        <span class="metric-value" id="metric-tension">—/10</span>
-      </div>
-      <div class="metric-card">
-        <span class="metric-label">👁️ Eye Contact</span>
-        <span class="metric-value" id="metric-eye">—%</span>
-      </div>
-      <div class="metric-card">
-        <span class="metric-label">🧍 Posture</span>
-        <span class="metric-value" id="metric-posture">—</span>
+      <!-- Emotion Banner migrated here -->
+      <div class="emotion-banner">
+        <div class="emotion-chip" id="emotion-chip">🎭 LOADING — 0% confident</div>
       </div>
     </div>
 
-    <!-- Second Metrics Row -->
-    <div class="metrics-grid">
-      <div class="metric-card">
-        <span class="metric-label">👀 Gaze</span>
-        <span class="metric-value" id="metric-gaze">—</span>
+    <!-- Right Column: Analytics -->
+    <div class="metrics-column">
+      
+      <!-- Primary Confidence UI -->
+      <div class="confidence-box" id="confidence-box">
+        <div class="conf-info">
+          <div class="conf-label">FOCUS LEVEL</div>
+          <div class="conf-level" id="conf-level">LOADING...</div>
+        </div>
+        <div class="conf-score" id="conf-score">--%</div>
       </div>
-      <div class="metric-card">
-        <span class="metric-label">🤚 Gestures</span>
-        <span class="metric-value" id="metric-gestures">—</span>
+
+      <!-- Top Metrics Row -->
+      <h3>📊 Key Metrics</h3>
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">⚡ Engagement</span>
+          <span class="metric-value" id="metric-eng">—/10</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">😰 Tension</span>
+          <span class="metric-value" id="metric-tension">—/10</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">👁️ Eye Contact</span>
+          <span class="metric-value" id="metric-eye">—%</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">🧍 Posture</span>
+          <span class="metric-value" id="metric-posture">—</span>
+        </div>
       </div>
-      <div class="metric-card">
-        <span class="metric-label">😊 Head Pose</span>
-        <span class="metric-value" id="metric-head">—</span>
+
+      <!-- Second Metrics Row -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">👀 Gaze</span>
+          <span class="metric-value" id="metric-gaze">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">🤚 Gestures</span>
+          <span class="metric-value" id="metric-gestures">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">😊 Head Pose</span>
+          <span class="metric-value" id="metric-head">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">👁️ Blinks/min</span>
+          <span class="metric-value" id="metric-blinks">—</span>
+        </div>
       </div>
-      <div class="metric-card">
-        <span class="metric-label">👁️ Blinks/min</span>
-        <span class="metric-value" id="metric-blinks">—</span>
+
+      <hr/>
+
+      <!-- Facial Signals -->
+      <h3>😊 Facial & Body Signals</h3>
+      <div class="signals-container" id="signals-container">
+        <!-- Badges injected here by app.js -->
       </div>
+
+      <hr/>
+
+      <!-- Emotion Breakdown -->
+      <h3>🎭 Emotion Breakdown</h3>
+      <div class="breakdown-container" id="breakdown-container">
+        <!-- Bars injected here by app.js -->
+      </div>
+
+      <hr/>
+
+      <!-- Behavior Analysis -->
+      <h3>🔍 Behavior Analysis</h3>
+      <div id="analysis-container">
+        <!-- Analysis boxes injected here -->
+      </div>
+
+      <div class="footer" id="footer-text">
+        Last updated: N/A | Data source: /data
+      </div>
+
     </div>
-
-    <hr/>
-
-    <!-- Facial Signals -->
-    <h3>😊 Facial & Body Signals</h3>
-    <div class="signals-container" id="signals-container">
-      <!-- Badges injected here by app.js -->
-    </div>
-
-    <hr/>
-
-    <!-- Emotion Breakdown -->
-    <h3>🎭 Emotion Breakdown</h3>
-    <div class="breakdown-container" id="breakdown-container">
-      <!-- Bars injected here by app.js -->
-    </div>
-
-    <hr/>
-
-    <!-- Behavior Analysis -->
-    <h3>🔍 Behavior Analysis</h3>
-    <div id="analysis-container">
-      <!-- Analysis boxes injected here -->
-    </div>
-
-    <div class="footer" id="footer-text">
-      Last updated: N/A | Data source: /data
-    </div>
-
   </main>
 
   <script src="app.js"></script>

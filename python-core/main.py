@@ -18,6 +18,47 @@ import urllib.request
 import urllib.error
 from collections import deque, Counter
 from datetime import datetime
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+# ─────────────────────────────────────────────
+#  VIDEO POSTER (Node.js Integration)
+# ─────────────────────────────────────────────
+class VideoPoster:
+    def __init__(self, url):
+        self._url = url
+        self._pending_frame = None
+        self._lock = threading.Lock()
+        self._running = True
+        t = threading.Thread(target=self._run, daemon=True)
+        t.start()
+
+    def push(self, frame_bytes):
+        with self._lock:
+            self._pending_frame = frame_bytes
+
+    def _run(self):
+        while self._running:
+            frame_to_send = None
+            with self._lock:
+                if self._pending_frame:
+                    frame_to_send = self._pending_frame
+                    self._pending_frame = None
+            
+            if frame_to_send:
+                try:
+                    req = urllib.request.Request(
+                        self._url,
+                        data=frame_to_send,
+                        headers={"Content-Type": "image/jpeg"},
+                        method="POST",
+                    )
+                    urllib.request.urlopen(req, timeout=1)
+                except Exception:
+                    pass
+            time.sleep(0.04)
+
+    def stop(self):
+        self._running = False
 
 # ─────────────────────────────────────────────
 #  CONFIG
@@ -869,6 +910,8 @@ def main():
     event_tracker = EventTracker()
     reporter = CumulativeReporter(window_sec=10.0)
     backend_poster = BackendPoster(BACKEND_URL, ADVISOR_MODE)
+    
+    video_poster = VideoPoster(BACKEND_URL.replace("/analyze", "/video_frame"))
 
     # Histories
     pitch_hist = deque(maxlen=20)
@@ -1049,20 +1092,19 @@ def main():
         # ── Debug Overlay ───────────────────────────────
         active_events = event_tracker.get_active_events()
         draw_overlay(frame, sig, latest_report, active_events)
-        cv2.imshow("Trusted Advisor AI - Press Q to quit", frame)
-
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord("q"):
-            print("\n[Trusted Advisor AI] Quit requested.")
-            break
+        
+        # Stream frame to Node
+        ret_enc, jpeg = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 70])
+        if ret_enc:
+            video_poster.push(jpeg.tobytes())
 
     # Cleanup
     backend_poster.stop()
+    video_poster.stop()
     cap.release()
     fmesh.close()
     pose_model.close()
     hands_model.close()
-    cv2.destroyAllWindows()
     print("[Trusted Advisor AI] Done.")
 
 

@@ -27,11 +27,9 @@ from collections import deque, Counter
 from deepface import DeepFace
 
 # Import V6 pose analysis functions
-# Resolve: face/anal/advisor_ai/Advisor-ai/vision/file → up 5 levels → face/ → face/vision/
-_FACE_ROOT = os.path.abspath(__file__)
-for _ in range(5):
-    _FACE_ROOT = os.path.dirname(_FACE_ROOT)
-_VISION_DIR = os.path.join(_FACE_ROOT, "vision")
+# Resolve vision directory
+_BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+_VISION_DIR = os.path.join(_BASE_DIR, "python-core", "vision")
 if _VISION_DIR not in sys.path:
     sys.path.insert(0, _VISION_DIR)
 
@@ -62,7 +60,7 @@ def _mode_vote(history):
 # ─────────────────────────────────────────────
 #  PATHS & CONFIG
 # ─────────────────────────────────────────────
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_FILE = os.path.join(BASE_DIR, "ta_face_signals.json")
 LOG_OUTPUT_PATH = os.path.join(BASE_DIR, "data", "session_facial_log.json")
 

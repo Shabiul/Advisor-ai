@@ -59,6 +59,17 @@ function updateDashboard(payload) {
   const report = payload.data || {};
   const sig = payload.sig || {};
 
+  // 0. Primary Confidence UI
+  if (report.summary) {
+    const focus = report.summary.focus_level || "UNKNOWN";
+    const attnScore = report.summary.attention_score || 0;
+    document.getElementById("conf-level").textContent = focus;
+    document.getElementById("conf-score").textContent = `${Math.round(attnScore * 100)}%`;
+  } else {
+    document.getElementById("conf-level").textContent = "WAITING...";
+    document.getElementById("conf-score").textContent = "--%";
+  }
+
   // 1. Emotion Banner
   const emo = (sig.emotion || "loading").toUpperCase();
   const emoConf = sig.emotion_conf || 0;

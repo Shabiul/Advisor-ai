@@ -62,11 +62,43 @@ app.post("/analyze", (req, res) => {
   }
 
   // Store the raw report for GET /data
-  latestReport = data;
+  latestReport = req.body;
   lastUpdated = new Date().toISOString();
 
   const interpretation = interpret(data, thresholds, upperMode);
   return res.json({ mode: upperMode, interpretation });
+});
+
+// ── Video Stream Handlers ─────────────────────────────────────────────
+
+let videoClients = [];
+
+app.post('/video_frame', express.raw({ type: 'image/jpeg', limit: '10mb' }), (req, res) => {
+  if (!req.body || !req.body.length) {
+    return res.status(400).send('Empty frame');
+  }
+  const frame = req.body;
+  videoClients.forEach(c => {
+    try {
+      c.write(`--FRAME\r\nContent-Type: image/jpeg\r\nContent-Length: ${frame.length}\r\n\r\n`);
+      c.write(frame);
+      c.write('\r\n');
+    } catch (e) {}
+  });
+  return res.sendStatus(200);
+});
+
+app.get('/video_feed', (req, res) => {
+  res.writeHead(200, {
+    'Content-Type': 'multipart/x-mixed-replace; boundary=FRAME',
+    'Cache-Control': 'no-cache, private',
+    'Connection': 'keep-alive',
+    'Pragma': 'no-cache'
+  });
+  videoClients.push(res);
+  req.on('close', () => {
+    videoClients = videoClients.filter(c => c !== res);
+  });
 });
 
 // ── GET /data ────────────────────────────────────────────────────────
