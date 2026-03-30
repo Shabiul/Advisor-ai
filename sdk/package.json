@@ -1,10 +1,19 @@
 {
   "name": "trusted-advisor-sdk",
-  "version": "1.0.0",
-  "description": "JavaScript SDK for the Trusted Advisor AI system",
+  "version": "2.0.0",
+  "description": "Node.js SDK for the Trusted Advisor AI Behavioral Intelligence Platform",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"No tests yet\""
+    "test": "node test/run.js",
+    "example": "node examples/basic-session.js"
   },
+  "keywords": [
+    "behavioral-intelligence",
+    "attention-tracking",
+    "proctoring",
+    "meeting-analytics",
+    "face-detection"
+  ],
+  "license": "MIT",
   "dependencies": {}
 }
