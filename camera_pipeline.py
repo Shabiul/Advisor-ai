@@ -33,6 +33,12 @@ _VISION_DIR = os.path.join(_BASE_DIR, "python-core", "vision")
 if _VISION_DIR not in sys.path:
     sys.path.insert(0, _VISION_DIR)
 
+# Import Session Recorder for auto-recording
+_RECORDER_DIR = os.path.join(_BASE_DIR, "python-core")
+if _RECORDER_DIR not in sys.path:
+    sys.path.insert(0, _RECORDER_DIR)
+from session_recorder import SessionRecorder
+
 from pose_analyzer import (
     detect_arm_state,
     detect_shoulder_advanced,
@@ -711,6 +717,13 @@ def main():
     session_start = time.time()
     log = []
 
+    # ── Session Recorder (auto-start) ──────────────────
+    session_recorder = SessionRecorder(
+        base_dir=os.path.join(BASE_DIR, "recordings"),
+        fps=30,
+    )
+    session_recorder.start(frame_width=1280, frame_height=720)
+
     # ---> NEW: Tracking variables for Cumulative Timer <---
     away_start = None
     max_away = 0
@@ -772,6 +785,9 @@ def main():
         if not ret:
             print(f"[ERROR] Cannot read camera {CAMERA_INDEX}.")
             break
+
+        # Record raw frame before any overlay/drawing
+        session_recorder.write_frame(frame)
 
         frame_n += 1
         h, w = frame.shape[:2]
@@ -986,6 +1002,9 @@ def main():
         # ── Write JSON ────────────────────────────────
         write_signals(sig)
 
+        # ── Record signals to session log ──────────────
+        session_recorder.write_signals(sig)
+
         # ── Debug overlay ─────────────────────────────
         draw_debug(frame, sig, emo_det.is_ready())
         cv2.imshow("Trusted Advisor AI - Press Q to quit", frame)
@@ -1003,6 +1022,7 @@ def main():
             print(f"[SAVED] {fname}")
 
     # Cleanup
+    session_recorder.stop()
     emo_det.stop()
     cap.release()
     fmesh.close()

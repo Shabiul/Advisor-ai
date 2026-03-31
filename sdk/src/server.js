@@ -16,6 +16,8 @@
 
 const http = require("http");
 const { URL } = require("url");
+const fs = require("fs");
+const path = require("path");
 const { Interpreter, THRESHOLDS } = require("./interpreter");
 const { EventEmitter } = require("./events");
 const { getDashboardHTML, getDashboardCSS, getDashboardJS } = require("./dashboard");
@@ -125,6 +127,8 @@ class AdvisorServer extends EventEmitter {
       this._handleVideoFeed(req, res);
     } else if (req.method === "GET" && pathname === "/data") {
       this._handleData(req, res);
+    } else if (req.method === "GET" && pathname === "/recordings") {
+      this._handleRecordings(req, res);
     } else if (this.serveDashboard && req.method === "GET") {
       this._handleStatic(pathname, res);
     } else {
@@ -240,6 +244,71 @@ class AdvisorServer extends EventEmitter {
       lastUpdated: this._lastUpdated,
       report: this._latestReport,
     }));
+  }
+
+  // ── GET /recordings ─────────────────────────────────────────────────
+
+  _handleRecordings(req, res) {
+    // Search for recordings directory in likely locations
+    const candidates = [
+      path.resolve(__dirname, "..", "..", "recordings"),        // sdk/../recordings
+      path.resolve(__dirname, "..", "..", "..", "recordings"),  // project root
+      path.resolve(process.cwd(), "recordings"),               // cwd
+    ];
+
+    let recordingsDir = null;
+    for (const dir of candidates) {
+      if (fs.existsSync(dir)) {
+        recordingsDir = dir;
+        break;
+      }
+    }
+
+    if (!recordingsDir) {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ sessions: [], message: "No recordings directory found." }));
+      return;
+    }
+
+    try {
+      const entries = fs.readdirSync(recordingsDir, { withFileTypes: true });
+      const sessions = [];
+
+      for (const entry of entries) {
+        if (!entry.isDirectory()) continue;
+
+        const sessionPath = path.join(recordingsDir, entry.name);
+        const metaPath = path.join(sessionPath, "metadata.json");
+
+        let metadata = {};
+        if (fs.existsSync(metaPath)) {
+          try {
+            metadata = JSON.parse(fs.readFileSync(metaPath, "utf-8"));
+          } catch (e) {}
+        }
+
+        const hasVideo = fs.existsSync(path.join(sessionPath, "video.mp4")) ||
+                         fs.existsSync(path.join(sessionPath, "video.avi"));
+        const hasSignals = fs.existsSync(path.join(sessionPath, "signals.jsonl"));
+
+        sessions.push({
+          name: entry.name,
+          path: sessionPath,
+          has_video: hasVideo,
+          has_signals: hasSignals,
+          duration: metadata.duration_seconds || null,
+          total_frames: metadata.total_frames || null,
+          start_time: metadata.start_time || null,
+          end_time: metadata.end_time || null,
+        });
+      }
+
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ sessions, count: sessions.length }));
+    } catch (err) {
+      res.writeHead(500, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ error: "Failed to list recordings: " + err.message }));
+    }
   }
 
   // ── Static Dashboard ───────────────────────────────────────────────

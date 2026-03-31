@@ -19,6 +19,7 @@ import urllib.error
 from collections import deque, Counter
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
+from session_recorder import SessionRecorder
 
 # ─────────────────────────────────────────────
 #  VIDEO POSTER (Node.js Integration)
@@ -910,6 +911,10 @@ def main():
     
     video_poster = VideoPoster(BACKEND_URL.replace("/analyze", "/video_frame"))
 
+    # ── Session Recorder (auto-start) ──────────────────
+    session_recorder = SessionRecorder(fps=30)
+    session_recorder.start(frame_width=1280, frame_height=720)
+
     # Histories
     pitch_hist = deque(maxlen=20)
     yaw_hist = deque(maxlen=20)
@@ -959,6 +964,9 @@ def main():
         if not ret:
             print("[ERROR] Cannot read camera.")
             break
+
+        # Record raw frame before any overlay drawing
+        session_recorder.write_frame(frame)
 
         frame_n += 1
         h, w = frame.shape[:2]
@@ -1097,6 +1105,9 @@ def main():
             # Post to backend
             backend_poster.push(latest_report, sig)
 
+            # Record signals alongside report
+            session_recorder.write_signals(sig, latest_report)
+
         # ── Debug Overlay ───────────────────────────────
         active_events = event_tracker.get_active_events()
         draw_overlay(frame, sig, latest_report, active_events)
@@ -1107,6 +1118,7 @@ def main():
             video_poster.push(jpeg.tobytes())
 
     # Cleanup
+    session_recorder.stop()
     backend_poster.stop()
     video_poster.stop()
     cap.release()
