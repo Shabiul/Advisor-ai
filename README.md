@@ -8,30 +8,37 @@ A real-time behavioral intelligence platform that captures webcam frames, extrac
 
 ```
 Advisor-ai/
-├── python-core/          ← Vision & analytics engine (MediaPipe, DeepFace)
-│   └── main.py           ← Headless pipeline: camera → signals → HTTP POST
-├── backend/              ← Express server (legacy, replaced by SDK)
+├── python-core/          <- Vision & analytics engine (MediaPipe, DeepFace)
+│   ├── main.py           <- Headless pipeline: camera -> signals -> HTTP POST
+│   ├── session_recorder.py  <- Auto-records video + signals when camera starts
+│   ├── training_exporter.py <- CLI tool: convert recordings to ML datasets
+│   └── vision/           <- Pose, face, and attention analyzers
+├── backend/              <- Express server (legacy, replaced by SDK)
 │   ├── server.js
-│   └── public/           ← Dashboard assets (HTML, CSS, JS)
-├── sdk/                  ← ★ Node.js SDK — the entire project as a package
+│   └── public/           <- Dashboard assets (HTML, CSS, JS)
+├── sdk/                  <- * Node.js SDK -- the entire project as a package
 │   ├── src/
-│   │   ├── index.js      ← Entry point
-│   │   ├── server.js     ← Full HTTP server (replaces backend/server.js)
-│   │   ├── dashboard.js  ← Embedded dashboard (replaces backend/public/)
-│   │   ├── session.js    ← Session orchestrator
-│   │   ├── api.js        ← HTTP client (zero deps)
-│   │   ├── signals.js    ← Reactive signal store
-│   │   ├── attention.js  ← Attention timeline & focus streaks
-│   │   ├── away.js       ← Away detection & interval logging
-│   │   ├── gestures.js   ← Session gesture counter
-│   │   ├── interpreter.js← Behavioral interpretation engine
-│   │   └── events.js     ← EventEmitter
+│   │   ├── index.js      <- Entry point
+│   │   ├── server.js     <- Full HTTP server (replaces backend/server.js)
+│   │   ├── dashboard.js  <- Embedded dashboard (replaces backend/public/)
+│   │   ├── session.js    <- Session orchestrator
+│   │   ├── api.js        <- HTTP client (zero deps)
+│   │   ├── signals.js    <- Reactive signal store
+│   │   ├── attention.js  <- Attention timeline & focus streaks
+│   │   ├── away.js       <- Away detection & interval logging
+│   │   ├── gestures.js   <- Session gesture counter
+│   │   ├── interpreter.js<- Behavioral interpretation engine
+│   │   └── events.js     <- EventEmitter
 │   ├── examples/
-│   │   ├── full-server.js      ← One-file backend replacement
-│   │   ├── basic-session.js    ← Live session monitoring
-│   │   └── standalone-modules.js
 │   └── test/
-│       └── run.js        ← 54 unit tests, zero dependencies
+├── recordings/           <- Auto-generated session recordings
+│   └── session_YYYY-MM-DD_HH-MM-SS_mmm/
+│       ├── video.mp4     <- Raw webcam recording (no overlays)
+│       ├── signals.jsonl <- Timestamped behavioral signals (JSON Lines)
+│       └── metadata.json <- Session info (duration, frames, timestamps)
+├── tests/
+│   └── test_recording.py <- 30 tests for recording + export pipeline
+├── camera_pipeline.py    <- Standalone pipeline with DeepFace + recording
 └── README.md
 ```
 
@@ -43,6 +50,7 @@ graph LR
         CAM[Webcam] --> MP[MediaPipe + DeepFace]
         MP --> SIG[Signal Extraction]
         SIG --> RPT[Cumulative Report]
+        CAM --> REC[Session Recorder]
     end
 
     subgraph SDK["Node.js SDK"]
@@ -50,6 +58,7 @@ graph LR
         SRV --> DATA[GET /data]
         SRV --> VF[POST /video_frame]
         SRV --> VS[GET /video_feed]
+        SRV --> RECS[GET /recordings]
         SRV --> DASH[Dashboard UI]
     end
 
@@ -58,6 +67,16 @@ graph LR
         SESS --> AWAY[Away Tracker]
         SESS --> GEST[Gesture Counter]
         SESS --> INTERP[Interpreter]
+    end
+
+    subgraph Training["Training Pipeline"]
+        REC --> VID[video.mp4]
+        REC --> JSONL[signals.jsonl]
+        VID --> EXP[Training Exporter]
+        JSONL --> EXP
+        EXP --> CSV[CSV Dataset]
+        EXP --> FRAMES[Frame + Label Pairs]
+        EXP --> SEQ[Sequence Windows]
     end
 
     RPT -->|HTTP POST| ANALYZE
@@ -168,6 +187,67 @@ const summary = session.getSummary();
 
 ---
 
+## 🎥 Session Recording & Training Data
+
+When the camera pipeline starts, sessions are **automatically recorded** to the `recordings/` directory. No configuration needed.
+
+### What Gets Recorded
+
+| File | Contents |
+|------|----------|
+| `video.mp4` | Raw webcam frames (no overlays) -- clean data for model training |
+| `signals.jsonl` | One JSON object per frame with all 20+ behavioral signals |
+| `metadata.json` | Session start/end time, duration, frame count, FPS |
+
+### Training Data Export
+
+Convert recorded sessions into ML-ready datasets:
+
+```bash
+# List all recorded sessions
+python python-core/training_exporter.py --list
+
+# Export as labeled CSV (one row per frame, 29 signal columns)
+python python-core/training_exporter.py --session recordings/session_2026-03-31_13-45-00_123 --format csv
+
+# Extract video frames + per-frame label JSON files
+python python-core/training_exporter.py --session <path> --format frames --sample-rate 5
+
+# Export sliding-window sequences for temporal/RNN models
+python python-core/training_exporter.py --session <path> --format sequences --window 30 --stride 10
+```
+
+### Export Formats
+
+| Format | Use Case | Output |
+|--------|----------|--------|
+| `csv` | Tabular ML (sklearn, XGBoost) | Single CSV with 29 signal columns per frame |
+| `frames` | Vision model fine-tuning | JPEG images + per-frame label JSON files |
+| `sequences` | Temporal models (LSTM, Transformer) | Sliding-window JSON with aggregated labels |
+
+### Programmatic Usage
+
+```python
+from session_recorder import SessionRecorder
+from training_exporter import TrainingDataExporter
+
+# Recording happens automatically, but you can also use it standalone:
+recorder = SessionRecorder(base_dir="my_recordings", fps=30)
+recorder.start(frame_width=1280, frame_height=720)
+recorder.write_frame(frame)      # raw BGR numpy array
+recorder.write_signals(sig)      # behavioral signal dict
+recorder.stop()
+
+# Export for training:
+exporter = TrainingDataExporter()
+exporter.load_session("recordings/session_2026-03-31_13-45-00_123")
+exporter.export_labeled_csv("training_data.csv")
+exporter.export_frame_dataset("frames/", sample_rate=5)
+exporter.export_sequence_windows("sequences.json", window_size=30, stride=10)
+```
+
+---
+
 ## ✨ Key Features
 
 ### Vision Engine (Python)
@@ -175,13 +255,21 @@ const summary = session.getSummary();
 - **Emotion Detection**: Real-time facial emotion classification via DeepFace
 - **Gesture Tracking**: Session-based cumulative hand gesture counting
 - **Event Tracking**: Timestamped behavioral events with precise start/end times and durations
+- **Auto-Recording**: Sessions automatically recorded (video + signals) when camera starts
 - **Headless Pipeline**: Runs without GUI, streams JPEG frames to Node.js backend
+
+### Training Pipeline
+- **Automatic Capture**: Raw video + behavioral signal logs saved to disk every session
+- **CSV Export**: Flat tabular datasets with 29 behavioral signal columns
+- **Frame Datasets**: Extracted video frames paired with per-frame behavioral labels
+- **Sequence Windows**: Sliding-window temporal datasets for RNN/Transformer training
+- **CLI Tool**: `training_exporter.py` with session discovery and multi-format export
 
 ### Dashboard (Twitch-Inspired UI)
 - **Live Video Feed**: MJPEG stream embedded directly in the dashboard
 - **Attention Timeline**: Real-time Chart.js line graph of attention score
 - **Live Timers**: Session uptime and away time chronometers
-- **Away Interval Log**: Timestamped records of every absence ≥3 seconds
+- **Away Interval Log**: Timestamped records of every absence >= 3 seconds
 - **Focus Level Badge**: Dynamic gradient-text focus level indicator
 - **8 Metric Cards**: Engagement, tension, eye contact, posture, gaze, gestures, head pose, blink rate
 - **Signal Badges**: Real-time facial signal status (smile, brow, lip, nodding, head shake)
@@ -194,6 +282,7 @@ const summary = session.getSummary();
 - **54 Unit Tests**: Full test suite with zero external test frameworks
 - **Event-Driven**: 13 event types for reactive integrations
 - **Dual Mode**: PROCTORING (suspicion levels) and MEETING (engagement levels)
+- **Recording API**: `GET /recordings` endpoint to list all recorded sessions
 
 ---
 
@@ -205,6 +294,7 @@ const summary = session.getSummary();
 | `GET`  | `/data` | Latest report + signals for dashboard polling |
 | `POST` | `/video_frame` | Receive JPEG frame from Python pipeline |
 | `GET`  | `/video_feed` | MJPEG live stream for browser embed |
+| `GET`  | `/recordings` | List all recorded sessions with metadata |
 | `GET`  | `/` | Twitch-style dashboard UI |
 
 ---
@@ -212,7 +302,15 @@ const summary = session.getSummary();
 ## 🧪 Testing
 
 ```bash
+# SDK unit tests (54 tests)
 cd sdk
-npm test              # 54 tests, 0 dependencies
-node examples/standalone-modules.js  # Module demos (no backend needed)
+npm test
+
+# Recording + export pipeline tests (30 tests)
+cd ..
+python tests/test_recording.py
+
+# Module demos (no backend needed)
+node sdk/examples/standalone-modules.js
 ```
+

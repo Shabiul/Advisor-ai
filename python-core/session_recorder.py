@@ -86,28 +86,38 @@ class SessionRecorder:
         if self._running:
             return
 
-        # Create session directory
-        timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        # Create session directory (with millisecond precision to avoid collisions)
+        now = datetime.now()
+        timestamp = now.strftime("%Y-%m-%d_%H-%M-%S") + f"_{now.microsecond // 1000:03d}"
         self._session_dir = os.path.join(self._base_dir, f"session_{timestamp}")
         os.makedirs(self._session_dir, exist_ok=True)
 
-        # Initialize video writer (MP4)
+        # Initialize video writer — try multiple codecs for compatibility
         video_path = os.path.join(self._session_dir, "video.mp4")
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-        self._video_writer = cv2.VideoWriter(
-            video_path, fourcc, self._fps,
-            (int(frame_width), int(frame_height))
-        )
+        codec_attempts = [
+            ("mp4v", "video.mp4"),
+            ("avc1", "video.mp4"),
+            ("XVID", "video.avi"),
+            ("MJPG", "video.avi"),
+        ]
 
-        if not self._video_writer.isOpened():
-            print(f"[RECORDER] WARNING: Could not open video writer at {video_path}")
-            print("[RECORDER] Falling back to AVI format...")
-            video_path = os.path.join(self._session_dir, "video.avi")
-            fourcc = cv2.VideoWriter_fourcc(*"XVID")
-            self._video_writer = cv2.VideoWriter(
+        self._video_writer = None
+        for codec, fname in codec_attempts:
+            video_path = os.path.join(self._session_dir, fname)
+            fourcc = cv2.VideoWriter_fourcc(*codec)
+            writer = cv2.VideoWriter(
                 video_path, fourcc, self._fps,
-                (int(frame_width), int(frame_height))
+                (int(frame_width), int(frame_height)),
+                isColor=True,
             )
+            if writer.isOpened():
+                self._video_writer = writer
+                break
+            else:
+                writer.release()
+
+        if self._video_writer is None:
+            print("[RECORDER] WARNING: No video codec worked. Recording signals only.")
 
         # Initialize signals log (JSONL)
         signals_path = os.path.join(self._session_dir, "signals.jsonl")
@@ -118,7 +128,7 @@ class SessionRecorder:
         self._signal_count = 0
         self._running = True
 
-        print(f"[RECORDER] Session recording started → {self._session_dir}")
+        print(f"[RECORDER] Session recording started -> {self._session_dir}")
         print(f"[RECORDER] Video: {video_path}")
         print(f"[RECORDER] Signals: {signals_path}")
 
@@ -131,6 +141,8 @@ class SessionRecorder:
             frame: BGR numpy array (raw, pre-overlay frame).
         """
         if not self._running or self._video_writer is None:
+            return
+        if frame is None or not hasattr(frame, 'shape') or len(frame.shape) < 2:
             return
 
         with self._lock:
@@ -218,7 +230,7 @@ class SessionRecorder:
 
         print(f"[RECORDER] Session recording stopped.")
         print(f"[RECORDER] Recorded {self._frame_count} frames, {self._signal_count} signal entries")
-        print(f"[RECORDER] Duration: {duration:.1f}s → {self._session_dir}")
+        print(f"[RECORDER] Duration: {duration:.1f}s -> {self._session_dir}")
 
     @property
     def is_recording(self):
