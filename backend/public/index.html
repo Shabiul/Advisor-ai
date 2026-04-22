@@ -47,6 +47,7 @@
       </div>
 
 
+
     </div>
 
     <!-- Right Column: Analytics -->
@@ -128,11 +129,107 @@
 
       <hr/>
 
+      <!-- ═══════════ AUDIO EMOTION INTELLIGENCE ═══════════ -->
+
+      <!-- Voice Activity -->
+      <h3>🎤 Voice Activity</h3>
+      <div class="voice-activity-box" id="voice-activity-box">
+        <div class="voice-header">
+          <span class="voice-mic-icon" id="voice-mic-icon">🎙️</span>
+          <span class="voice-status" id="voice-status">Waiting for audio service...</span>
+        </div>
+        <div class="voice-energy-track">
+          <div class="voice-energy-fill" id="voice-energy-fill" style="width: 0%;"></div>
+        </div>
+        <div class="voice-details">
+          <span>RMS: <strong id="voice-rms">0.000</strong></span>
+          <span>Updated: <strong id="voice-ts">—</strong></span>
+        </div>
+      </div>
+
+      <!-- Audio Emotion -->
+      <h3>🧠 Audio Emotion</h3>
+      <div class="confidence-box" id="audio-emotion-box" style="margin-bottom: 1.5rem;">
+        <div class="conf-info">
+          <div class="conf-label">VOCAL EMOTION</div>
+          <div class="conf-level" id="audio-emotion-label" style="font-size: 2rem;">WAITING...</div>
+        </div>
+        <div class="conf-score" id="audio-emotion-conf" style="font-size: 3.2rem;">—%</div>
+      </div>
+      <div class="breakdown-container" id="audio-breakdown-container">
+        <div style="color:var(--text-secondary); font-size:0.9rem;">Waiting for audio emotion data...</div>
+      </div>
+
+      <!-- VAD Dimensions -->
+      <div class="metrics-grid" style="margin-top: 1rem;">
+        <div class="metric-card">
+          <span class="metric-label">💓 Valence</span>
+          <span class="metric-value" id="metric-valence">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">⚡ Arousal</span>
+          <span class="metric-value" id="metric-arousal">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">👑 Dominance</span>
+          <span class="metric-value" id="metric-dominance">—</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">🧭 VAD Quadrant</span>
+          <span class="metric-value" id="metric-vad-quad" style="font-size: 1rem;">—</span>
+        </div>
+      </div>
+
+      <hr/>
+
+      <!-- Live Transcript -->
+      <h3>📝 Live Transcript</h3>
+      <div class="transcript-panel" id="transcript-panel">
+        <div class="transcript-header">🔴 LIVE TRANSCRIPT</div>
+        <div class="transcript-body" id="transcript-body">
+          <div class="transcript-placeholder">Waiting for speech (requires Canary model)...</div>
+        </div>
+      </div>
+
+      <hr/>
+
+      <!-- Multimodal Fusion -->
+      <h3>🔀 Multimodal Fusion</h3>
+      <div class="multimodal-state-box" id="multimodal-state-box">
+        <div class="emotion-fusion-row">
+          <div class="fusion-source">
+            <span class="fusion-label">👁️ Vision</span>
+            <span class="fusion-value" id="fusion-vision">—</span>
+          </div>
+          <div class="fusion-source">
+            <span class="fusion-label">🎤 Audio</span>
+            <span class="fusion-value" id="fusion-audio">—</span>
+          </div>
+          <div class="fusion-source">
+            <span class="fusion-label">🔀 Fused</span>
+            <span class="fusion-value" id="fusion-combined">—</span>
+          </div>
+        </div>
+        <div class="congruence-row">
+          <span class="congruence-label">Congruence</span>
+          <div class="congruence-track">
+            <div class="congruence-fill" id="congruence-fill" style="width: 0%;"></div>
+          </div>
+          <span class="congruence-pct" id="congruence-pct">—%</span>
+        </div>
+        <div class="multimodal-insight" id="multimodal-insight"></div>
+      </div>
+
+      <hr/>
+
       <!-- Behavior Analysis -->
       <h3>🔍 Behavior Analysis</h3>
       <div id="analysis-container">
         <!-- Analysis boxes injected here -->
       </div>
+
+      <hr/>
+
 
       <div class="footer" id="footer-text">
         Last updated: N/A | Data source: /data
@@ -141,6 +238,6 @@
     </div>
   </main>
 
-  <script src="app.js?v=2.1"></script>
+  <script src="app.js?v=3.0"></script>
 </body>
 </html>

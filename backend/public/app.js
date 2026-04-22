@@ -1,14 +1,15 @@
 /**
- * Trusted Advisor AI — Strict Theme Dashboard App
- * ================================================
- * Fetches /data every 400ms and updates DOM to match app.py layout 
- * with strict #0F0F0F, #2C2C2C, #EDEDED, #8A8A8A palette.
+ * Trusted Advisor AI — Dashboard App (v3.0 — Multimodal)
+ * ======================================================
+ * Fetches /data every 400ms and updates DOM with vision + audio emotion data.
+ * Palette: #0F0F0F, #2C2C2C, #EDEDED, #8A8A8A
  */
 
 const FETCH_INTERVAL = 400;
 const DATA_URL = "/data";
 
-// DOM Elements
+// ── DOM Elements ─────────────────────────────────────────────────────
+
 const statusIndicator = document.getElementById("status-indicator");
 
 const metricEng = document.getElementById("metric-eng");
@@ -26,7 +27,33 @@ const breakdownContainer = document.getElementById("breakdown-container");
 const analysisContainer = document.getElementById("analysis-container");
 const footerText = document.getElementById("footer-text");
 
-// Globals
+// Audio emotion DOM
+const voiceMicIcon = document.getElementById("voice-mic-icon");
+const voiceStatus = document.getElementById("voice-status");
+const voiceEnergyFill = document.getElementById("voice-energy-fill");
+const voiceRms = document.getElementById("voice-rms");
+const voiceTs = document.getElementById("voice-ts");
+
+const audioEmotionLabel = document.getElementById("audio-emotion-label");
+const audioEmotionConf = document.getElementById("audio-emotion-conf");
+const audioBreakdownContainer = document.getElementById("audio-breakdown-container");
+
+const metricValence = document.getElementById("metric-valence");
+const metricArousal = document.getElementById("metric-arousal");
+const metricDominance = document.getElementById("metric-dominance");
+const metricVadQuad = document.getElementById("metric-vad-quad");
+
+const transcriptBody = document.getElementById("transcript-body");
+
+const fusionVision = document.getElementById("fusion-vision");
+const fusionAudio = document.getElementById("fusion-audio");
+const fusionCombined = document.getElementById("fusion-combined");
+const congruenceFill = document.getElementById("congruence-fill");
+const congruencePct = document.getElementById("congruence-pct");
+const multimodalInsight = document.getElementById("multimodal-insight");
+
+// ── Globals ──────────────────────────────────────────────────────────
+
 let sessionSeconds = 0;
 let awaySeconds = 0;
 let isFaceDetected = false;
@@ -34,6 +61,10 @@ let attentionChart = null;
 
 let awayLogs = [];
 let currentAwayStart = null;
+
+// Track last audio update time for staleness detection
+let lastAudioUpdateTime = 0;
+
 
 function initChart() {
   const ctx = document.getElementById('attentionChart').getContext('2d');
@@ -100,21 +131,23 @@ setInterval(() => {
   document.getElementById('away-time').textContent = formatTime(awaySeconds);
 }, 1000);
 
-// Fetch Loop
+
+// ── Fetch Loop ───────────────────────────────────────────────────────
+
 async function fetchData() {
   try {
     const res = await fetch(DATA_URL);
     const json = await res.json();
 
-    const stale = json.lastUpdated && (Date.now() - json.lastUpdated > 2500);
-
-    if (json.status === "waiting" || !json.report) {
+    if (json.status === "waiting" || (!json.report && !json.audioEmotion)) {
       statusIndicator.textContent = "Waiting for data...";
       isFaceDetected = false;
       return;
     }
 
-    if (stale) {
+    const stale = json.lastUpdated && (Date.now() - new Date(json.lastUpdated).getTime() > 5000);
+
+    if (stale && !json.audioEmotion) {
       statusIndicator.textContent = "Camera Feed Frozen";
       statusIndicator.style.color = "#FF4A4A";
       statusIndicator.style.borderColor = "#FF4A4A";
@@ -124,8 +157,30 @@ async function fetchData() {
       statusIndicator.style.color = "var(--text-color)";
       statusIndicator.style.borderColor = "var(--text-color)";
     }
-    
-    updateDashboard(json.report);
+
+    // Update vision dashboard
+    if (json.report) {
+      updateVisionDashboard(json.report);
+    }
+
+    // Update audio emotion dashboard
+    if (json.audioEmotion) {
+      lastAudioUpdateTime = Date.now();
+      updateAudioDashboard(json.audioEmotion);
+    } else {
+      // Check staleness of audio data
+      if (lastAudioUpdateTime > 0 && (Date.now() - lastAudioUpdateTime > 5000)) {
+        voiceStatus.textContent = "Audio service disconnected";
+        voiceStatus.classList.remove("active");
+        voiceMicIcon.classList.remove("speaking");
+      }
+    }
+
+    // Update multimodal fusion
+    if (json.report && json.audioEmotion) {
+      updateMultimodalFusion(json.report, json.audioEmotion);
+    }
+
   } catch (err) {
     statusIndicator.textContent = "Connection lost";
     statusIndicator.style.color = "var(--text-secondary)";
@@ -134,19 +189,16 @@ async function fetchData() {
   }
 }
 
-function updateDashboard(payload) {
-  // payload is { mode, data, sig } based on our app.js assumption 
-  // actually the backend stores `json.report` which equals the POST body.
-  // The POST body is `{"mode": "PROCTORING", "data": report, "sig": sig}`.
-  // So payload = {"mode": "PROCTORING", "data": report, "sig": sig}
-  
+
+// ── Vision Dashboard ─────────────────────────────────────────────────
+
+function updateVisionDashboard(payload) {
   const report = payload.data || {};
   const sig = payload.sig || {};
 
-  // Guarantee strict boolean or explicitly true string
   isFaceDetected = (sig.face_detected === true || String(sig.face_detected).toLowerCase() === "true");
 
-  // 0. Primary Confidence UI
+  // Primary Confidence UI
   if (report.summary) {
     const focus = report.summary.focus_level || "UNKNOWN";
     const attnScore = report.summary.attention_score || 0;
@@ -165,7 +217,7 @@ function updateDashboard(payload) {
     attentionChart.update();
   }
 
-  // 2. Top Metrics
+  // Top Metrics
   const eng = sig.engagement_score || 5;
   const tension = sig.micro_tension_score || 0;
   const eye = sig.eye_contact_score || 0;
@@ -176,13 +228,13 @@ function updateDashboard(payload) {
   metricEye.textContent = `${Math.round(eye * 100)}%`;
   metricPosture.textContent = posture;
 
-  // 3. Second Metrics
+  // Second Metrics
   metricGaze.textContent = sig.gaze || "—";
   metricGestures.textContent = sig.gestures || "0";
   metricHead.textContent = sig.head_pose || "—";
   metricBlinks.textContent = Math.round(sig.blinks_per_minute || 0).toString();
 
-  // 4. Facial Signals
+  // Facial Signals
   let signalsHtml = "";
   signalsHtml += createBadge(`Smile: ${sig.smile_label || '-'}`, sig.smile_genuine);
   signalsHtml += createBadge(`Brow: ${sig.brow_label || '-'}`, sig.brow_label === 'RAISED');
@@ -191,10 +243,9 @@ function updateDashboard(payload) {
   signalsHtml += createBadge(`Head Shake`, sig.head_shake);
   signalsContainer.innerHTML = signalsHtml;
 
-  // 5. Emotion Breakdown
+  // Emotion Breakdown (vision-based from sig)
   const emoAll = sig.emotion_all || {};
   if (Object.keys(emoAll).length > 0 && sig.emotion !== "loading" && sig.emotion !== "analyzing") {
-    // Sort emotions by value descending
     const sortedEmos = Object.entries(emoAll).sort((a, b) => b[1] - a[1]);
     let barsHtml = "";
     for (const [emoName, emoVal] of sortedEmos) {
@@ -214,7 +265,7 @@ function updateDashboard(payload) {
     breakdownContainer.innerHTML = '<div style="color:var(--text-secondary); font-size:0.9rem;">Loading breakdown...</div>';
   }
 
-  // 6. Behavior Analysis
+  // Behavior Analysis
   let analysisHtml = "";
   if (eng >= 7) {
     analysisHtml += `<div class="analysis-box">✅ Excellent Engagement (${eng}/10) — Confident, well-projected non-verbal communication.</div>`;
@@ -230,10 +281,213 @@ function updateDashboard(payload) {
   
   analysisContainer.innerHTML = analysisHtml;
 
-  // 7. Footer
+  // Footer
   const now = new Date();
   footerText.textContent = `Last updated: ${now.toLocaleTimeString()} | Data source: /data`;
 }
+
+
+// ── Audio Emotion Dashboard ──────────────────────────────────────────
+
+function updateAudioDashboard(audioPayload) {
+  const ae = audioPayload.audio_emotion;
+  if (!ae) return;
+
+  const isSilence = (ae.status === "silence");
+  const rms = ae.rms || 0;
+
+  // Voice Activity
+  if (isSilence) {
+    voiceStatus.textContent = "Listening... (waiting for speech)";
+    voiceStatus.classList.remove("active");
+    voiceMicIcon.classList.remove("speaking");
+  } else {
+    voiceStatus.textContent = "Speech Detected";
+    voiceStatus.classList.add("active");
+    voiceMicIcon.classList.add("speaking");
+  }
+
+  // RMS energy bar (scale: 0-0.1 maps to 0-100%)
+  const energyPct = Math.min(100, Math.round(rms * 1000));
+  voiceEnergyFill.style.width = `${energyPct}%`;
+  voiceRms.textContent = rms.toFixed(4);
+  voiceTs.textContent = ae.timestamp || "—";
+
+  // Audio Emotion label + confidence
+  if (!isSilence && ae.label) {
+    audioEmotionLabel.textContent = ae.label.toUpperCase();
+    audioEmotionConf.textContent = `${Math.round((ae.confidence || 0) * 100)}%`;
+  } else {
+    audioEmotionLabel.textContent = isSilence ? "LISTENING..." : "WAITING...";
+    audioEmotionConf.textContent = "—%";
+  }
+
+  // Audio category breakdown bars
+  if (!isSilence && ae.all_scores && Object.keys(ae.all_scores).length > 0) {
+    const sorted = Object.entries(ae.all_scores).sort((a, b) => b[1] - a[1]);
+    let barsHtml = "";
+    for (const [emo, score] of sorted) {
+      const pct = Math.round(score * 100);
+      const width = Math.max(2, pct);
+      barsHtml += `
+        <div class="score-bar-row">
+          <span class="score-label">${emo}</span>
+          <div class="score-track">
+            <div class="score-fill" style="width: ${width}%;"></div>
+          </div>
+          <span class="score-pct">${pct}%</span>
+        </div>
+      `;
+    }
+    audioBreakdownContainer.innerHTML = barsHtml;
+  }
+
+  // VAD Dimensions
+  if (!isSilence) {
+    metricValence.textContent = formatVAD(ae.valence);
+    metricArousal.textContent = formatVAD(ae.arousal);
+    metricDominance.textContent = formatVAD(ae.dominance);
+    metricVadQuad.textContent = ae.vad_quadrant || "—";
+  }
+
+  // Transcript
+  const transcript = audioPayload.transcript;
+  if (transcript && transcript.length > 0) {
+    let html = "";
+    for (const entry of transcript) {
+      html += `
+        <div class="transcript-entry">
+          <span class="transcript-ts">${entry.ts}</span>
+          <span class="transcript-text">${escapeHtml(entry.text)}</span>
+        </div>
+      `;
+    }
+    transcriptBody.innerHTML = html;
+    // Auto-scroll to bottom
+    transcriptBody.scrollTop = transcriptBody.scrollHeight;
+  }
+}
+
+function formatVAD(val) {
+  if (val === undefined || val === null) return "—";
+  const num = parseFloat(val);
+  return (num >= 0 ? "+" : "") + num.toFixed(3);
+}
+
+function escapeHtml(text) {
+  const div = document.createElement("div");
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+
+// ── Multimodal Fusion ────────────────────────────────────────────────
+
+function updateMultimodalFusion(visionPayload, audioPayload) {
+  const sig = visionPayload.sig || {};
+  const report = visionPayload.data || {};
+  const ae = audioPayload.audio_emotion || {};
+
+  // Check if report has pre-computed multimodal fusion from main.py
+  const serverMultimodal = report.multimodal_emotion;
+
+  if (serverMultimodal && serverMultimodal.fused_emotion) {
+    // Use server-side fusion (richer — uses facial signal analysis)
+    fusionVision.textContent = capitalize(serverMultimodal.vision_emotion || "—");
+    fusionAudio.textContent = capitalize(serverMultimodal.audio_emotion || "—");
+    fusionCombined.textContent = capitalize(serverMultimodal.fused_emotion);
+
+    const congruence = Math.round((serverMultimodal.congruence || 0) * 100);
+    congruenceFill.style.width = `${congruence}%`;
+    congruencePct.textContent = `${congruence}%`;
+
+    // Render behavioral insights from server
+    const insights = serverMultimodal.behavioral_insights || [];
+    if (insights.length > 0) {
+      let html = '<span class="insight-label">🧠 AI BEHAVIORAL INSIGHTS</span>';
+      for (const insight of insights) {
+        const icon = insight.includes("congruence") || insight.includes("genuinely") || insight.includes("receptive") ? "✅"
+                   : insight.includes("mismatch") || insight.includes("suppressing") || insight.includes("stress") ? "🚨"
+                   : "⚠️";
+        html += `<div style="margin:4px 0;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);">${icon} ${insight}</div>`;
+      }
+      multimodalInsight.innerHTML = html;
+    }
+    return;
+  }
+
+  // Fallback: client-side fusion
+  const visionEmotion = sig.emotion || "—";
+  const audioEmotion = (ae.status !== "silence" && ae.label) ? ae.label : "—";
+  const fused = audioPayload.fused_emotion || null;
+
+  fusionVision.textContent = capitalize(visionEmotion);
+  fusionAudio.textContent = capitalize(audioEmotion);
+
+  if (fused && fused.label) {
+    fusionCombined.textContent = capitalize(fused.label);
+  } else if (audioEmotion !== "—") {
+    fusionCombined.textContent = capitalize(audioEmotion);
+  } else {
+    fusionCombined.textContent = capitalize(visionEmotion);
+  }
+
+  let congruence = 0;
+  if (visionEmotion !== "—" && audioEmotion !== "—") {
+    if (visionEmotion.toLowerCase() === audioEmotion.toLowerCase()) {
+      congruence = 100;
+    } else {
+      congruence = calculateCongruence(visionEmotion, audioEmotion);
+    }
+  }
+
+  congruenceFill.style.width = `${congruence}%`;
+  congruencePct.textContent = `${congruence}%`;
+
+  if (visionEmotion !== "—" && audioEmotion !== "—") {
+    if (congruence >= 80) {
+      multimodalInsight.innerHTML = `
+        <span class="insight-label">MULTIMODAL INSIGHT</span>
+        ✅ Strong congruence — facial expression and vocal tone align on <strong>${capitalize(audioEmotion)}</strong>.
+      `;
+    } else if (congruence >= 40) {
+      multimodalInsight.innerHTML = `
+        <span class="insight-label">MULTIMODAL INSIGHT</span>
+        ⚠️ Mixed signals — face shows <strong>${capitalize(visionEmotion)}</strong> but voice indicates <strong>${capitalize(audioEmotion)}</strong>. Client may be masking emotions.
+      `;
+    } else {
+      multimodalInsight.innerHTML = `
+        <span class="insight-label">MULTIMODAL INSIGHT</span>
+        🚨 Emotional incongruence — strong mismatch between visual (<strong>${capitalize(visionEmotion)}</strong>) and vocal (<strong>${capitalize(audioEmotion)}</strong>) signals. Investigate further.
+      `;
+    }
+  } else {
+    multimodalInsight.innerHTML = "";
+  }
+}
+
+function capitalize(str) {
+  if (!str || str === "—") return "—";
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
+
+// Emotion valence groups for congruence scoring
+const EMOTION_VALENCE = {
+  happy: 1, calm: 0.7, neutral: 0.5, surprised: 0.4,
+  sad: -0.3, fear: -0.5, fearful: -0.5, angry: -0.7,
+  disgust: -0.8
+};
+
+function calculateCongruence(emo1, emo2) {
+  const v1 = EMOTION_VALENCE[emo1.toLowerCase()] ?? 0;
+  const v2 = EMOTION_VALENCE[emo2.toLowerCase()] ?? 0;
+  const diff = Math.abs(v1 - v2);
+  // Max possible diff is 1.8 (happy vs disgust); scale to 0-100
+  return Math.round(Math.max(0, (1 - diff / 1.8)) * 100);
+}
+
+
+// ── Helpers ──────────────────────────────────────────────────────────
 
 function createBadge(label, active) {
   const cls = active ? "on" : "off";
@@ -266,6 +520,9 @@ function renderAwayLogs() {
   
   container.innerHTML = html;
 }
+
+
+// ── Init ─────────────────────────────────────────────────────────────
 
 setInterval(fetchData, FETCH_INTERVAL);
 initChart();

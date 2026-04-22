@@ -37,8 +37,9 @@ const { SignalStore } = require("./signals");
 const { AttentionTracker } = require("./attention");
 const { AwayTracker } = require("./away");
 const { GestureCounter } = require("./gestures");
-const { Interpreter, THRESHOLDS } = require("./interpreter");
+const { Interpreter, THRESHOLDS, FUSION_WEIGHTS, INCONSISTENCY_PATTERNS, EMOTION_VALENCE } = require("./interpreter");
 const { EventEmitter } = require("./events");
+const { LLMEngine } = require("./llm_engine");
 
 module.exports = {
   // ── Server (full project backend) ──────────
@@ -60,5 +61,11 @@ module.exports = {
   GestureCounter,
   Interpreter,
   THRESHOLDS,
+  FUSION_WEIGHTS,
+  INCONSISTENCY_PATTERNS,
+  EMOTION_VALENCE,
   EventEmitter,
+
+  // ── Multimodal Intelligence (NEW) ──────────
+  LLMEngine,
 };

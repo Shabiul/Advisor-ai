@@ -1,0 +1,21 @@
+{
+  "status": "active",
+  "label": "sad",
+  "confidence": 0.305,
+  "all_scores": {
+    "sad": 0.30502319917385623,
+    "calm": 0.08193969113128129,
+    "neutral": 0.08103040485445911,
+    "disgust": 0.1833892485635546,
+    "fearful": 0.10093752711289733,
+    "happy": 0.08279053140415855,
+    "angry": 0.0838304711316729,
+    "surprised": 0.08105892662812018
+  },
+  "valence": 0.337,
+  "arousal": 0.3358,
+  "dominance": 0.3272,
+  "vad_quadrant": "Excited / Happy",
+  "rms": 0.086539,
+  "timestamp": 1776833444
+}

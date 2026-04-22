@@ -39,6 +39,10 @@ class AdvisorServer extends EventEmitter {
     this._lastUpdated = null;
     this._videoClients = [];
     this._httpServer = null;
+
+    // Audio emotion store (from emo_service.py)
+    this._latestAudioEmotion = null;
+    this._audioLastUpdated = null;
   }
 
   /**
@@ -121,12 +125,16 @@ class AdvisorServer extends EventEmitter {
     // Route
     if (req.method === "POST" && pathname === "/analyze") {
       this._handleAnalyze(req, res);
+    } else if (req.method === "POST" && pathname === "/audio_emotion") {
+      this._handleAudioEmotion(req, res);
     } else if (req.method === "POST" && pathname === "/video_frame") {
       this._handleVideoFrame(req, res);
     } else if (req.method === "GET" && pathname === "/video_feed") {
       this._handleVideoFeed(req, res);
     } else if (req.method === "GET" && pathname === "/data") {
       this._handleData(req, res);
+    } else if (req.method === "GET" && pathname === "/audio_data") {
+      this._handleAudioData(req, res);
     } else if (req.method === "GET" && pathname === "/recordings") {
       this._handleRecordings(req, res);
     } else if (this.serveDashboard && req.method === "GET") {
@@ -162,13 +170,25 @@ class AdvisorServer extends EventEmitter {
           return;
         }
 
+        // Attach sig to report data so interpreter can derive vision emotion
+        if (parsed.sig) {
+          data._sig = parsed.sig;
+        }
+
         // Store
         this._latestReport = parsed;
         this._lastUpdated = Date.now();
 
-        // Interpret
+        // Interpret — use multimodal when audio data is available
         const interpreter = new Interpreter(upperMode);
-        const interpretation = interpreter.interpret(data);
+        let interpretation;
+
+        if (this._latestAudioEmotion) {
+          interpretation = interpreter.interpretMultimodal(data, this._latestAudioEmotion);
+        } else {
+          interpretation = interpreter.interpret(data);
+          interpretation.modality = "vision_only";
+        }
 
         // Emit event
         this.emit("analyze", { mode: upperMode, data, sig: parsed.sig, interpretation });
@@ -180,6 +200,49 @@ class AdvisorServer extends EventEmitter {
         res.end(JSON.stringify({ error: "Invalid JSON: " + err.message }));
       }
     });
+  }
+
+  // ── POST /audio_emotion ─────────────────────────────────────────────
+
+  _handleAudioEmotion(req, res) {
+    let body = "";
+    req.on("data", (chunk) => (body += chunk));
+    req.on("end", () => {
+      try {
+        const parsed = JSON.parse(body);
+        if (!parsed || !parsed.audio_emotion) {
+          res.writeHead(400, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Missing 'audio_emotion' in request body." }));
+          return;
+        }
+
+        this._latestAudioEmotion = parsed;
+        this._audioLastUpdated = Date.now();
+
+        this.emit("audio_emotion", parsed);
+
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ status: "ok", received: new Date().toISOString() }));
+      } catch (err) {
+        res.writeHead(400, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Invalid JSON: " + err.message }));
+      }
+    });
+  }
+
+  // ── GET /audio_data ─────────────────────────────────────────────────
+
+  _handleAudioData(req, res) {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    if (!this._latestAudioEmotion) {
+      res.end(JSON.stringify({ status: "waiting", message: "No audio emotion data yet." }));
+      return;
+    }
+    res.end(JSON.stringify({
+      status: "live",
+      lastUpdated: this._audioLastUpdated,
+      ...this._latestAudioEmotion,
+    }));
   }
 
   // ── POST /video_frame ───────────────────────────────────────────────
@@ -234,7 +297,7 @@ class AdvisorServer extends EventEmitter {
   _handleData(req, res) {
     res.writeHead(200, { "Content-Type": "application/json" });
 
-    if (!this._latestReport) {
+    if (!this._latestReport && !this._latestAudioEmotion) {
       res.end(JSON.stringify({ status: "waiting", message: "No data received yet." }));
       return;
     }
@@ -242,7 +305,9 @@ class AdvisorServer extends EventEmitter {
     res.end(JSON.stringify({
       status: "live",
       lastUpdated: this._lastUpdated,
-      report: this._latestReport,
+      report: this._latestReport || null,
+      audioEmotion: this._latestAudioEmotion || null,
+      audioLastUpdated: this._audioLastUpdated || null,
     }));
   }
 

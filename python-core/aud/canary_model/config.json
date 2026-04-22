@@ -1,0 +1,95 @@
+{
+  "audio_locator_tag": "<|audioplaceholder|>",
+  "freeze_params": [
+    "^llm\\..+$",
+    "^embed_tokens\\..+$"
+  ],
+  "lora": {
+    "lora_alpha": 256,
+    "lora_dropout": 0.01,
+    "r": 128,
+    "target_modules": [
+      "q_proj",
+      "v_proj"
+    ],
+    "task_type": "CAUSAL_LM"
+  },
+  "lr_scheduler": {
+    "_target_": "nemo.core.optim.lr_scheduler.CosineAnnealing",
+    "max_steps": 100000,
+    "min_lr": 1e-06,
+    "warmup_steps": 1000
+  },
+  "optimizer": {
+    "_target_": "torch.optim.AdamW",
+    "betas": [
+      0.9,
+      0.98
+    ],
+    "foreach": true,
+    "lr": 0.0005,
+    "weight_decay": 0.001
+  },
+  "perception": {
+    "encoder": {
+      "_target_": "nemo.collections.asr.modules.ConformerEncoder",
+      "att_context_size": [
+        -1,
+        -1
+      ],
+      "causal_downsampling": false,
+      "conv_context_size": null,
+      "conv_kernel_size": 9,
+      "conv_norm_type": "batch_norm",
+      "d_model": 1024,
+      "dropout": 0.1,
+      "dropout_att": 0.1,
+      "dropout_emb": 0.0,
+      "dropout_pre_encoder": 0.1,
+      "feat_in": 128,
+      "feat_out": -1,
+      "ff_expansion_factor": 4,
+      "n_heads": 8,
+      "n_layers": 32,
+      "pos_emb_max_len": 5000,
+      "reduction": null,
+      "reduction_factor": 1,
+      "reduction_position": null,
+      "self_attention_model": "rel_pos",
+      "subsampling": "dw_striding",
+      "subsampling_conv_channels": 256,
+      "subsampling_factor": 8,
+      "untie_biases": true,
+      "xscaling": false
+    },
+    "modality_adapter": {
+      "_target_": "nemo.collections.speechlm2.modules.perception.IdentityConnector",
+      "d_model": 1024
+    },
+    "output_dim": 2048,
+    "preprocessor": {
+      "_target_": "nemo.collections.asr.modules.AudioToMelSpectrogramPreprocessor",
+      "dither": 1e-05,
+      "features": 128,
+      "frame_splicing": 1,
+      "log": true,
+      "n_fft": 512,
+      "normalize": "per_feature",
+      "pad_to": 0,
+      "pad_value": 0.0,
+      "sample_rate": 16000,
+      "window": "hann",
+      "window_size": 0.025,
+      "window_stride": 0.01
+    },
+    "target": "nemo.collections.speechlm2.modules.perception.AudioPerceptionModule"
+  },
+  "pretrained_asr": "nvidia/canary-1b-flash",
+  "pretrained_llm": "Qwen/Qwen3-1.7B",
+  "pretrained_weights": false,
+  "prevent_freeze_params": [
+    "^.+\\.lora_.+$"
+  ],
+  "prompt_format": "qwen",
+  "torch_dtype": "bfloat16"
+}

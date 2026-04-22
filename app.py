@@ -159,16 +159,25 @@ if data.get("proctor_alert") == True:
     st.error("🚨 PROCTOR ALERT: User has been looking away from the screen for too long! ")
 
 # ---------------------------------------------------------------------------
-# Emotion banner
+# Emotion banners (Visual + Audio + Multimodal)
 # ---------------------------------------------------------------------------
 emo = data["emotion"].upper()
 emo_conf = data["emotion_conf"]
-st.markdown(
-    f'<div style="text-align:center; margin: 10px 0 20px 0;">'
-    f'<span class="emotion-chip">🎭 {emo} — {emo_conf:.0f}% confident</span>'
-    f'</div>',
-    unsafe_allow_html=True,
-)
+audio_emo = data.get("audio_emotion", {})
+multimodal_emo = data.get("multimodal_emotion", {})
+
+chips_html = '<div style="text-align:center; margin: 10px 0 20px 0;">'
+chips_html += f'<span class="emotion-chip" style="background:linear-gradient(135deg,#667eea,#764ba2)">👁️ {emo} — {emo_conf:.0f}%</span>'
+if audio_emo.get("label"):
+    a_label = audio_emo["label"].upper()
+    a_conf = audio_emo.get("confidence", 0) * 100
+    chips_html += f'<span class="emotion-chip" style="background:linear-gradient(135deg,#f093fb,#f5576c)">🎙️ {a_label} — {a_conf:.0f}%</span>'
+if multimodal_emo.get("label"):
+    m_label = multimodal_emo["label"].upper()
+    m_conf = multimodal_emo.get("confidence", 0) * 100
+    chips_html += f'<span class="emotion-chip" style="background:linear-gradient(135deg,#43e97b,#38f9d7)">🧠 {m_label} — {m_conf:.0f}%</span>'
+chips_html += '</div>'
+st.markdown(chips_html, unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------------
 # Top metrics (4 cols)
@@ -278,6 +287,64 @@ if emo_all and data["emotion"] not in ["loading", "analyzing"]:
     st.markdown(bars_html, unsafe_allow_html=True)
 
 # ---------------------------------------------------------------------------
+# Audio Emotion Breakdown (from acoustic bridge)
+# ---------------------------------------------------------------------------
+audio_emo = data.get("audio_emotion", {})
+audio_all = audio_emo.get("all_scores", {})
+if audio_all:
+    st.markdown("---")
+    st.markdown("### 🎙️ Acoustic Emotion (Voice)")
+
+    emo_colors_audio = {
+        "happy": "#64ffda", "neutral": "#a8b2d1", "sad": "#74b9ff",
+        "angry": "#ff6b6b", "surprised": "#feca57", "fear": "#a29bfe",
+        "disgust": "#fd79a8", "calm": "#00cec9", "fearful": "#a29bfe",
+    }
+    sorted_audio = sorted(audio_all.items(), key=lambda x: x[1], reverse=True)
+    bars_html_a = ""
+    for emo_name, emo_val in sorted_audio:
+        color = emo_colors_audio.get(emo_name, "#a8b2d1")
+        width = max(2, emo_val * 100)
+        bars_html_a += (
+            f'<div class="score-bar">'
+            f'<span class="score-label">{emo_name.title()}</span>'
+            f'<div class="score-track">'
+            f'<div class="score-fill" style="width:{width}%;background:{color}"></div>'
+            f'</div>'
+            f'<span style="color:#8892b0;font-size:0.8rem;margin-left:8px;">{emo_val:.0%}</span>'
+            f'</div>'
+        )
+    st.markdown(bars_html_a, unsafe_allow_html=True)
+
+    # VAD Dimensional scores
+    v = audio_emo.get("valence", 0)
+    a = audio_emo.get("arousal", 0)
+    d = audio_emo.get("dominance", 0)
+    quad = audio_emo.get("vad_quadrant", "")
+
+    vad_cols = st.columns(4)
+    vad_cols[0].metric("Valence", f"{v:+.2f}")
+    vad_cols[1].metric("Arousal", f"{a:+.2f}")
+    vad_cols[2].metric("Dominance", f"{d:+.2f}")
+    vad_cols[3].metric("VAD Quadrant", quad or "-")
+
+# ---------------------------------------------------------------------------
+# Live Transcript (from Canary-Qwen)
+# ---------------------------------------------------------------------------
+transcript = data.get("live_transcript") or []
+if transcript:
+    st.markdown("---")
+    st.markdown("### 📝 Live Transcript")
+    transcript_html = '<div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:16px;max-height:200px;overflow-y:auto;">'
+    for entry in transcript:
+        if isinstance(entry, dict):
+            ts = entry.get("ts", "")
+            txt = entry.get("text", "")
+            transcript_html += f'<div style="margin:4px 0;"><span style="color:#667eea;font-weight:600;">[{ts}]</span> <span style="color:#e6f1ff;">{txt}</span></div>'
+    transcript_html += '</div>'
+    st.markdown(transcript_html, unsafe_allow_html=True)
+
+# ---------------------------------------------------------------------------
 # Behavior Analysis
 # ---------------------------------------------------------------------------
 st.markdown("---")
@@ -313,6 +380,68 @@ if tension >= 6:
         f'</div>',
         unsafe_allow_html=True,
     )
+
+# ---------------------------------------------------------------------------
+# 🔀 Multimodal Behavioral Insights (Face + Voice Fusion)
+# ---------------------------------------------------------------------------
+multimodal = data.get("multimodal_emotion", {})
+if multimodal and multimodal.get("fused_emotion"):
+    st.markdown("---")
+    st.markdown("### 🔀 Multimodal Behavioral Intelligence")
+
+    # Fusion overview chips
+    vision_emo = multimodal.get("vision_emotion", "—").upper()
+    audio_emo = multimodal.get("audio_emotion", "—").upper()
+    fused_emo = multimodal.get("fused_emotion", "—").upper()
+    fused_conf = multimodal.get("fused_confidence", 0)
+    congruence = multimodal.get("congruence", 0)
+    congruence_level = multimodal.get("congruence_level", "—")
+
+    # Fusion comparison row
+    fc1, fc2, fc3 = st.columns(3)
+    fc1.metric("👁️ Face Emotion", vision_emo)
+    fc2.metric("🎙️ Voice Emotion", audio_emo)
+    fc3.metric("🧠 Fused Emotion", f"{fused_emo} ({fused_conf:.0%})")
+
+    # Congruence metric
+    cong_color = "#64ffda" if congruence >= 0.7 else "#ffc107" if congruence >= 0.4 else "#ff6b6b"
+    st.markdown(
+        f'<div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:16px;margin:10px 0;">'
+        f'<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">'
+        f'<span style="color:#a8b2d1;font-weight:600;">Emotional Congruence</span>'
+        f'<span style="color:{cong_color};font-weight:700;font-size:1.2rem;">{congruence:.0%} ({congruence_level})</span>'
+        f'</div>'
+        f'<div style="height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;">'
+        f'<div style="width:{congruence*100}%;height:100%;background:{cong_color};border-radius:4px;transition:width 0.3s;"></div>'
+        f'</div>'
+        f'</div>',
+        unsafe_allow_html=True,
+    )
+
+    # VAD dimensions from audio
+    vad = multimodal.get("vad", {})
+    if vad:
+        vc1, vc2, vc3 = st.columns(3)
+        vc1.metric("💓 Valence", f"{vad.get('valence', 0):+.2f}")
+        vc2.metric("⚡ Arousal", f"{vad.get('arousal', 0):+.2f}")
+        vc3.metric("👑 Dominance", f"{vad.get('dominance', 0):+.2f}")
+
+    # Behavioral insights (the key value-add)
+    insights = multimodal.get("behavioral_insights", [])
+    if insights:
+        st.markdown("#### 🧠 AI Behavioral Insights")
+        for insight in insights:
+            if "congruence" in insight.lower() or "genuinely" in insight.lower() or "receptive" in insight.lower():
+                box_class = "analysis-success"
+            elif "mismatch" in insight.lower() or "suppressing" in insight.lower() or "stress" in insight.lower():
+                box_class = "analysis-danger"
+            else:
+                box_class = "analysis-warning"
+
+            st.markdown(
+                f'<div class="analysis-box {box_class}">{insight}</div>',
+                unsafe_allow_html=True,
+            )
 
 # ---------------------------------------------------------------------------
 # Communication Breakdown Chart

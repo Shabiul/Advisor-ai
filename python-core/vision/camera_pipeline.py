@@ -8,8 +8,8 @@ Yields (frame, signals) tuples per frame for overlay + analytics.
 import time
 import cv2
 
-from vision.face_analyzer import FaceAnalyzer
-from vision.pose_analyzer import PoseAnalyzer
+from .face_analyzer import FaceAnalyzer
+from .pose_analyzer import PoseAnalyzer
 
 
 class CameraPipeline:

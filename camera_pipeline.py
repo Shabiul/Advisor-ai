@@ -39,14 +39,224 @@ if _RECORDER_DIR not in sys.path:
     sys.path.insert(0, _RECORDER_DIR)
 from session_recorder import SessionRecorder
 
-from pose_analyzer import (
-    detect_arm_state,
-    detect_shoulder_advanced,
-    detect_neck_position,
-    detect_sitting_posture,
-    detect_attention_state,
-    interpret_behavior,
-)
+
+# ─────────────────────────────────────────────
+#  POSE LANDMARK INDICES
+# ─────────────────────────────────────────────
+P_LEFT_SHOULDER = 11
+P_RIGHT_SHOULDER = 12
+P_LEFT_ELBOW = 13
+P_RIGHT_ELBOW = 14
+P_LEFT_WRIST = 15
+P_RIGHT_WRIST = 16
+P_LEFT_HIP = 23
+P_RIGHT_HIP = 24
+P_NOSE = 0
+
+
+# ─────────────────────────────────────────────
+#  POSE HELPER FUNCTIONS
+# ─────────────────────────────────────────────
+import math as _math
+
+def _dist(a, b):
+    return _math.sqrt((a.x - b.x) ** 2 + (a.y - b.y) ** 2)
+
+
+def detect_arm_state(plm):
+    lw = plm[P_LEFT_WRIST]
+    rw = plm[P_RIGHT_WRIST]
+    le = plm[P_LEFT_ELBOW]
+    re = plm[P_RIGHT_ELBOW]
+
+    if _dist(lw, re) < 0.12 and _dist(rw, le) < 0.12:
+        return "CROSSED"
+
+    wrist_sep = abs(lw.x - rw.x)
+    lw_vis = getattr(lw, "visibility", 1.0)
+    rw_vis = getattr(rw, "visibility", 1.0)
+    if wrist_sep > 0.35 and lw_vis > 0.5 and rw_vis > 0.5:
+        return "OPEN"
+
+    return "RELAXED"
+
+
+def detect_shoulder_advanced(plm):
+    ls = plm[P_LEFT_SHOULDER]
+    rs = plm[P_RIGHT_SHOULDER]
+    nose = plm[P_NOSE]
+    lh = plm[P_LEFT_HIP]
+    rh = plm[P_RIGHT_HIP]
+
+    y_diff = abs(ls.y - rs.y)
+    alignment = "TILTED" if y_diff > 0.04 else "STRAIGHT"
+
+    shoulder_mid_y = (ls.y + rs.y) / 2.0
+    hip_mid_y = (lh.y + rh.y) / 2.0
+    torso_h = abs(hip_mid_y - shoulder_mid_y)
+    hip_vis = getattr(lh, "visibility", 0)
+    if hip_vis > 0.3 and torso_h < 0.03:
+        energy = "DROPPED"
+    else:
+        energy = "ACTIVE"
+
+    nose_below = nose.y - shoulder_mid_y
+    if nose_below > 0.04:
+        position = "FORWARD"
+    else:
+        position = "NEUTRAL"
+
+    return {"alignment": alignment, "energy": energy, "position": position}
+
+
+_neck_angle_hist = deque(maxlen=10)
+
+
+def detect_neck_position(plm):
+    nose = plm[P_NOSE]
+    ls = plm[P_LEFT_SHOULDER]
+    rs = plm[P_RIGHT_SHOULDER]
+
+    shoulder_mid_x = (ls.x + rs.x) / 2.0
+    shoulder_mid_y = (ls.y + rs.y) / 2.0
+
+    vertical_gap = nose.y - shoulder_mid_y
+    lateral_offset = nose.x - shoulder_mid_x
+
+    _neck_angle_hist.append((lateral_offset, vertical_gap))
+
+    if vertical_gap > 0.08:
+        position = "DOWN"
+    elif vertical_gap > 0.06:
+        position = "FORWARD_HEAD"
+    elif lateral_offset < -0.04:
+        position = "TILTED_RIGHT"
+    elif lateral_offset > 0.04:
+        position = "TILTED_LEFT"
+    else:
+        position = "STRAIGHT"
+
+    stability = "STABLE"
+    if len(_neck_angle_hist) >= 5:
+        recent = list(_neck_angle_hist)[-5:]
+        x_vals = [p[0] for p in recent]
+        y_vals = [p[1] for p in recent]
+        x_var = max(x_vals) - min(x_vals)
+        y_var = max(y_vals) - min(y_vals)
+        if x_var > 0.02 or y_var > 0.02:
+            stability = "UNSTABLE"
+
+    return {"position": position, "stability": stability}
+
+
+_prev_shoulder_pos = None
+
+
+def detect_sitting_posture(plm):
+    global _prev_shoulder_pos
+
+    ls = plm[P_LEFT_SHOULDER]
+    rs = plm[P_RIGHT_SHOULDER]
+    nose = plm[P_NOSE]
+    lh = plm[P_LEFT_HIP]
+    rh = plm[P_RIGHT_HIP]
+
+    shoulder_mid_x = (ls.x + rs.x) / 2.0
+    shoulder_mid_y = (ls.y + rs.y) / 2.0
+    hip_mid_y = (lh.y + rh.y) / 2.0
+
+    current_pos = (shoulder_mid_x, shoulder_mid_y)
+    if _prev_shoulder_pos is not None:
+        dx = abs(current_pos[0] - _prev_shoulder_pos[0])
+        dy = abs(current_pos[1] - _prev_shoulder_pos[1])
+        if dx > 0.03 or dy > 0.03:
+            _prev_shoulder_pos = current_pos
+            return "SHIFTING_UNSTABLE"
+    _prev_shoulder_pos = current_pos
+
+    nose_forward = nose.y - shoulder_mid_y
+    torso_h = abs(hip_mid_y - shoulder_mid_y)
+
+    hip_vis = getattr(lh, "visibility", 0)
+    if hip_vis > 0.3 and torso_h < 0.03 and nose_forward > 0.08:
+        return "SLOUCHED"
+
+    if nose_forward > 0.03:
+        return "LEAN_FORWARD"
+    if nose_forward < -0.02:
+        return "LEAN_BACK"
+
+    return "UPRIGHT"
+
+
+def detect_attention_state(face_data, pose_data):
+    score = 0
+    max_score = 4
+
+    ec = face_data.get("eye_contact_score", 0)
+    if ec > 0.6:
+        score += 1
+
+    head = face_data.get("head_pose", "")
+    if "FORWARD" in head:
+        score += 1
+
+    shoulders = pose_data.get("shoulders", {})
+    sh_align = shoulders.get("alignment", "") if isinstance(shoulders, dict) else shoulders
+    if sh_align == "STRAIGHT":
+        score += 1
+
+    arms = pose_data.get("arms", "")
+    if arms == "OPEN":
+        score += 1
+
+    if score >= 3:
+        state = "ATTENTIVE"
+    elif score == 2:
+        state = "NEUTRAL"
+    else:
+        state = "DISTRACTED"
+
+    return state, round(score / max_score, 2)
+
+
+def interpret_behavior(sig):
+    tags = []
+    ec = sig.get("eye_contact_score", 0)
+    head = sig.get("head_pose", "")
+    nod = sig.get("nodding", False)
+    shake = sig.get("head_shake", False)
+    smile = sig.get("smile_label", "NONE")
+    tension = sig.get("micro_tension_score", 0)
+    blink = sig.get("blinks_per_minute", 15)
+    bl = sig.get("body_language", {})
+    arms = bl.get("arms", "RELAXED")
+    sitting = bl.get("sitting_posture", "UPRIGHT")
+
+    if ec > 0.7 and "FORWARD" in head:
+        tags.append("ENGAGED")
+    if nod:
+        tags.append("AGREEING")
+    if shake:
+        tags.append("DISAGREEING")
+    if smile == "GENUINE":
+        tags.append("POSITIVE")
+    if tension >= 6:
+        tags.append("STRESSED")
+    if blink > 25:
+        tags.append("ANXIOUS")
+    if arms == "CROSSED":
+        tags.append("DEFENSIVE")
+    if sitting == "SLOUCHED":
+        tags.append("FATIGUED")
+    if ec < 0.3 and "DOWN" in head:
+        tags.append("DISENGAGED")
+
+    if not tags:
+        tags.append("NEUTRAL")
+    return tags
+
+
 
 
 # ─────────────────────────────────────────────
@@ -191,6 +401,42 @@ class EmotionDetector:
                     pass  # keep last result
 
             time.sleep(0.08)
+
+    def stop(self):
+        self._running = False
+
+
+# ─────────────────────────────────────────────
+#  AUDIO EMOTION READER (reads bridge output)
+# ─────────────────────────────────────────────
+AUDIO_SIGNAL_FILE = os.path.join(BASE_DIR, "ta_audio_signals.json")
+
+
+class AudioEmotionReader:
+    """Reads the audio emotion bridge output file for vision-audio fusion."""
+
+    def __init__(self):
+        self._data = {}
+        self._lock = threading.Lock()
+        self._running = True
+        t = threading.Thread(target=self._poll, daemon=True)
+        t.start()
+
+    def _poll(self):
+        while self._running:
+            try:
+                if os.path.exists(AUDIO_SIGNAL_FILE):
+                    with open(AUDIO_SIGNAL_FILE, "r") as f:
+                        data = json.load(f)
+                    with self._lock:
+                        self._data = data
+            except (json.JSONDecodeError, IOError):
+                pass
+            time.sleep(0.3)
+
+    def get(self):
+        with self._lock:
+            return dict(self._data)
 
     def stop(self):
         self._running = False
@@ -696,6 +942,7 @@ def main():
     print("[PIPELINE] Starting... press Q to quit.")
 
     emo_det = EmotionDetector()
+    audio_reader = AudioEmotionReader()
     fmesh = mp_face_mesh.FaceMesh(
         max_num_faces=1, refine_landmarks=True,
         min_detection_confidence=0.5, min_tracking_confidence=0.5,
@@ -800,6 +1047,30 @@ def main():
         sig["emotion"] = emo_data["emotion"]
         sig["emotion_conf"] = emo_data["emotion_conf"]
         sig["emotion_all"] = emo_data["emotion_all"]
+
+        # ── Audio Emotion (from bridge) ───────────────
+        audio_emo = audio_reader.get()
+        if audio_emo and audio_emo.get("label"):
+            sig["audio_emotion"] = {
+                "label": audio_emo.get("label", "unknown"),
+                "confidence": audio_emo.get("confidence", 0),
+                "all_scores": audio_emo.get("all_scores", {}),
+                "valence": audio_emo.get("valence", 0),
+                "arousal": audio_emo.get("arousal", 0),
+                "dominance": audio_emo.get("dominance", 0),
+                "vad_quadrant": audio_emo.get("vad_quadrant", ""),
+            }
+            sig["live_transcript"] = audio_emo.get("transcript")
+
+            # Fused multimodal emotion if both sources available
+            if audio_emo.get("fused_scores"):
+                fused = audio_emo["fused_scores"]
+                fused_label = max(fused, key=fused.get)
+                sig["multimodal_emotion"] = {
+                    "label": fused_label,
+                    "confidence": round(fused.get(fused_label, 0), 2),
+                    "all_scores": fused,
+                }
 
         # ── Face Mesh ─────────────────────────────────
         fm = fmesh.process(rgb)
@@ -1024,6 +1295,7 @@ def main():
     # Cleanup
     session_recorder.stop()
     emo_det.stop()
+    audio_reader.stop()
     cap.release()
     fmesh.close()
     pose_model.close()

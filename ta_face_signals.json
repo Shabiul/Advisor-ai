@@ -1,0 +1,103 @@
+{
+  "emotion": "neutral",
+  "emotion_conf": 100.0,
+  "emotion_all": {
+    "angry": 0.0,
+    "disgust": 0.0,
+    "fear": 0.0,
+    "happy": 0.0,
+    "sad": 0.0,
+    "surprise": 0.0,
+    "neutral": 100.0
+  },
+  "gaze": "CENTER",
+  "eye_contact_score": 0.88,
+  "head_pose": "FACING FORWARD",
+  "nodding": false,
+  "head_shake": true,
+  "blinks_per_minute": 8.0,
+  "brow_score": 1.0,
+  "brow_label": "RAISED",
+  "lip_score": 0.8,
+  "lip_label": "COMPRESSED",
+  "smile_genuine": false,
+  "smile_label": "NONE",
+  "micro_tension_score": 3,
+  "engagement_score": 8,
+  "posture": "Closed",
+  "gestures": 0,
+  "body_language": {
+    "arms": "RELAXED",
+    "shoulders": {
+      "alignment": "STRAIGHT",
+      "energy": "ACTIVE",
+      "position": "NEUTRAL"
+    },
+    "neck": {
+      "position": "TILTED_LEFT",
+      "stability": "STABLE"
+    },
+    "sitting_posture": "UPRIGHT",
+    "posture": "Closed"
+  },
+  "face": {
+    "cheeks": "RAISED",
+    "lips": {
+      "state": "COMPRESSED",
+      "movement": "MEDIUM"
+    }
+  },
+  "attention_state": "ATTENTIVE",
+  "attention_confidence": 0.75,
+  "behavior_tags": [
+    "ENGAGED",
+    "DISAGREEING"
+  ],
+  "current_looking_away_seconds": 0,
+  "max_away_seconds": 17.74,
+  "total_away_time_seconds": 207.26,
+  "total_away_events": 57,
+  "away_history": [
+    {
+      "timestamp": 468.0,
+      "duration_seconds": 0.72
+    },
+    {
+      "timestamp": 469.7,
+      "duration_seconds": 0.84
+    },
+    {
+      "timestamp": 476.1,
+      "duration_seconds": 5.7
+    },
+    {
+      "timestamp": 478.9,
+      "duration_seconds": 1.98
+    },
+    {
+      "timestamp": 488.0,
+      "duration_seconds": 0.64
+    }
+  ],
+  "proctor_alert": false,
+  "timestamp": 1776685358,
+  "audio_emotion": {
+    "label": "sad",
+    "confidence": 0.305,
+    "all_scores": {
+      "sad": 0.30502319917385623,
+      "calm": 0.08193969113128129,
+      "neutral": 0.08103040485445911,
+      "disgust": 0.1833892485635546,
+      "fearful": 0.10093752711289733,
+      "happy": 0.08279053140415855,
+      "angry": 0.0838304711316729,
+      "surprised": 0.08105892662812018
+    },
+    "valence": 0.337,
+    "arousal": 0.3358,
+    "dominance": 0.3272,
+    "vad_quadrant": "Excited / Happy",
+    "source": "wav2vec2"
+  }
+}

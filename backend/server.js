@@ -24,6 +24,11 @@ const PORT = process.env.PORT || 3000;
 let latestReport = null;
 let lastUpdated = null;
 
+// ── Audio Emotion store ──────────────────────────────────────────────
+
+let latestAudioEmotion = null;
+let audioLastUpdated = null;
+
 // ── Thresholds ───────────────────────────────────────────────────────
 
 const THRESHOLDS = {
@@ -69,6 +74,35 @@ app.post("/analyze", (req, res) => {
   return res.json({ mode: upperMode, interpretation });
 });
 
+// ── POST /audio_emotion ──────────────────────────────────────────────
+
+app.post("/audio_emotion", (req, res) => {
+  const body = req.body;
+
+  if (!body || !body.audio_emotion) {
+    return res.status(400).json({ error: "Missing 'audio_emotion' in request body." });
+  }
+
+  latestAudioEmotion = body;
+  audioLastUpdated = new Date().toISOString();
+
+  return res.json({ status: "ok", received: audioLastUpdated });
+});
+
+// ── GET /audio_data ──────────────────────────────────────────────────
+
+app.get("/audio_data", (req, res) => {
+  if (!latestAudioEmotion) {
+    return res.json({ status: "waiting", message: "No audio emotion data yet." });
+  }
+
+  return res.json({
+    status: "live",
+    lastUpdated: audioLastUpdated,
+    ...latestAudioEmotion,
+  });
+});
+
 // ── Video Stream Handlers ─────────────────────────────────────────────
 
 let videoClients = [];
@@ -104,7 +138,7 @@ app.get('/video_feed', (req, res) => {
 // ── GET /data ────────────────────────────────────────────────────────
 
 app.get("/data", (req, res) => {
-  if (!latestReport) {
+  if (!latestReport && !latestAudioEmotion) {
     return res.json({ status: "waiting", message: "No data received yet." });
   }
 
@@ -112,6 +146,8 @@ app.get("/data", (req, res) => {
     status: "live",
     lastUpdated,
     report: latestReport,
+    audioEmotion: latestAudioEmotion || null,
+    audioLastUpdated: audioLastUpdated || null,
   });
 });
 
@@ -193,6 +229,10 @@ function interpret(report, t, mode) {
     ...(engagement && { engagement_level: engagement }),
     recommendation: report.recommendation || "REVIEW_REQUIRED",
     original_report: report,
+    // Audio emotion data (from bridge, if present)
+    ...(report.audio_emotion && { audio_emotion: report.audio_emotion }),
+    ...(report.multimodal_emotion && { multimodal_emotion: report.multimodal_emotion }),
+    ...(report.live_transcript && { live_transcript: report.live_transcript }),
   };
 }
 

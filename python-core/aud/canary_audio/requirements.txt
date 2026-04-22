@@ -1,0 +1,6 @@
+torch
+torchaudio
+torchvision
+nemo_toolkit[asr]
+soundfile
+huggingface_hub

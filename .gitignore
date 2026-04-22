@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Model weights (large binary files — download via scripts)
+python-core/aud/local_emotion_models/*/model.safetensors
+python-core/aud/local_emotion_models/*/model.safetensors.bak
+python-core/aud/canary_model/model.safetensors
+python-core/aud/canary_model/.cache/
+*.safetensors
+
+# WSL venv artifacts (not used on Windows)
+python-core/aud/bin/
+python-core/aud/lib/
+python-core/aud/lib64
+python-core/aud/include/
+python-core/aud/pyvenv.cfg
+
+# Node.js
+node_modules/
+backend/node_modules/
+sdk/node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temp / debug
+*.tmp
+diag_output.txt
+
+# Recordings (session data)
+recordings/
+
+# Conda / venv
+.conda/
+*.egg

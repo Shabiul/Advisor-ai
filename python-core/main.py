@@ -8,6 +8,12 @@
 
 import os
 import sys
+
+# Fix Windows console encoding for Unicode symbols
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8")
+
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -22,7 +28,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from session_recorder import SessionRecorder
 
 # ─────────────────────────────────────────────
-#  VIDEO POSTER (Node.js Integration)
+#  VIDEO POSTER (Node.js Integration — fallback)
 # ─────────────────────────────────────────────
 class VideoPoster:
     def __init__(self, url):
@@ -61,6 +67,91 @@ class VideoPoster:
     def stop(self):
         self._running = False
 
+
+# ─────────────────────────────────────────────
+#  DIRECT MJPEG STREAM SERVER (fast, no relay)
+# ─────────────────────────────────────────────
+MJPEG_PORT = int(os.environ.get("ADVISOR_MJPEG_PORT", "9090"))
+
+
+class MJPEGServer:
+    """Lightweight MJPEG HTTP server. Browsers connect directly to get
+    the live stream at full FPS with zero relay overhead."""
+
+    def __init__(self, port=MJPEG_PORT):
+        self._port = port
+        self._latest_jpeg = None
+        self._lock = threading.Lock()
+        self._event = threading.Event()
+        self._clients = []
+        self._running = True
+
+    def start(self):
+        t = threading.Thread(target=self._serve, daemon=True)
+        t.start()
+        print(f"[MJPEG] Direct stream on http://localhost:{self._port}/video_feed")
+
+    def push(self, jpeg_bytes):
+        """Main loop pushes JPEG frames here."""
+        with self._lock:
+            self._latest_jpeg = jpeg_bytes
+        self._event.set()
+
+    def _serve(self):
+        server = HTTPServer(("0.0.0.0", self._port), self._make_handler())
+        server.timeout = 0.5
+        while self._running:
+            server.handle_request()
+
+    def _make_handler(self):
+        mjpeg_server = self
+
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                if self.path == "/video_feed":
+                    self.send_response(200)
+                    self.send_header("Content-Type", "multipart/x-mixed-replace; boundary=frame")
+                    self.send_header("Cache-Control", "no-cache, private")
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.send_header("Connection", "keep-alive")
+                    self.end_headers()
+                    try:
+                        while mjpeg_server._running:
+                            mjpeg_server._event.wait(timeout=0.1)
+                            mjpeg_server._event.clear()
+                            with mjpeg_server._lock:
+                                jpeg = mjpeg_server._latest_jpeg
+                            if jpeg:
+                                self.wfile.write(b"--frame\r\n")
+                                self.wfile.write(b"Content-Type: image/jpeg\r\n")
+                                self.wfile.write(f"Content-Length: {len(jpeg)}\r\n\r\n".encode())
+                                self.wfile.write(jpeg)
+                                self.wfile.write(b"\r\n")
+                                self.wfile.flush()
+                    except (BrokenPipeError, ConnectionResetError, OSError):
+                        pass
+                else:
+                    self.send_response(200)
+                    self.send_header("Content-Type", "text/plain")
+                    self.send_header("Access-Control-Allow-Origin", "*")
+                    self.end_headers()
+                    self.wfile.write(b"MJPEG server. Use /video_feed")
+
+            def handle(self):
+                """Suppress ConnectionAbortedError on Windows when clients disconnect."""
+                try:
+                    super().handle()
+                except (ConnectionAbortedError, ConnectionResetError, OSError):
+                    pass
+
+            def log_message(self, format, *args):
+                pass  # suppress request logs
+
+        return Handler
+
+    def stop(self):
+        self._running = False
+
 # ─────────────────────────────────────────────
 #  CONFIG
 # ─────────────────────────────────────────────
@@ -72,6 +163,10 @@ EAR_CONSEC_FRAMES = 2
 BLINK_WINDOW_SEC = 60
 SMOOTH_WINDOW = 5
 REPORT_INTERVAL = 0.5  # seconds between HTTP posts
+
+# Audio emotion signal file (written by emo_service.py)
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+AUDIO_SIGNAL_FILE = os.path.join(_PROJECT_ROOT, "ta_audio_signals.json")
 
 # ─────────────────────────────────────────────
 #  MEDIAPIPE SETUP
@@ -700,6 +795,10 @@ class CumulativeReporter:
         neck = bl.get("neck", {})
         shoulders = bl.get("shoulders", {})
 
+        # ── Audio emotion fusion ──────────────────────
+        audio_emo = sig.get("audio_emotion", {})
+        multimodal = self._build_multimodal(sig, audio_emo, attention_score)
+
         report = {
             "summary": {
                 "attention_score": attention_score,
@@ -723,9 +822,100 @@ class CumulativeReporter:
             "look_away_episodes": event_tracker.get_look_away_episodes(),
             "engagement_score": sig.get("engagement_score", 5),
             "eye_contact_score": sig.get("eye_contact_score", 0),
+            # ── Audio + Multimodal fusion ──
+            "audio_emotion": audio_emo if audio_emo else None,
+            "multimodal_emotion": multimodal,
         }
 
         return report
+
+    def _build_multimodal(self, sig, audio_emo, attention_score):
+        """Fuse vision and audio signals into unified behavioral insights."""
+        if not audio_emo or not audio_emo.get("label"):
+            return None
+
+        audio_label = audio_emo.get("label", "neutral")
+        audio_conf = audio_emo.get("confidence", 0)
+        audio_valence = audio_emo.get("valence", 0)
+        audio_arousal = audio_emo.get("arousal", 0)
+
+        # Vision emotional proxy from facial signals
+        smile = sig.get("smile_genuine", False)
+        smile_label = sig.get("smile_label", "NONE")
+        brow_label = sig.get("brow_label", "NEUTRAL")
+        lip_label = sig.get("lip_label", "RELAXED")
+        tension = sig.get("micro_tension_score", 0)
+        engagement = sig.get("engagement_score", 5)
+
+        # Derive vision emotion from facial signals
+        if smile and smile_label == "GENUINE":
+            vision_emo = "happy"
+        elif brow_label == "FURROWED" and tension >= 6:
+            vision_emo = "angry"
+        elif brow_label == "RAISED" and lip_label in ["SLIGHTLY_OPEN", "SPEAKING"]:
+            vision_emo = "surprised"
+        elif tension >= 5 and lip_label == "COMPRESSED":
+            vision_emo = "fear"
+        elif engagement <= 3 and not smile:
+            vision_emo = "sad"
+        else:
+            vision_emo = "neutral"
+
+        # Congruence: do face and voice agree?
+        VALENCE_MAP = {
+            "happy": 1.0, "calm": 0.7, "neutral": 0.5, "surprised": 0.4,
+            "sad": -0.3, "fear": -0.5, "fearful": -0.5,
+            "angry": -0.7, "disgust": -0.8,
+        }
+        v_vision = VALENCE_MAP.get(vision_emo, 0.0)
+        v_audio = VALENCE_MAP.get(audio_label, 0.0)
+        diff = abs(v_vision - v_audio)
+        congruence = round(max(0.0, 1.0 - diff / 1.8), 2)
+
+        # Fused emotion: weighted blend favoring higher-confidence source
+        if vision_emo == audio_label:
+            fused_label = audio_label
+            fused_conf = min(1.0, audio_conf * 1.2)
+        elif congruence > 0.6:
+            fused_label = audio_label if audio_conf > 0.5 else vision_emo
+            fused_conf = audio_conf
+        else:
+            fused_label = audio_label  # voice is harder to fake
+            fused_conf = audio_conf * 0.8
+
+        # Behavioral insights
+        insights = []
+        if congruence >= 0.8:
+            insights.append(f"Strong emotional congruence — face and voice both indicate {fused_label}.")
+        elif congruence >= 0.5:
+            insights.append(f"Mixed signals — face reads {vision_emo} but voice indicates {audio_label}. Possible social masking.")
+        else:
+            insights.append(f"Emotional mismatch — face shows {vision_emo}, voice reveals {audio_label}. Client may be suppressing true emotions.")
+
+        if audio_arousal > 0.3 and engagement <= 4:
+            insights.append("High vocal arousal but low visual engagement — possible internal distress or frustration.")
+        if audio_label in ["angry", "fear", "disgust"] and smile:
+            insights.append("Negative vocal emotion with visible smile — potential stress response or nervous laughter.")
+        if audio_valence < -0.2 and tension >= 5:
+            insights.append("Both voice and facial muscles indicate stress — recommend a pause or topic change.")
+        if audio_label == "happy" and engagement >= 7:
+            insights.append("Positive vocal tone with high engagement — client is genuinely receptive and comfortable.")
+
+        return {
+            "vision_emotion": vision_emo,
+            "audio_emotion": audio_label,
+            "audio_confidence": round(audio_conf, 2),
+            "fused_emotion": fused_label,
+            "fused_confidence": round(fused_conf, 2),
+            "congruence": congruence,
+            "congruence_level": "HIGH" if congruence >= 0.7 else "MEDIUM" if congruence >= 0.4 else "LOW",
+            "vad": {
+                "valence": audio_valence,
+                "arousal": audio_arousal,
+                "dominance": audio_emo.get("dominance", 0),
+            },
+            "behavioral_insights": insights,
+        }
 
     def _empty(self, event_tracker):
         return {
@@ -787,6 +977,64 @@ class BackendPoster:
                     print(f"[BACKEND] Post error: {e}")
 
             time.sleep(0.3)
+
+    def stop(self):
+        self._running = False
+
+
+# ─────────────────────────────────────────────
+#  AUDIO SIGNAL READER (reads emo_service output)
+# ─────────────────────────────────────────────
+class AudioSignalReader:
+    """Periodically reads ta_audio_signals.json written by emo_service.py
+    and injects audio emotion data into the shared sig dict."""
+
+    def __init__(self, sig, filepath=AUDIO_SIGNAL_FILE, interval=0.5):
+        self._sig = sig
+        self._filepath = filepath
+        self._interval = interval
+        self._running = True
+        self._last_ts = 0
+        t = threading.Thread(target=self._run, daemon=True)
+        t.start()
+        print(f"[AUDIO] Reader active — watching {filepath}")
+
+    def _run(self):
+        while self._running:
+            try:
+                if os.path.exists(self._filepath):
+                    mtime = os.path.getmtime(self._filepath)
+                    if mtime > self._last_ts:
+                        self._last_ts = mtime
+                        with open(self._filepath, "r") as f:
+                            data = json.load(f)
+                        self._inject(data)
+            except (json.JSONDecodeError, IOError, OSError):
+                pass
+            time.sleep(self._interval)
+
+    def _inject(self, data):
+        """Inject audio emotion data into the shared signal dict."""
+        ts = data.get("timestamp", 0)
+        # Only inject if data is recent (within 5 seconds)
+        if ts and (time.time() - ts) > 5:
+            self._sig["audio_emotion"] = {}
+            return
+
+        self._sig["audio_emotion"] = {
+            "label": data.get("label", "unknown"),
+            "confidence": data.get("confidence", 0),
+            "all_scores": data.get("all_scores", {}),
+            "valence": data.get("valence", 0),
+            "arousal": data.get("arousal", 0),
+            "dominance": data.get("dominance", 0),
+            "vad_quadrant": data.get("vad_quadrant", ""),
+            "rms": data.get("rms", 0),
+        }
+
+        # Also inject transcript if available
+        if data.get("transcript"):
+            self._sig["live_transcript"] = data["transcript"]
 
     def stop(self):
         self._running = False
@@ -874,12 +1122,238 @@ def draw_overlay(frame, sig, report, active_events):
 
 
 # ─────────────────────────────────────────────
-#  MAIN LOOP
+#  ML WORKER (background thread)
+# ─────────────────────────────────────────────
+class MLWorker:
+    """
+    Runs heavy ML inference (FaceMesh, Pose, Hands) in a background thread.
+    The main loop feeds it raw frames; it updates shared signal state.
+    This decouples video streaming FPS from ML processing speed.
+    """
+
+    def __init__(self, sig, event_tracker, reporter, backend_poster, session_recorder):
+        self._sig = sig
+        self._event_tracker = event_tracker
+        self._reporter = reporter
+        self._backend_poster = backend_poster
+        self._session_recorder = session_recorder
+        self._pending_frame = None           # latest frame for ML
+        self._lock = threading.Lock()
+        self._running = True
+        self._last_report_time = time.time()
+
+        # ML-only state (owned exclusively by worker thread)
+        self._pitch_hist = deque(maxlen=20)
+        self._yaw_hist = deque(maxlen=20)
+        self._blink_times = deque()
+        self._blink_count = 0
+        self._consec_ear = 0
+        self._session_start = time.time()
+        self._total_gestures = 0
+        self._hands_prev = False
+        self._arm_hist = deque(maxlen=SMOOTH_WINDOW)
+        self._sh_hist = deque(maxlen=SMOOTH_WINDOW)
+        self._neck_hist = deque(maxlen=SMOOTH_WINDOW)
+        self._sit_hist = deque(maxlen=SMOOTH_WINDOW)
+        self._cheek_hist = deque(maxlen=SMOOTH_WINDOW)
+        self._lip_hist = deque(maxlen=10)
+        self._ear_hist = deque(maxlen=10)
+
+        # Latest ML drawing artifacts (pose/hands landmarks for overlay)
+        self._pose_landmarks = None
+        self._hand_landmarks_list = []
+        self._latest_report = {}
+        self._active_events = []
+
+        # Init MediaPipe models (owned by this thread)
+        self._fmesh = mp_face_mesh.FaceMesh(
+            max_num_faces=1, refine_landmarks=True,
+            min_detection_confidence=0.5, min_tracking_confidence=0.5,
+        )
+        self._pose = mp_pose.Pose(
+            min_detection_confidence=0.5, min_tracking_confidence=0.5,
+        )
+        self._hands = mp_hands.Hands(
+            max_num_hands=2,
+            min_detection_confidence=0.5, min_tracking_confidence=0.5,
+        )
+
+        t = threading.Thread(target=self._run, daemon=True)
+        t.start()
+
+    def push_frame(self, frame):
+        """Main loop calls this to give the worker the latest frame."""
+        with self._lock:
+            self._pending_frame = frame
+
+    def get_draw_state(self):
+        """Main loop calls this to get latest ML results for drawing."""
+        with self._lock:
+            return (
+                self._pose_landmarks,
+                self._hand_landmarks_list,
+                self._latest_report,
+                self._active_events,
+            )
+
+    def _run(self):
+        while self._running:
+            # Grab latest frame
+            frame = None
+            with self._lock:
+                if self._pending_frame is not None:
+                    frame = self._pending_frame
+                    self._pending_frame = None
+
+            if frame is None:
+                time.sleep(0.005)
+                continue
+
+            h, w = frame.shape[:2]
+            rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+            # ── Face Mesh ──────────────────────────────
+            fm = self._fmesh.process(rgb)
+            if fm.multi_face_landmarks:
+                lms = fm.multi_face_landmarks[0].landmark
+                self._sig["face_detected"] = True
+                self._sig["gaze"] = get_gaze(lms, w, h)
+                self._sig["eye_contact_score"] = get_eye_contact(lms)
+
+                yaw, pitch, pose_label = get_head_pose(lms)
+                self._sig["head_pose"] = pose_label
+                self._pitch_hist.append(pitch)
+                self._yaw_hist.append(yaw)
+                self._sig["nodding"] = get_nod(self._pitch_hist)
+                self._sig["head_shake"] = get_shake(self._yaw_hist)
+
+                l_ear_val = ear(lms, LEFT_EYE_IDX, w, h)
+                r_ear_val = ear(lms, RIGHT_EYE_IDX, w, h)
+                avg_ear = (l_ear_val + r_ear_val) / 2.0
+                if avg_ear < EAR_THRESHOLD:
+                    self._consec_ear += 1
+                else:
+                    if self._consec_ear >= EAR_CONSEC_FRAMES:
+                        self._blink_count += 1
+                        self._blink_times.append(time.time())
+                    self._consec_ear = 0
+
+                now = time.time()
+                while self._blink_times and now - self._blink_times[0] > BLINK_WINDOW_SEC:
+                    self._blink_times.popleft()
+                elapsed = min(now - self._session_start, BLINK_WINDOW_SEC)
+                self._sig["blinks_per_minute"] = (len(self._blink_times) / elapsed * 60) if elapsed > 0 else 0
+
+                bs, bl_label = get_brow(lms)
+                self._sig["brow_score"], self._sig["brow_label"] = bs, bl_label
+
+                sg, sl = get_smile(lms, self._ear_hist)
+                self._sig["smile_genuine"], self._sig["smile_label"] = sg, sl
+
+                raw_cheek = get_cheek_state(lms)
+                self._cheek_hist.append(raw_cheek)
+                smoothed_cheek = _mode_vote(self._cheek_hist)
+
+                lip_result, lip_s = get_lip(lms, self._lip_hist)
+                self._sig["lip_score"] = lip_s
+                self._sig["lip_label"] = lip_result["state"]
+                self._sig["face"] = {"cheeks": smoothed_cheek, "lips": lip_result}
+
+                self._sig["micro_tension_score"] = tension_score(
+                    bs, lip_s, self._sig["blinks_per_minute"], "neutral",
+                )
+                self._sig["engagement_score"] = engagement_score_calc(self._sig)
+            else:
+                self._sig["face_detected"] = False
+
+            # ── Pose ───────────────────────────────────
+            pose_results = self._pose.process(rgb)
+            pose_lm = None
+            if pose_results.pose_landmarks:
+                plm = pose_results.pose_landmarks.landmark
+                pose_lm = pose_results.pose_landmarks
+
+                raw_arm = detect_arm_state(plm)
+                self._arm_hist.append(raw_arm)
+                smoothed_arm = _mode_vote(self._arm_hist)
+
+                raw_shoulder = detect_shoulder_advanced(plm)
+                self._sh_hist.append(raw_shoulder["alignment"])
+                smoothed_sh_align = _mode_vote(self._sh_hist)
+                smoothed_shoulder = {
+                    "alignment": smoothed_sh_align,
+                    "energy": raw_shoulder["energy"],
+                    "position": raw_shoulder["position"],
+                }
+
+                raw_neck = detect_neck_position(plm)
+                self._neck_hist.append(raw_neck["position"])
+                smoothed_neck_pos = _mode_vote(self._neck_hist)
+                smoothed_neck = {
+                    "position": smoothed_neck_pos,
+                    "stability": raw_neck["stability"],
+                }
+
+                raw_sitting = detect_sitting_posture(plm)
+                self._sit_hist.append(raw_sitting)
+                smoothed_sitting = _mode_vote(self._sit_hist)
+
+                self._sig["body_language"] = {
+                    "arms": smoothed_arm,
+                    "shoulders": smoothed_shoulder,
+                    "neck": smoothed_neck,
+                    "sitting_posture": smoothed_sitting,
+                }
+
+            # ── Hands ──────────────────────────────────
+            hands_results = self._hands.process(rgb)
+            hands_present = False
+            hand_lm_list = []
+            if hands_results.multi_hand_landmarks:
+                hands_present = True
+                hand_lm_list = list(hands_results.multi_hand_landmarks)
+
+            if hands_present and not self._hands_prev:
+                self._total_gestures += 1
+            self._hands_prev = hands_present
+            self._sig["gestures"] = self._total_gestures
+
+            # ── Events + Report ────────────────────────
+            self._event_tracker.update(self._sig)
+            self._reporter.push(self._sig)
+
+            now = time.time()
+            report = self._latest_report
+            if now - self._last_report_time >= REPORT_INTERVAL:
+                report = self._reporter.generate(self._sig, self._event_tracker)
+                self._last_report_time = now
+                self._backend_poster.push(report, self._sig)
+                self._session_recorder.write_signals(self._sig, report)
+
+            active = self._event_tracker.get_active_events()
+
+            # Store latest drawing state (thread-safe)
+            with self._lock:
+                self._pose_landmarks = pose_lm
+                self._hand_landmarks_list = hand_lm_list
+                self._latest_report = report
+                self._active_events = active
+
+    def stop(self):
+        self._running = False
+        self._fmesh.close()
+        self._pose.close()
+        self._hands.close()
+
+
+# ─────────────────────────────────────────────
+#  MAIN LOOP  (streams at full camera FPS)
 # ─────────────────────────────────────────────
 def main():
     cap = cv2.VideoCapture(CAMERA_INDEX)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
+    cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
 
     if not cap.isOpened():
         print(f"[ERROR] Cannot open camera {CAMERA_INDEX}.")
@@ -891,53 +1365,7 @@ def main():
     print(f"  Mode       : {ADVISOR_MODE}")
     print("  Press 'q' in the camera window to quit.\n")
 
-    # Init models
-    fmesh = mp_face_mesh.FaceMesh(
-        max_num_faces=1, refine_landmarks=True,
-        min_detection_confidence=0.5, min_tracking_confidence=0.5,
-    )
-    pose_model = mp_pose.Pose(
-        min_detection_confidence=0.5, min_tracking_confidence=0.5,
-    )
-    hands_model = mp_hands.Hands(
-        max_num_hands=2,
-        min_detection_confidence=0.5, min_tracking_confidence=0.5,
-    )
-
-    # Init trackers
-    event_tracker = EventTracker()
-    reporter = CumulativeReporter(window_sec=10.0)
-    backend_poster = BackendPoster(BACKEND_URL, ADVISOR_MODE)
-    
-    video_poster = VideoPoster(BACKEND_URL.replace("/analyze", "/video_frame"))
-
-    # ── Session Recorder (auto-start) ──────────────────
-    session_recorder = SessionRecorder(fps=30)
-    session_recorder.start(frame_width=1280, frame_height=720)
-
-    # Histories
-    pitch_hist = deque(maxlen=20)
-    yaw_hist = deque(maxlen=20)
-    blink_times = deque()
-    blink_count = 0
-    consec_ear = 0
-    session_start = time.time()
-    
-    total_gestures_session = 0
-    hands_present_prev = False
-
-    arm_hist = deque(maxlen=SMOOTH_WINDOW)
-    shoulder_adv_hist = deque(maxlen=SMOOTH_WINDOW)
-    neck_hist_buf = deque(maxlen=SMOOTH_WINDOW)
-    sitting_hist = deque(maxlen=SMOOTH_WINDOW)
-    cheek_hist = deque(maxlen=SMOOTH_WINDOW)
-    lip_move_hist = deque(maxlen=10)
-    ear_hist_buf = deque(maxlen=10)
-
-    frame_n = 0
-    last_report_time = time.time()
-    latest_report = {}
-
+    # Shared signal dict — written by MLWorker, read by main loop
     sig = {
         "gaze": "-", "eye_contact_score": 0.5,
         "head_pose": "-", "nodding": False, "head_shake": False,
@@ -957,7 +1385,30 @@ def main():
             "cheeks": "RELAXED",
             "lips": {"state": "RELAXED", "movement": "LOW"},
         },
+        "audio_emotion": {},    # injected by AudioSignalReader
+        "live_transcript": [],  # injected by AudioSignalReader
     }
+
+    event_tracker = EventTracker()
+    reporter = CumulativeReporter(window_sec=10.0)
+    backend_poster = BackendPoster(BACKEND_URL, ADVISOR_MODE)
+    video_poster = VideoPoster(BACKEND_URL.replace("/analyze", "/video_frame"))
+
+    # Audio emotion reader (reads from emo_service.py output file)
+    audio_reader = AudioSignalReader(sig)
+
+    # Direct MJPEG server (browser connects here — no relay)
+    mjpeg_server = MJPEGServer(port=MJPEG_PORT)
+    mjpeg_server.start()
+
+    session_recorder = SessionRecorder(fps=30)
+    session_recorder.start(frame_width=1280, frame_height=720)
+
+    # Start ML in background thread
+    ml_worker = MLWorker(sig, event_tracker, reporter, backend_poster, session_recorder)
+    print("[PIPELINE] ML worker started in background thread")
+    print("[PIPELINE] Audio signal reader watching for emo_service data")
+    print("[PIPELINE] Video streaming at full camera FPS (uncapped)")
 
     while True:
         ret, frame = cap.read()
@@ -965,166 +1416,42 @@ def main():
             print("[ERROR] Cannot read camera.")
             break
 
-        # Record raw frame before any overlay drawing
+        # Record raw frame
         session_recorder.write_frame(frame)
 
-        frame_n += 1
-        h, w = frame.shape[:2]
-        rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # Feed frame to ML worker (non-blocking — drops old frames)
+        ml_worker.push_frame(frame.copy())
 
-        # ── Face Mesh ──────────────────────────────────
-        fm = fmesh.process(rgb)
-        if fm.multi_face_landmarks:
-            lms = fm.multi_face_landmarks[0].landmark
-            sig["face_detected"] = True
+        # Get latest ML results for drawing (non-blocking)
+        pose_lm, hand_lm_list, latest_report, active_events = ml_worker.get_draw_state()
 
-            sig["gaze"] = get_gaze(lms, w, h)
-            sig["eye_contact_score"] = get_eye_contact(lms)
-
-            yaw, pitch, pose_label = get_head_pose(lms)
-            sig["head_pose"] = pose_label
-            pitch_hist.append(pitch)
-            yaw_hist.append(yaw)
-            sig["nodding"] = get_nod(pitch_hist)
-            sig["head_shake"] = get_shake(yaw_hist)
-
-            # Blink detection
-            l_ear_val = ear(lms, LEFT_EYE_IDX, w, h)
-            r_ear_val = ear(lms, RIGHT_EYE_IDX, w, h)
-            avg_ear = (l_ear_val + r_ear_val) / 2.0
-            if avg_ear < EAR_THRESHOLD:
-                consec_ear += 1
-            else:
-                if consec_ear >= EAR_CONSEC_FRAMES:
-                    blink_count += 1
-                    blink_times.append(time.time())
-                consec_ear = 0
-
-            now = time.time()
-            while blink_times and now - blink_times[0] > BLINK_WINDOW_SEC:
-                blink_times.popleft()
-            elapsed = min(now - session_start, BLINK_WINDOW_SEC)
-            sig["blinks_per_minute"] = (len(blink_times) / elapsed * 60) if elapsed > 0 else 0
-
-            bs, bl_label = get_brow(lms)
-            sig["brow_score"], sig["brow_label"] = bs, bl_label
-
-            sg, sl = get_smile(lms, ear_hist_buf)
-            sig["smile_genuine"], sig["smile_label"] = sg, sl
-
-            # Cheek
-            raw_cheek = get_cheek_state(lms)
-            cheek_hist.append(raw_cheek)
-            smoothed_cheek = _mode_vote(cheek_hist)
-
-            # Lip
-            lip_result, lip_s = get_lip(lms, lip_move_hist)
-            sig["lip_score"] = lip_s
-            sig["lip_label"] = lip_result["state"]
-
-            sig["face"] = {
-                "cheeks": smoothed_cheek,
-                "lips": lip_result,
-            }
-
-            sig["micro_tension_score"] = tension_score(
-                bs, lip_s, sig["blinks_per_minute"], "neutral",
-            )
-            sig["engagement_score"] = engagement_score_calc(sig)
-
-        else:
-            sig["face_detected"] = False
-
-        # ── Pose ────────────────────────────────────────
-        pose_results = pose_model.process(rgb)
-        if pose_results.pose_landmarks:
-            plm = pose_results.pose_landmarks.landmark
-
-            raw_arm = detect_arm_state(plm)
-            arm_hist.append(raw_arm)
-            smoothed_arm = _mode_vote(arm_hist)
-
-            raw_shoulder = detect_shoulder_advanced(plm)
-            shoulder_adv_hist.append(raw_shoulder["alignment"])
-            smoothed_sh_align = _mode_vote(shoulder_adv_hist)
-            smoothed_shoulder = {
-                "alignment": smoothed_sh_align,
-                "energy": raw_shoulder["energy"],
-                "position": raw_shoulder["position"],
-            }
-
-            raw_neck = detect_neck_position(plm)
-            neck_hist_buf.append(raw_neck["position"])
-            smoothed_neck_pos = _mode_vote(neck_hist_buf)
-            smoothed_neck = {
-                "position": smoothed_neck_pos,
-                "stability": raw_neck["stability"],
-            }
-
-            raw_sitting = detect_sitting_posture(plm)
-            sitting_hist.append(raw_sitting)
-            smoothed_sitting = _mode_vote(sitting_hist)
-
-            sig["body_language"] = {
-                "arms": smoothed_arm,
-                "shoulders": smoothed_shoulder,
-                "neck": smoothed_neck,
-                "sitting_posture": smoothed_sitting,
-            }
-
-            # Draw pose skeleton
+        # Draw skeleton + hands from latest ML results onto current frame
+        if pose_lm is not None:
             mp_drawing.draw_landmarks(
-                frame, pose_results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
+                frame, pose_lm, mp_pose.POSE_CONNECTIONS,
             )
-
-        # ── Hands ──────────────────────────────────────
-        hands_results = hands_model.process(rgb)
-        hands_present = False
-        if hands_results.multi_hand_landmarks:
-            hands_present = True
-            for hlm in hands_results.multi_hand_landmarks:
+        if hand_lm_list:
+            for hlm in hand_lm_list:
                 mp_drawing.draw_landmarks(frame, hlm, mp_hands.HAND_CONNECTIONS)
-        
-        if hands_present and not hands_present_prev:
-            total_gestures_session += 1
-        hands_present_prev = hands_present
-        
-        sig["gestures"] = total_gestures_session
 
-        # ── Event Tracking ──────────────────────────────
-        event_tracker.update(sig)
-
-        # ── Cumulative Report ───────────────────────────
-        reporter.push(sig)
-
-        now = time.time()
-        if now - last_report_time >= REPORT_INTERVAL:
-            latest_report = reporter.generate(sig, event_tracker)
-            last_report_time = now
-
-            # Post to backend
-            backend_poster.push(latest_report, sig)
-
-            # Record signals alongside report
-            session_recorder.write_signals(sig, latest_report)
-
-        # ── Debug Overlay ───────────────────────────────
-        active_events = event_tracker.get_active_events()
+        # Draw overlay with latest signals
         draw_overlay(frame, sig, latest_report, active_events)
-        
-        # Stream frame to Node
+
+        # JPEG encode once, push to both direct stream and Node relay
         ret_enc, jpeg = cv2.imencode('.jpg', frame, [cv2.IMWRITE_JPEG_QUALITY, 70])
         if ret_enc:
-            video_poster.push(jpeg.tobytes())
+            jpeg_bytes = jpeg.tobytes()
+            mjpeg_server.push(jpeg_bytes)   # direct to browser (fast)
+            video_poster.push(jpeg_bytes)    # relay to Node (fallback)
 
     # Cleanup
+    ml_worker.stop()
+    audio_reader.stop()
+    mjpeg_server.stop()
     session_recorder.stop()
     backend_poster.stop()
     video_poster.stop()
     cap.release()
-    fmesh.close()
-    pose_model.close()
-    hands_model.close()
     print("[Trusted Advisor AI] Done.")
 
 

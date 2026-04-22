@@ -1,0 +1,4691 @@
+[
+  {
+    "ts": 9.4,
+    "emotion": "neutral",
+    "emotion_conf": 56.6,
+    "emotion_all": {
+      "angry": 41.8,
+      "disgust": 0.0,
+      "fear": 1.4,
+      "happy": 0.0,
+      "sad": 0.1,
+      "surprise": 0.1,
+      "neutral": 56.6
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.99,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 0.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.53,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 1.27,
+    "total_away_time_seconds": 1.27,
+    "total_away_events": 1,
+    "away_history": [
+      {
+        "timestamp": 8.8,
+        "duration_seconds": 1.27
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684878
+  },
+  {
+    "ts": 17.7,
+    "emotion": "angry",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 100.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 0.0
+    },
+    "gaze": "LOOKING LEFT",
+    "eye_contact_score": 0.48,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 10.178885956567491,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.56,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 2,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.65,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 2.42,
+    "total_away_time_seconds": 4.32,
+    "total_away_events": 3,
+    "away_history": [
+      {
+        "timestamp": 8.8,
+        "duration_seconds": 1.27
+      },
+      {
+        "timestamp": 10.6,
+        "duration_seconds": 0.63
+      },
+      {
+        "timestamp": 15.2,
+        "duration_seconds": 2.42
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684886
+  },
+  {
+    "ts": 26.1,
+    "emotion": "sad",
+    "emotion_conf": 93.9,
+    "emotion_all": {
+      "angry": 6.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 93.9,
+      "surprise": 0.0,
+      "neutral": 0.0
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.71,
+    "head_pose": "HEAD RAISED",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 10.270593945447425,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.68,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 5,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_RIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 5.63,
+    "max_away_seconds": 2.42,
+    "total_away_time_seconds": 9.94,
+    "total_away_events": 3,
+    "away_history": [
+      {
+        "timestamp": 8.8,
+        "duration_seconds": 1.27
+      },
+      {
+        "timestamp": 10.6,
+        "duration_seconds": 0.63
+      },
+      {
+        "timestamp": 15.2,
+        "duration_seconds": 2.42
+      }
+    ],
+    "proctor_alert": true,
+    "timestamp": 1776684895
+  },
+  {
+    "ts": 35.1,
+    "emotion": "neutral",
+    "emotion_conf": 98.5,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 1.4,
+      "happy": 0.1,
+      "sad": 0.1,
+      "surprise": 0.0,
+      "neutral": 98.5
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.97,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 8.64792698709608,
+    "brow_score": 0.94,
+    "brow_label": "RAISED",
+    "lip_score": 0.93,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "FORWARD_HEAD",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 19.56,
+    "total_away_events": 4,
+    "away_history": [
+      {
+        "timestamp": 8.8,
+        "duration_seconds": 1.27
+      },
+      {
+        "timestamp": 10.6,
+        "duration_seconds": 0.63
+      },
+      {
+        "timestamp": 15.2,
+        "duration_seconds": 2.42
+      },
+      {
+        "timestamp": 33.0,
+        "duration_seconds": 15.24
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684904
+  },
+  {
+    "ts": 43.0,
+    "emotion": "angry",
+    "emotion_conf": 99.5,
+    "emotion_all": {
+      "angry": 99.5,
+      "disgust": 0.0,
+      "fear": 0.4,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 0.0
+    },
+    "gaze": "LOOKING LEFT",
+    "eye_contact_score": 0.36,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 6.985160069923368,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.45,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 2,
+    "engagement_score": 2,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_RIGHT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "HIGH"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.7,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 19.56,
+    "total_away_events": 4,
+    "away_history": [
+      {
+        "timestamp": 8.8,
+        "duration_seconds": 1.27
+      },
+      {
+        "timestamp": 10.6,
+        "duration_seconds": 0.63
+      },
+      {
+        "timestamp": 15.2,
+        "duration_seconds": 2.42
+      },
+      {
+        "timestamp": 33.0,
+        "duration_seconds": 15.24
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684912
+  },
+  {
+    "ts": 52.7,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.4,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 9.117823195970916,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.86,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 5,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 1.06,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 23.48,
+    "total_away_events": 8,
+    "away_history": [
+      {
+        "timestamp": 33.0,
+        "duration_seconds": 15.24
+      },
+      {
+        "timestamp": 43.7,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 44.6,
+        "duration_seconds": 0.71
+      },
+      {
+        "timestamp": 45.5,
+        "duration_seconds": 0.51
+      },
+      {
+        "timestamp": 50.4,
+        "duration_seconds": 0.91
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684921
+  },
+  {
+    "ts": 61.4,
+    "emotion": "angry",
+    "emotion_conf": 94.2,
+    "emotion_all": {
+      "angry": 94.2,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.4,
+      "surprise": 0.0,
+      "neutral": 5.4
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.7,
+    "head_pose": "HEAD RAISED",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 10.439336618037474,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.7,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 7,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_RIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 0.0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 25.53,
+    "total_away_events": 10,
+    "away_history": [
+      {
+        "timestamp": 44.6,
+        "duration_seconds": 0.71
+      },
+      {
+        "timestamp": 45.5,
+        "duration_seconds": 0.51
+      },
+      {
+        "timestamp": 50.4,
+        "duration_seconds": 0.91
+      },
+      {
+        "timestamp": 54.0,
+        "duration_seconds": 2.4
+      },
+      {
+        "timestamp": 56.2,
+        "duration_seconds": 0.72
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684930
+  },
+  {
+    "ts": 70.5,
+    "emotion": "neutral",
+    "emotion_conf": 97.6,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 2.0,
+      "happy": 0.1,
+      "sad": 0.2,
+      "surprise": 0.0,
+      "neutral": 97.6
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.98,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 11.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.78,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 36.66,
+    "total_away_events": 12,
+    "away_history": [
+      {
+        "timestamp": 50.4,
+        "duration_seconds": 0.91
+      },
+      {
+        "timestamp": 54.0,
+        "duration_seconds": 2.4
+      },
+      {
+        "timestamp": 56.2,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 65.1,
+        "duration_seconds": 7.66
+      },
+      {
+        "timestamp": 69.0,
+        "duration_seconds": 3.47
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684939
+  },
+  {
+    "ts": 79.5,
+    "emotion": "neutral",
+    "emotion_conf": 50.7,
+    "emotion_all": {
+      "angry": 47.8,
+      "disgust": 0.0,
+      "fear": 0.2,
+      "happy": 0.0,
+      "sad": 0.3,
+      "surprise": 0.9,
+      "neutral": 50.7
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 1.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 12.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.0,
+    "lip_label": "SLIGHTLY_OPEN",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 9,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RAISED",
+      "lips": {
+        "state": "SLIGHTLY_OPEN",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 36.66,
+    "total_away_events": 12,
+    "away_history": [
+      {
+        "timestamp": 50.4,
+        "duration_seconds": 0.91
+      },
+      {
+        "timestamp": 54.0,
+        "duration_seconds": 2.4
+      },
+      {
+        "timestamp": 56.2,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 65.1,
+        "duration_seconds": 7.66
+      },
+      {
+        "timestamp": 69.0,
+        "duration_seconds": 3.47
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684948
+  },
+  {
+    "ts": 87.9,
+    "emotion": "fear",
+    "emotion_conf": 59.7,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 59.7,
+      "happy": 40.2,
+      "sad": 0.0,
+      "surprise": 0.1,
+      "neutral": 0.0
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.9,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 12.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.84,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 36.66,
+    "total_away_events": 12,
+    "away_history": [
+      {
+        "timestamp": 50.4,
+        "duration_seconds": 0.91
+      },
+      {
+        "timestamp": 54.0,
+        "duration_seconds": 2.4
+      },
+      {
+        "timestamp": 56.2,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 65.1,
+        "duration_seconds": 7.66
+      },
+      {
+        "timestamp": 69.0,
+        "duration_seconds": 3.47
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684957
+  },
+  {
+    "ts": 96.3,
+    "emotion": "fear",
+    "emotion_conf": 46.7,
+    "emotion_all": {
+      "angry": 11.7,
+      "disgust": 0.0,
+      "fear": 46.7,
+      "happy": 0.0,
+      "sad": 34.4,
+      "surprise": 0.1,
+      "neutral": 7.1
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.96,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 12.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.88,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RAISED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 36.66,
+    "total_away_events": 12,
+    "away_history": [
+      {
+        "timestamp": 50.4,
+        "duration_seconds": 0.91
+      },
+      {
+        "timestamp": 54.0,
+        "duration_seconds": 2.4
+      },
+      {
+        "timestamp": 56.2,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 65.1,
+        "duration_seconds": 7.66
+      },
+      {
+        "timestamp": 69.0,
+        "duration_seconds": 3.47
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684965
+  },
+  {
+    "ts": 104.7,
+    "emotion": "neutral",
+    "emotion_conf": 70.4,
+    "emotion_all": {
+      "angry": 3.8,
+      "disgust": 0.0,
+      "fear": 3.0,
+      "happy": 7.4,
+      "sad": 7.8,
+      "surprise": 7.5,
+      "neutral": 70.4
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.63,
+    "head_pose": "HEAD RAISED",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 14.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.25,
+    "lip_label": "RELAXED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "RELAXED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.45,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0.97,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 37.63,
+    "total_away_events": 12,
+    "away_history": [
+      {
+        "timestamp": 50.4,
+        "duration_seconds": 0.91
+      },
+      {
+        "timestamp": 54.0,
+        "duration_seconds": 2.4
+      },
+      {
+        "timestamp": 56.2,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 65.1,
+        "duration_seconds": 7.66
+      },
+      {
+        "timestamp": 69.0,
+        "duration_seconds": 3.47
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684973
+  },
+  {
+    "ts": 113.5,
+    "emotion": "neutral",
+    "emotion_conf": 88.4,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 11.5,
+      "happy": 0.0,
+      "sad": 0.1,
+      "surprise": 0.0,
+      "neutral": 88.4
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.76,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 11.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.56,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 37.94,
+    "total_away_events": 13,
+    "away_history": [
+      {
+        "timestamp": 54.0,
+        "duration_seconds": 2.4
+      },
+      {
+        "timestamp": 56.2,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 65.1,
+        "duration_seconds": 7.66
+      },
+      {
+        "timestamp": 69.0,
+        "duration_seconds": 3.47
+      },
+      {
+        "timestamp": 105.0,
+        "duration_seconds": 1.28
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684982
+  },
+  {
+    "ts": 122.5,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.55,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 11.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.19,
+    "lip_label": "RELAXED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "TILTED",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "RELAXED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "DISTRACTED",
+    "attention_confidence": 0.3,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 0.12,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 40.4,
+    "total_away_events": 15,
+    "away_history": [
+      {
+        "timestamp": 65.1,
+        "duration_seconds": 7.66
+      },
+      {
+        "timestamp": 69.0,
+        "duration_seconds": 3.47
+      },
+      {
+        "timestamp": 105.0,
+        "duration_seconds": 1.28
+      },
+      {
+        "timestamp": 115.1,
+        "duration_seconds": 1.41
+      },
+      {
+        "timestamp": 121.1,
+        "duration_seconds": 0.94
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776684991
+  },
+  {
+    "ts": 131.5,
+    "emotion": "neutral",
+    "emotion_conf": 45.4,
+    "emotion_all": {
+      "angry": 0.1,
+      "disgust": 0.0,
+      "fear": 15.5,
+      "happy": 0.0,
+      "sad": 37.6,
+      "surprise": 1.4,
+      "neutral": 45.4
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.97,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 9.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.56,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 9,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.7,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 47.54,
+    "total_away_events": 18,
+    "away_history": [
+      {
+        "timestamp": 115.1,
+        "duration_seconds": 1.41
+      },
+      {
+        "timestamp": 121.1,
+        "duration_seconds": 0.94
+      },
+      {
+        "timestamp": 125.9,
+        "duration_seconds": 3.55
+      },
+      {
+        "timestamp": 127.3,
+        "duration_seconds": 0.87
+      },
+      {
+        "timestamp": 131.5,
+        "duration_seconds": 2.83
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685000
+  },
+  {
+    "ts": 140.2,
+    "emotion": "neutral",
+    "emotion_conf": 99.8,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.2,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 99.8
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.77,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 11.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.81,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "TILTED",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.55,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 51.16,
+    "total_away_events": 20,
+    "away_history": [
+      {
+        "timestamp": 125.9,
+        "duration_seconds": 3.55
+      },
+      {
+        "timestamp": 127.3,
+        "duration_seconds": 0.87
+      },
+      {
+        "timestamp": 131.5,
+        "duration_seconds": 2.83
+      },
+      {
+        "timestamp": 133.5,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 138.8,
+        "duration_seconds": 2.89
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685009
+  },
+  {
+    "ts": 148.9,
+    "emotion": "surprise",
+    "emotion_conf": 92.5,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 6.7,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 92.5,
+      "neutral": 0.7
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.9,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 12.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.99,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 9,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 56.49,
+    "total_away_events": 21,
+    "away_history": [
+      {
+        "timestamp": 127.3,
+        "duration_seconds": 0.87
+      },
+      {
+        "timestamp": 131.5,
+        "duration_seconds": 2.83
+      },
+      {
+        "timestamp": 133.5,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 138.8,
+        "duration_seconds": 2.89
+      },
+      {
+        "timestamp": 145.9,
+        "duration_seconds": 5.33
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685018
+  },
+  {
+    "ts": 157.8,
+    "emotion": "neutral",
+    "emotion_conf": 99.9,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.1,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 99.9
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.31,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 10.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.85,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 5,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 1.42,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 62.08,
+    "total_away_events": 23,
+    "away_history": [
+      {
+        "timestamp": 133.5,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 138.8,
+        "duration_seconds": 2.89
+      },
+      {
+        "timestamp": 145.9,
+        "duration_seconds": 5.33
+      },
+      {
+        "timestamp": 154.3,
+        "duration_seconds": 3.43
+      },
+      {
+        "timestamp": 155.2,
+        "duration_seconds": 0.74
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685026
+  },
+  {
+    "ts": 166.4,
+    "emotion": "neutral",
+    "emotion_conf": 64.0,
+    "emotion_all": {
+      "angry": 1.7,
+      "disgust": 0.0,
+      "fear": 0.8,
+      "happy": 33.4,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 64.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.54,
+    "head_pose": "HEAD RAISED",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 11.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.8,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 5,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "DISTRACTED",
+    "attention_confidence": 0.25,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 2.15,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 67.53,
+    "total_away_events": 24,
+    "away_history": [
+      {
+        "timestamp": 138.8,
+        "duration_seconds": 2.89
+      },
+      {
+        "timestamp": 145.9,
+        "duration_seconds": 5.33
+      },
+      {
+        "timestamp": 154.3,
+        "duration_seconds": 3.43
+      },
+      {
+        "timestamp": 155.2,
+        "duration_seconds": 0.74
+      },
+      {
+        "timestamp": 161.1,
+        "duration_seconds": 4.73
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685035
+  },
+  {
+    "ts": 174.9,
+    "emotion": "neutral",
+    "emotion_conf": 82.4,
+    "emotion_all": {
+      "angry": 14.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.6,
+      "sad": 3.0,
+      "surprise": 0.0,
+      "neutral": 82.4
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.98,
+    "head_pose": "HEAD RAISED",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 15.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.9,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 9,
+    "body_language": {
+      "arms": "OPEN",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.7,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 10.67,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 76.05,
+    "total_away_events": 24,
+    "away_history": [
+      {
+        "timestamp": 138.8,
+        "duration_seconds": 2.89
+      },
+      {
+        "timestamp": 145.9,
+        "duration_seconds": 5.33
+      },
+      {
+        "timestamp": 154.3,
+        "duration_seconds": 3.43
+      },
+      {
+        "timestamp": 155.2,
+        "duration_seconds": 0.74
+      },
+      {
+        "timestamp": 161.1,
+        "duration_seconds": 4.73
+      }
+    ],
+    "proctor_alert": true,
+    "timestamp": 1776685044
+  },
+  {
+    "ts": 183.8,
+    "emotion": "sad",
+    "emotion_conf": 73.5,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 17.2,
+      "happy": 0.0,
+      "sad": 73.5,
+      "surprise": 0.0,
+      "neutral": 9.3
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.96,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 15.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.96,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 79.35,
+    "total_away_events": 25,
+    "away_history": [
+      {
+        "timestamp": 145.9,
+        "duration_seconds": 5.33
+      },
+      {
+        "timestamp": 154.3,
+        "duration_seconds": 3.43
+      },
+      {
+        "timestamp": 155.2,
+        "duration_seconds": 0.74
+      },
+      {
+        "timestamp": 161.1,
+        "duration_seconds": 4.73
+      },
+      {
+        "timestamp": 178.2,
+        "duration_seconds": 13.97
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685053
+  },
+  {
+    "ts": 193.8,
+    "emotion": "neutral",
+    "emotion_conf": 68.8,
+    "emotion_all": {
+      "angry": 11.7,
+      "disgust": 0.0,
+      "fear": 16.2,
+      "happy": 0.0,
+      "sad": 2.7,
+      "surprise": 0.5,
+      "neutral": 68.8
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.97,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 16.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.72,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 80.47,
+    "total_away_events": 26,
+    "away_history": [
+      {
+        "timestamp": 154.3,
+        "duration_seconds": 3.43
+      },
+      {
+        "timestamp": 155.2,
+        "duration_seconds": 0.74
+      },
+      {
+        "timestamp": 161.1,
+        "duration_seconds": 4.73
+      },
+      {
+        "timestamp": 178.2,
+        "duration_seconds": 13.97
+      },
+      {
+        "timestamp": 187.2,
+        "duration_seconds": 1.12
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685062
+  },
+  {
+    "ts": 203.0,
+    "emotion": "neutral",
+    "emotion_conf": 82.5,
+    "emotion_all": {
+      "angry": 0.2,
+      "disgust": 0.0,
+      "fear": 14.6,
+      "happy": 0.0,
+      "sad": 2.2,
+      "surprise": 0.5,
+      "neutral": 82.5
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.97,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 14.0,
+    "brow_score": 0.91,
+    "brow_label": "RAISED",
+    "lip_score": 0.81,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 80.47,
+    "total_away_events": 26,
+    "away_history": [
+      {
+        "timestamp": 154.3,
+        "duration_seconds": 3.43
+      },
+      {
+        "timestamp": 155.2,
+        "duration_seconds": 0.74
+      },
+      {
+        "timestamp": 161.1,
+        "duration_seconds": 4.73
+      },
+      {
+        "timestamp": 178.2,
+        "duration_seconds": 13.97
+      },
+      {
+        "timestamp": 187.2,
+        "duration_seconds": 1.12
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685072
+  },
+  {
+    "ts": 211.7,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.21,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 17.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.58,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 1.85,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 85.65,
+    "total_away_events": 28,
+    "away_history": [
+      {
+        "timestamp": 161.1,
+        "duration_seconds": 4.73
+      },
+      {
+        "timestamp": 178.2,
+        "duration_seconds": 13.97
+      },
+      {
+        "timestamp": 187.2,
+        "duration_seconds": 1.12
+      },
+      {
+        "timestamp": 205.2,
+        "duration_seconds": 0.79
+      },
+      {
+        "timestamp": 208.8,
+        "duration_seconds": 2.54
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685080
+  },
+  {
+    "ts": 220.6,
+    "emotion": "angry",
+    "emotion_conf": 97.4,
+    "emotion_all": {
+      "angry": 97.4,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.1,
+      "surprise": 0.0,
+      "neutral": 2.5
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 19.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.64,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 2,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "DISTRACTED",
+    "attention_confidence": 0.35,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 1.47,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 87.78,
+    "total_away_events": 29,
+    "away_history": [
+      {
+        "timestamp": 178.2,
+        "duration_seconds": 13.97
+      },
+      {
+        "timestamp": 187.2,
+        "duration_seconds": 1.12
+      },
+      {
+        "timestamp": 205.2,
+        "duration_seconds": 0.79
+      },
+      {
+        "timestamp": 208.8,
+        "duration_seconds": 2.54
+      },
+      {
+        "timestamp": 212.3,
+        "duration_seconds": 2.52
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685089
+  },
+  {
+    "ts": 228.5,
+    "emotion": "fear",
+    "emotion_conf": 74.5,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 74.5,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 25.5
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 21.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.68,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 5,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 6.22,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 92.53,
+    "total_away_events": 29,
+    "away_history": [
+      {
+        "timestamp": 178.2,
+        "duration_seconds": 13.97
+      },
+      {
+        "timestamp": 187.2,
+        "duration_seconds": 1.12
+      },
+      {
+        "timestamp": 205.2,
+        "duration_seconds": 0.79
+      },
+      {
+        "timestamp": 208.8,
+        "duration_seconds": 2.54
+      },
+      {
+        "timestamp": 212.3,
+        "duration_seconds": 2.52
+      }
+    ],
+    "proctor_alert": true,
+    "timestamp": 1776685097
+  },
+  {
+    "ts": 237.3,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.36,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 18.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.68,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 5,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 1.9,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 103.4,
+    "total_away_events": 32,
+    "away_history": [
+      {
+        "timestamp": 208.8,
+        "duration_seconds": 2.54
+      },
+      {
+        "timestamp": 212.3,
+        "duration_seconds": 2.52
+      },
+      {
+        "timestamp": 229.7,
+        "duration_seconds": 10.64
+      },
+      {
+        "timestamp": 233.5,
+        "duration_seconds": 3.62
+      },
+      {
+        "timestamp": 234.9,
+        "duration_seconds": 0.92
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685106
+  },
+  {
+    "ts": 245.5,
+    "emotion": "neutral",
+    "emotion_conf": 99.6,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.4,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 99.6
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.53,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 19.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.65,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 5,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "HIGH"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 3.34,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 111.4,
+    "total_away_events": 33,
+    "away_history": [
+      {
+        "timestamp": 212.3,
+        "duration_seconds": 2.52
+      },
+      {
+        "timestamp": 229.7,
+        "duration_seconds": 10.64
+      },
+      {
+        "timestamp": 233.5,
+        "duration_seconds": 3.62
+      },
+      {
+        "timestamp": 234.9,
+        "duration_seconds": 0.92
+      },
+      {
+        "timestamp": 241.9,
+        "duration_seconds": 6.57
+      }
+    ],
+    "proctor_alert": true,
+    "timestamp": 1776685114
+  },
+  {
+    "ts": 254.3,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.37,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 19.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.6,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.65,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 120.07,
+    "total_away_events": 34,
+    "away_history": [
+      {
+        "timestamp": 229.7,
+        "duration_seconds": 10.64
+      },
+      {
+        "timestamp": 233.5,
+        "duration_seconds": 3.62
+      },
+      {
+        "timestamp": 234.9,
+        "duration_seconds": 0.92
+      },
+      {
+        "timestamp": 241.9,
+        "duration_seconds": 6.57
+      },
+      {
+        "timestamp": 254.2,
+        "duration_seconds": 12.01
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685123
+  },
+  {
+    "ts": 263.0,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.09,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 19.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.44,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 2.73,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 127.19,
+    "total_away_events": 35,
+    "away_history": [
+      {
+        "timestamp": 233.5,
+        "duration_seconds": 3.62
+      },
+      {
+        "timestamp": 234.9,
+        "duration_seconds": 0.92
+      },
+      {
+        "timestamp": 241.9,
+        "duration_seconds": 6.57
+      },
+      {
+        "timestamp": 254.2,
+        "duration_seconds": 12.01
+      },
+      {
+        "timestamp": 258.7,
+        "duration_seconds": 4.39
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685132
+  },
+  {
+    "ts": 271.9,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 15.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.6,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 13.0,
+    "max_away_seconds": 15.24,
+    "total_away_time_seconds": 137.46,
+    "total_away_events": 35,
+    "away_history": [
+      {
+        "timestamp": 233.5,
+        "duration_seconds": 3.62
+      },
+      {
+        "timestamp": 234.9,
+        "duration_seconds": 0.92
+      },
+      {
+        "timestamp": 241.9,
+        "duration_seconds": 6.57
+      },
+      {
+        "timestamp": 254.2,
+        "duration_seconds": 12.01
+      },
+      {
+        "timestamp": 258.7,
+        "duration_seconds": 4.39
+      }
+    ],
+    "proctor_alert": true,
+    "timestamp": 1776685141
+  },
+  {
+    "ts": 281.5,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.02,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 13.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.39,
+    "lip_label": "RELAXED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "RELAXED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.5,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 5.33,
+    "max_away_seconds": 17.05,
+    "total_away_time_seconds": 146.84,
+    "total_away_events": 36,
+    "away_history": [
+      {
+        "timestamp": 234.9,
+        "duration_seconds": 0.92
+      },
+      {
+        "timestamp": 241.9,
+        "duration_seconds": 6.57
+      },
+      {
+        "timestamp": 254.2,
+        "duration_seconds": 12.01
+      },
+      {
+        "timestamp": 258.7,
+        "duration_seconds": 4.39
+      },
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      }
+    ],
+    "proctor_alert": true,
+    "timestamp": 1776685150
+  },
+  {
+    "ts": 290.0,
+    "emotion": "neutral",
+    "emotion_conf": 89.6,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 10.4,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 89.6
+    },
+    "gaze": "LOOKING LEFT",
+    "eye_contact_score": 0.51,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 16.0,
+    "brow_score": 0.99,
+    "brow_label": "RAISED",
+    "lip_score": 0.99,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 5,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "HIGH"
+      }
+    },
+    "attention_state": "DISTRACTED",
+    "attention_confidence": 0.3,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 13.83,
+    "max_away_seconds": 17.05,
+    "total_away_time_seconds": 155.33,
+    "total_away_events": 36,
+    "away_history": [
+      {
+        "timestamp": 234.9,
+        "duration_seconds": 0.92
+      },
+      {
+        "timestamp": 241.9,
+        "duration_seconds": 6.57
+      },
+      {
+        "timestamp": 254.2,
+        "duration_seconds": 12.01
+      },
+      {
+        "timestamp": 258.7,
+        "duration_seconds": 4.39
+      },
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      }
+    ],
+    "proctor_alert": true,
+    "timestamp": 1776685159
+  },
+  {
+    "ts": 298.1,
+    "emotion": "sad",
+    "emotion_conf": 74.7,
+    "emotion_all": {
+      "angry": 6.2,
+      "disgust": 0.0,
+      "fear": 11.8,
+      "happy": 0.0,
+      "sad": 74.7,
+      "surprise": 0.0,
+      "neutral": 7.3
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.94,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 16.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.71,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 6,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "TILTED_RIGHT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 159.25,
+    "total_away_events": 37,
+    "away_history": [
+      {
+        "timestamp": 241.9,
+        "duration_seconds": 6.57
+      },
+      {
+        "timestamp": 254.2,
+        "duration_seconds": 12.01
+      },
+      {
+        "timestamp": 258.7,
+        "duration_seconds": 4.39
+      },
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685167
+  },
+  {
+    "ts": 306.4,
+    "emotion": "neutral",
+    "emotion_conf": 68.3,
+    "emotion_all": {
+      "angry": 31.1,
+      "disgust": 0.0,
+      "fear": 0.1,
+      "happy": 0.1,
+      "sad": 0.0,
+      "surprise": 0.3,
+      "neutral": 68.3
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.98,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 16.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.99,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RAISED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 160.94,
+    "total_away_events": 38,
+    "away_history": [
+      {
+        "timestamp": 254.2,
+        "duration_seconds": 12.01
+      },
+      {
+        "timestamp": 258.7,
+        "duration_seconds": 4.39
+      },
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685175
+  },
+  {
+    "ts": 314.9,
+    "emotion": "angry",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 100.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 0.0
+    },
+    "gaze": "LOOKING LEFT",
+    "eye_contact_score": 0.44,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 17.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.61,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 2,
+    "engagement_score": 3,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_RIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.7,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0.0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 167.46,
+    "total_away_events": 39,
+    "away_history": [
+      {
+        "timestamp": 258.7,
+        "duration_seconds": 4.39
+      },
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685184
+  },
+  {
+    "ts": 323.6,
+    "emotion": "neutral",
+    "emotion_conf": 61.3,
+    "emotion_all": {
+      "angry": 9.9,
+      "disgust": 0.0,
+      "fear": 0.4,
+      "happy": 0.1,
+      "sad": 0.0,
+      "surprise": 28.2,
+      "neutral": 61.3
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.99,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 21.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.97,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 7,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 168.19,
+    "total_away_events": 40,
+    "away_history": [
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685192
+  },
+  {
+    "ts": 331.9,
+    "emotion": "angry",
+    "emotion_conf": 97.8,
+    "emotion_all": {
+      "angry": 97.8,
+      "disgust": 0.0,
+      "fear": 0.6,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 1.6,
+      "neutral": 0.0
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.92,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 24.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.68,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 4,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 168.19,
+    "total_away_events": 40,
+    "away_history": [
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685201
+  },
+  {
+    "ts": 339.8,
+    "emotion": "neutral",
+    "emotion_conf": 89.3,
+    "emotion_all": {
+      "angry": 10.2,
+      "disgust": 0.0,
+      "fear": 0.1,
+      "happy": 0.0,
+      "sad": 0.1,
+      "surprise": 0.3,
+      "neutral": 89.3
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.95,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 23.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.99,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 7,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 168.19,
+    "total_away_events": 40,
+    "away_history": [
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685208
+  },
+  {
+    "ts": 348.0,
+    "emotion": "surprise",
+    "emotion_conf": 48.4,
+    "emotion_all": {
+      "angry": 10.8,
+      "disgust": 1.4,
+      "fear": 39.2,
+      "happy": 0.0,
+      "sad": 0.1,
+      "surprise": 48.4,
+      "neutral": 0.1
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.93,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 22.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.77,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 7,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "DOWN",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 168.19,
+    "total_away_events": 40,
+    "away_history": [
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685217
+  },
+  {
+    "ts": 355.5,
+    "emotion": "surprise",
+    "emotion_conf": 81.4,
+    "emotion_all": {
+      "angry": 17.2,
+      "disgust": 0.0,
+      "fear": 1.5,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 81.4,
+      "neutral": 0.0
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.93,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 22.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.77,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 7,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "DOWN",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 168.19,
+    "total_away_events": 40,
+    "away_history": [
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685224
+  },
+  {
+    "ts": 363.1,
+    "emotion": "fear",
+    "emotion_conf": 65.5,
+    "emotion_all": {
+      "angry": 0.2,
+      "disgust": 0.0,
+      "fear": 65.5,
+      "happy": 4.1,
+      "sad": 0.0,
+      "surprise": 18.3,
+      "neutral": 11.9
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.93,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 22.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.77,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 7,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "DOWN",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 168.19,
+    "total_away_events": 40,
+    "away_history": [
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685232
+  },
+  {
+    "ts": 371.2,
+    "emotion": "surprise",
+    "emotion_conf": 79.6,
+    "emotion_all": {
+      "angry": 18.1,
+      "disgust": 0.0,
+      "fear": 0.2,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 79.6,
+      "neutral": 2.2
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.99,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 9.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.4,
+    "lip_label": "RELAXED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 0,
+    "engagement_score": 10,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "UPRIGHT",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "RELAXED",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 168.19,
+    "total_away_events": 40,
+    "away_history": [
+      {
+        "timestamp": 275.9,
+        "duration_seconds": 17.05
+      },
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685240
+  },
+  {
+    "ts": 379.0,
+    "emotion": "surprise",
+    "emotion_conf": 66.5,
+    "emotion_all": {
+      "angry": 22.2,
+      "disgust": 0.0,
+      "fear": 11.3,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 66.5,
+      "neutral": 0.0
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 1.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 10.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.58,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "DOWN",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RAISED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 169.02,
+    "total_away_events": 41,
+    "away_history": [
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 374.2,
+        "duration_seconds": 0.84
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685248
+  },
+  {
+    "ts": 386.6,
+    "emotion": "surprise",
+    "emotion_conf": 63.3,
+    "emotion_all": {
+      "angry": 7.4,
+      "disgust": 0.3,
+      "fear": 28.9,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 63.3,
+      "neutral": 0.0
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 1.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 10.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.58,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "FORWARD_HEAD",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RAISED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 169.02,
+    "total_away_events": 41,
+    "away_history": [
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 374.2,
+        "duration_seconds": 0.84
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685255
+  },
+  {
+    "ts": 394.1,
+    "emotion": "surprise",
+    "emotion_conf": 82.8,
+    "emotion_all": {
+      "angry": 1.9,
+      "disgust": 0.0,
+      "fear": 15.3,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 82.8,
+      "neutral": 0.0
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 1.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 10.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.58,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "DOWN",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RAISED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 169.02,
+    "total_away_events": 41,
+    "away_history": [
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 374.2,
+        "duration_seconds": 0.84
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685263
+  },
+  {
+    "ts": 401.8,
+    "emotion": "surprise",
+    "emotion_conf": 74.5,
+    "emotion_all": {
+      "angry": 10.4,
+      "disgust": 0.1,
+      "fear": 15.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 74.5,
+      "neutral": 0.0
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 1.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 10.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.58,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "DOWN",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RAISED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 169.02,
+    "total_away_events": 41,
+    "away_history": [
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 374.2,
+        "duration_seconds": 0.84
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685270
+  },
+  {
+    "ts": 409.4,
+    "emotion": "angry",
+    "emotion_conf": 82.7,
+    "emotion_all": {
+      "angry": 82.7,
+      "disgust": 0.0,
+      "fear": 10.7,
+      "happy": 0.0,
+      "sad": 6.4,
+      "surprise": 0.0,
+      "neutral": 0.2
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 1.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 10.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.58,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "DOWN",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RAISED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "MEDIUM"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 169.02,
+    "total_away_events": 41,
+    "away_history": [
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 374.2,
+        "duration_seconds": 0.84
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685278
+  },
+  {
+    "ts": 417.4,
+    "emotion": "angry",
+    "emotion_conf": 39.5,
+    "emotion_all": {
+      "angry": 39.5,
+      "disgust": 1.0,
+      "fear": 32.3,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 27.1,
+      "neutral": 0.0
+    },
+    "gaze": "LOOKING LEFT",
+    "eye_contact_score": 0.68,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 5.0,
+    "brow_score": 0.92,
+    "brow_label": "RAISED",
+    "lip_score": 0.93,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 1,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "FORWARD"
+      },
+      "neck": {
+        "position": "DOWN",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 169.02,
+    "total_away_events": 41,
+    "away_history": [
+      {
+        "timestamp": 293.9,
+        "duration_seconds": 17.74
+      },
+      {
+        "timestamp": 302.6,
+        "duration_seconds": 1.69
+      },
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 374.2,
+        "duration_seconds": 0.84
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685286
+  },
+  {
+    "ts": 426.5,
+    "emotion": "neutral",
+    "emotion_conf": 95.7,
+    "emotion_all": {
+      "angry": 0.2,
+      "disgust": 0.0,
+      "fear": 4.1,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 95.7
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 0.97,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 3.0,
+    "brow_score": 0.98,
+    "brow_label": "RAISED",
+    "lip_score": 0.82,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 4,
+    "engagement_score": 7,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED",
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 171.08,
+    "total_away_events": 43,
+    "away_history": [
+      {
+        "timestamp": 313.5,
+        "duration_seconds": 6.52
+      },
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 374.2,
+        "duration_seconds": 0.84
+      },
+      {
+        "timestamp": 421.7,
+        "duration_seconds": 0.98
+      },
+      {
+        "timestamp": 422.9,
+        "duration_seconds": 1.08
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685295
+  },
+  {
+    "ts": 435.0,
+    "emotion": "neutral",
+    "emotion_conf": 92.6,
+    "emotion_all": {
+      "angry": 0.5,
+      "disgust": 0.0,
+      "fear": 0.2,
+      "happy": 0.0,
+      "sad": 6.8,
+      "surprise": 0.0,
+      "neutral": 92.6
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.03,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 4.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.64,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 4,
+    "engagement_score": 4,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "TILTED",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "DISTRACTED",
+    "attention_confidence": 0.25,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0.46,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 172.55,
+    "total_away_events": 44,
+    "away_history": [
+      {
+        "timestamp": 315.6,
+        "duration_seconds": 0.73
+      },
+      {
+        "timestamp": 374.2,
+        "duration_seconds": 0.84
+      },
+      {
+        "timestamp": 421.7,
+        "duration_seconds": 0.98
+      },
+      {
+        "timestamp": 422.9,
+        "duration_seconds": 1.08
+      },
+      {
+        "timestamp": 434.0,
+        "duration_seconds": 1.01
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685304
+  },
+  {
+    "ts": 443.8,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.6,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 5.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.79,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 4,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.55,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0.49,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 178.08,
+    "total_away_events": 47,
+    "away_history": [
+      {
+        "timestamp": 422.9,
+        "duration_seconds": 1.08
+      },
+      {
+        "timestamp": 434.0,
+        "duration_seconds": 1.01
+      },
+      {
+        "timestamp": 438.7,
+        "duration_seconds": 4.13
+      },
+      {
+        "timestamp": 440.9,
+        "duration_seconds": 0.86
+      },
+      {
+        "timestamp": 442.3,
+        "duration_seconds": 0.5
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685312
+  },
+  {
+    "ts": 452.8,
+    "emotion": "neutral",
+    "emotion_conf": 100.0,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 0.0,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 100.0
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.19,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 6.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.78,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 4,
+    "posture": "Closed",
+    "gestures": 1,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "TILTED",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "DISTRACTED",
+    "attention_confidence": 0.25,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0.85,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 186.16,
+    "total_away_events": 49,
+    "away_history": [
+      {
+        "timestamp": 438.7,
+        "duration_seconds": 4.13
+      },
+      {
+        "timestamp": 440.9,
+        "duration_seconds": 0.86
+      },
+      {
+        "timestamp": 442.3,
+        "duration_seconds": 0.5
+      },
+      {
+        "timestamp": 446.1,
+        "duration_seconds": 2.9
+      },
+      {
+        "timestamp": 451.2,
+        "duration_seconds": 4.83
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685321
+  },
+  {
+    "ts": 467.7,
+    "emotion": "fear",
+    "emotion_conf": 58.6,
+    "emotion_all": {
+      "angry": 0.1,
+      "disgust": 0.0,
+      "fear": 58.6,
+      "happy": 0.0,
+      "sad": 0.6,
+      "surprise": 1.8,
+      "neutral": 38.8
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.34,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 7.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.64,
+    "lip_label": "TIGHT",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 2,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "UNSTABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "TIGHT",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.55,
+    "behavior_tags": [
+      "NEUTRAL"
+    ],
+    "current_looking_away_seconds": 0.38,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 197.76,
+    "total_away_events": 52,
+    "away_history": [
+      {
+        "timestamp": 446.1,
+        "duration_seconds": 2.9
+      },
+      {
+        "timestamp": 451.2,
+        "duration_seconds": 4.83
+      },
+      {
+        "timestamp": 460.9,
+        "duration_seconds": 8.95
+      },
+      {
+        "timestamp": 463.7,
+        "duration_seconds": 1.84
+      },
+      {
+        "timestamp": 466.0,
+        "duration_seconds": 1.28
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685336
+  },
+  {
+    "ts": 477.3,
+    "emotion": "fear",
+    "emotion_conf": 95.3,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 95.3,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 4.7
+    },
+    "gaze": "LOOKING RIGHT",
+    "eye_contact_score": 0.56,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": true,
+    "blinks_per_minute": 6.0,
+    "brow_score": 0.94,
+    "brow_label": "RAISED",
+    "lip_score": 0.82,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 5,
+    "engagement_score": 2,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "TILTED",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "TILTED_LEFT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_BACK",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "LOW"
+      }
+    },
+    "attention_state": "NEUTRAL",
+    "attention_confidence": 0.4,
+    "behavior_tags": [
+      "DISAGREEING"
+    ],
+    "current_looking_away_seconds": 0.34,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 204.99,
+    "total_away_events": 55,
+    "away_history": [
+      {
+        "timestamp": 463.7,
+        "duration_seconds": 1.84
+      },
+      {
+        "timestamp": 466.0,
+        "duration_seconds": 1.28
+      },
+      {
+        "timestamp": 468.0,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 469.7,
+        "duration_seconds": 0.84
+      },
+      {
+        "timestamp": 476.1,
+        "duration_seconds": 5.7
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685346
+  },
+  {
+    "ts": 486.5,
+    "emotion": "neutral",
+    "emotion_conf": 81.9,
+    "emotion_all": {
+      "angry": 0.0,
+      "disgust": 0.0,
+      "fear": 18.1,
+      "happy": 0.0,
+      "sad": 0.0,
+      "surprise": 0.0,
+      "neutral": 81.9
+    },
+    "gaze": "CENTER",
+    "eye_contact_score": 1.0,
+    "head_pose": "FACING FORWARD",
+    "nodding": false,
+    "head_shake": false,
+    "blinks_per_minute": 8.0,
+    "brow_score": 1.0,
+    "brow_label": "RAISED",
+    "lip_score": 0.73,
+    "lip_label": "COMPRESSED",
+    "smile_genuine": false,
+    "smile_label": "NONE",
+    "micro_tension_score": 3,
+    "engagement_score": 8,
+    "posture": "Closed",
+    "gestures": 0,
+    "body_language": {
+      "arms": "RELAXED",
+      "shoulders": {
+        "alignment": "STRAIGHT",
+        "energy": "ACTIVE",
+        "position": "NEUTRAL"
+      },
+      "neck": {
+        "position": "STRAIGHT",
+        "stability": "STABLE"
+      },
+      "sitting_posture": "LEAN_FORWARD",
+      "posture": "Closed"
+    },
+    "face": {
+      "cheeks": "RELAXED",
+      "lips": {
+        "state": "COMPRESSED",
+        "movement": "HIGH"
+      }
+    },
+    "attention_state": "ATTENTIVE",
+    "attention_confidence": 0.75,
+    "behavior_tags": [
+      "ENGAGED"
+    ],
+    "current_looking_away_seconds": 0,
+    "max_away_seconds": 17.74,
+    "total_away_time_seconds": 206.62,
+    "total_away_events": 56,
+    "away_history": [
+      {
+        "timestamp": 466.0,
+        "duration_seconds": 1.28
+      },
+      {
+        "timestamp": 468.0,
+        "duration_seconds": 0.72
+      },
+      {
+        "timestamp": 469.7,
+        "duration_seconds": 0.84
+      },
+      {
+        "timestamp": 476.1,
+        "duration_seconds": 5.7
+      },
+      {
+        "timestamp": 478.9,
+        "duration_seconds": 1.98
+      }
+    ],
+    "proctor_alert": false,
+    "timestamp": 1776685355
+  }
+]
